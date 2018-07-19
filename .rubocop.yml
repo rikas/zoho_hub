@@ -1,0 +1,39 @@
+require: rubocop-rspec
+
+AllCops:
+  TargetRubyVersion: 2.5.1
+
+# Don't force top level comments in every class
+Style/Documentation:
+  Enabled: false
+
+# A good line length is 100 chars
+Metrics/LineLength:
+  Max: 100
+  AllowURI: true
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/ClassLength:
+  Max: 300
+
+Metrics/MethodLength:
+  Max: 20
+
+Metrics/AbcSize:
+  Max: 30
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Max: 10
+
+RSpec/RepeatedExample:
+  Exclude:
+    - 'spec/policies/**/*'
+
+RSpec/RepeatedDescription:
+  Exclude:
+    - 'spec/policies/**/*'
