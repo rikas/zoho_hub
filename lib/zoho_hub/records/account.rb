@@ -3,7 +3,6 @@
 require 'zoho_hub/records/base_record'
 
 module ZohoHub
-  # The Account class represents a Finpoint borrower organisation (BorrowerOrganisation model).
   class Account < BaseRecord
     attributes :id, :name, :territories, :company_number, :employee_count, :company_type, :industry
     attributes :billing_city, :billing_code, :billing_country, :billing_street, :billing_state

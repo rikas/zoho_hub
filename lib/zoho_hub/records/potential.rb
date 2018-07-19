@@ -3,7 +3,6 @@
 require 'zoho_hub/records/base_record'
 
 module ZohoHub
-  # The Potential class represents a Finpoint finance application (FinanceApplication model).
   class Potential < BaseRecord
     list_name 'Potentials'
 
