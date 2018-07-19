@@ -2,11 +2,11 @@ PATH
   remote: .
   specs:
     zoho_hub (0.1.0)
-      activesupport
-      addressable
-      faraday
-      faraday_middleware
-      multi_json
+      activesupport (~> 5.2)
+      addressable (~> 2.5)
+      faraday (~> 0.15)
+      faraday_middleware (~> 0.12)
+      multi_json (~> 1.13)
 
 GEM
   remote: https://rubygems.org/
@@ -89,13 +89,13 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 1.16)
-  dotenv
-  pry-byebug
+  dotenv (~> 2.5)
+  pry-byebug (~> 3.6)
   rake (~> 10.0)
   rspec (~> 3.0)
-  rubocop
-  rubocop-rspec
-  simplecov
+  rubocop (~> 0.58)
+  rubocop-rspec (~> 1.27)
+  simplecov (~> 0.16)
   zoho_hub!
 
 BUNDLED WITH
