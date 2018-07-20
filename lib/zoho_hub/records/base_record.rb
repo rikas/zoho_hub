@@ -86,6 +86,10 @@ module ZohoHub
         ZohoHub.connection.post(path, params.to_json)
       end
 
+      def put(path, params = {})
+        ZohoHub.connection.put(path, params.to_json)
+      end
+
       def exists?(id)
         !find(id).nil?
       rescue RecordNotFound
@@ -114,6 +118,10 @@ module ZohoHub
 
     def post(path, params = {})
       self.class.post(path, params)
+    end
+
+    def put(path, params = {})
+      self.class.put(path, params)
     end
 
     def save

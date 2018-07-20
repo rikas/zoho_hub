@@ -28,6 +28,11 @@ module ZohoHub
       response.body
     end
 
+    def put(path, params = {})
+      response = with_refresh { adapter.put(path, params) }
+      response.body
+    end
+
     def access_token?
       @access_token.present?
     end
