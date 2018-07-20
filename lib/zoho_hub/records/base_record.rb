@@ -125,7 +125,13 @@ module ZohoHub
     end
 
     def save
-      body = post(self.class.record_name, data: [to_params])
+      body = if new_record?
+               post(self.class.record_name, data: [to_params])
+             else
+               path = URI.join(self.class.record_name, zoho_id)
+               put(path, data: [to_params])
+             end
+
       response = build_response(body)
 
       response.data.dig(:details, :id)
