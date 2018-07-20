@@ -125,9 +125,9 @@ module ZohoHub
     end
 
     def save
-      body = if new_record?
+      body = if new_record? # create new record
                post(self.class.record_name, data: [to_params])
-             else
+             else # update existing record
                path = File.join(self.class.record_name, id)
                put(path, data: [to_params])
              end
