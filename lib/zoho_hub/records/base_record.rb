@@ -128,7 +128,7 @@ module ZohoHub
       body = if new_record?
                post(self.class.record_name, data: [to_params])
              else
-               path = URI.join(self.class.record_name, zoho_id)
+               path = URI.join(self.class.record_name, id)
                put(path, data: [to_params])
              end
 
@@ -138,7 +138,7 @@ module ZohoHub
     end
 
     def new_record?
-      !zoho_id.present?
+      !id.present?
     end
 
     def to_params
