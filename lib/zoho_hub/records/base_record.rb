@@ -131,6 +131,10 @@ module ZohoHub
       response.data.dig(:details, :id)
     end
 
+    def new_record?
+      !zoho_id.present?
+    end
+
     def to_params
       params = {}
 
