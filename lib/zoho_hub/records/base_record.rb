@@ -128,7 +128,7 @@ module ZohoHub
       body = if new_record?
                post(self.class.record_name, data: [to_params])
              else
-               path = URI.join(self.class.record_name, id)
+               path = File.join(self.class.record_name, id)
                put(path, data: [to_params])
              end
 
