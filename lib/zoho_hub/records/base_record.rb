@@ -83,8 +83,6 @@ module ZohoHub
       end
 
       def post(path, params = {})
-        puts "POSTING TO `#{path}` -- #{params}"
-
         ZohoHub.connection.post(path, params.to_json)
       end
 
