@@ -2,12 +2,14 @@
 
 require 'faraday'
 require 'faraday_middleware'
+require 'rainbow'
 
 require 'zoho_hub/response'
 
 module ZohoHub
   class Connection
     attr_accessor :debug, :access_token, :expires_in, :api_domain, :refresh_token
+    attr_accessor :on_refresh_cb
 
     BASE_PATH = '/crm/v2/'
 
@@ -19,16 +21,22 @@ module ZohoHub
     end
 
     def get(path, params = {})
+      log "GET #{path} with #{params}"
+
       response = with_refresh { adapter.get(path, params) }
       response.body
     end
 
     def post(path, params = {})
+      log "POST #{path} with #{params}"
+
       response = with_refresh { adapter.post(path, params) }
       response.body
     end
 
     def put(path, params = {})
+      log "PUT #{path} with #{params}"
+
       response = with_refresh { adapter.put(path, params) }
       response.body
     end
@@ -41,6 +49,12 @@ module ZohoHub
       @refresh_token.present?
     end
 
+    def log(text)
+      return unless ZohoHub.configuration.debug?
+
+      puts Rainbow("[ZohoHub] #{text}").magenta.bright
+    end
+
     private
 
     def with_refresh
@@ -50,8 +64,10 @@ module ZohoHub
 
       # Try to refresh the token and try again
       if response.invalid_token? && refresh_token?
-        puts 'Refreshing outdated token...'
+        log "Refreshing outdated token... #{@access_token}"
         params = ZohoHub::Auth.refresh_token(@refresh_token)
+
+        @on_refresh_cb.call(params) if @on_refresh_cb.present?
 
         @access_token = params[:access_token]
 
