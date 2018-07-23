@@ -24,6 +24,10 @@ module ZohoHub
     @connection
   end
 
+  def on_refresh(&block)
+    @connection.on_refresh_cb = block
+  end
+
   def setup_connection(params = {})
     raise "ERROR: #{params[:error]}" if params[:error]
 
