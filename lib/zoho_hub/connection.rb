@@ -11,9 +11,11 @@ module ZohoHub
     attr_accessor :debug, :access_token, :expires_in, :api_domain, :refresh_token
     attr_accessor :on_refresh_cb
 
+    DEFAULT_DOMAIN = 'https://www.zohoapis.eu'
+
     BASE_PATH = '/crm/v2/'
 
-    def initialize(access_token:, api_domain:, expires_in: 3600, refresh_token: nil)
+    def initialize(access_token:, api_domain: DEFAULT_DOMAIN, expires_in: 3600, refresh_token: nil)
       @access_token = access_token
       @expires_in = expires_in
       @api_domain = api_domain
