@@ -3,6 +3,7 @@
 require 'faraday'
 require 'faraday_middleware'
 require 'rainbow'
+require 'addressable'
 
 require 'zoho_hub/response'
 
@@ -80,7 +81,7 @@ module ZohoHub
     end
 
     def base_url
-      URI.join(@api_domain, BASE_PATH).to_s
+      Addressable::URI.join(@api_domain, BASE_PATH).to_s
     end
 
     # The authorization header that must be added to every request for authorized requests.
