@@ -10,6 +10,9 @@ require 'zoho_hub/response'
 module ZohoHub
   class Connection
     attr_accessor :debug, :access_token, :expires_in, :api_domain, :refresh_token
+
+    # This is a block to be run when the token is refreshed. This way you can do whatever you want
+    # with the new parameters returned by the refresh method.
     attr_accessor :on_refresh_cb
 
     DEFAULT_DOMAIN = 'https://www.zohoapis.eu'
