@@ -5,16 +5,10 @@ require 'zoho_hub/response'
 module ZohoHub
   class BaseRecord
     class << self
-      def record_name(name = nil)
-        @record_name = name if name
-        @record_name ||= to_s.demodulize.pluralize
-        @record_name
-      end
-
-      def list_name(name = nil)
-        @list_name = name if name
-        @list_name ||= to_s.demodulize.pluralize.downcase
-        @list_name
+      def request_path(name = nil)
+        @request_path = name if name
+        @request_path ||= to_s.demodulize.pluralize
+        @request_path
       end
 
       def attributes(*attributes)
@@ -40,18 +34,20 @@ module ZohoHub
       end
 
       def find(id)
-        body = get(File.join(record_name, id.to_s))
+        body = get(File.join(request_path, id.to_s))
         response = build_response(body)
 
         if response.empty?
-          raise RecordNotFound, "Couldn't find #{record_name.singularize} with 'id'=#{id}"
+          raise RecordNotFound, "Couldn't find #{request_path.singularize} with 'id'=#{id}"
         end
 
         new(response.data)
       end
 
       def where(params)
-        response = get(list_name, params)
+        path = File.join(request_path, 'search')
+
+        response = get(path, params)
         data = response[:data]
 
         data.map { |info| new(info) }
@@ -70,7 +66,7 @@ module ZohoHub
         options[:page] ||= 1
         options[:per_page] ||= 200
 
-        body = get(list_name, options)
+        body = get(request_path, options)
         response = build_response(body)
 
         data = response.nil? ? [] : response.data
@@ -126,9 +122,9 @@ module ZohoHub
 
     def save
       body = if new_record? # create new record
-               post(self.class.record_name, data: [to_params])
+               post(self.class.request_path, data: [to_params])
              else # update existing record
-               path = File.join(self.class.record_name, id)
+               path = File.join(self.class.request_path, id)
                put(path, data: [to_params])
              end
 
