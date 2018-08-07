@@ -9,4 +9,7 @@ module ZohoHub
 
   class InvalidTokenError < StandardError
   end
+
+  class ZohoAPIError < StandardError
+  end
 end

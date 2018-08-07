@@ -78,6 +78,8 @@ module ZohoHub
         @access_token = params[:access_token]
 
         http_response = yield
+      elsif response.authentication_failure?
+        raise ZohoAPIError, response.msg
       end
 
       http_response
