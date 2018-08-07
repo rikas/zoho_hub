@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    zoho_hub (0.1.5)
+    zoho_hub (0.1.6)
       activesupport (~> 5.2)
       addressable (~> 2.5)
       faraday (~> 0.15)
