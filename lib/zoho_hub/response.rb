@@ -7,12 +7,22 @@ module ZohoHub
     end
 
     def invalid_data?
+      return false if data.is_a?(Array)
+
       data[:code] == 'INVALID_DATA'
     end
 
     # {:code=>"INVALID_TOKEN", :details=>{}, :message=>"invalid oauth token", :status=>"error"}
     def invalid_token?
+      return false if data.is_a?(Array)
+
       data[:code] == 'INVALID_TOKEN'
+    end
+
+    def authentication_failure?
+      return false if data.is_a?(Array)
+
+      data[:code] == 'AUTHENTICATION_FAILURE'
     end
 
     def empty?
