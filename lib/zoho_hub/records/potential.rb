@@ -4,13 +4,11 @@ require 'zoho_hub/records/base_record'
 
 module ZohoHub
   class Potential < BaseRecord
-    list_name 'Potentials'
-
     attributes :id, :code, :deal_name, :amount, :description, :stage
     attributes :company_age_years, :company_age_months, :term, :use_proceeds, :proceeds_detail
     attributes :currency, :territory, :employee_count, :turnover, :industry, :region
     attributes :review_outcome, :first_created, :last_modified, :preferred_term
-    attributes :campaign_id, :account_id, :contact_id, :campaign_detail
+    attributes :campaign_id, :account_id, :contact_id, :campaign_detail, :reviewers_comment
 
     DEFAULTS = {
       currency: 'GBP',
