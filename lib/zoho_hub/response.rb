@@ -44,8 +44,10 @@ module ZohoHub
       if data.dig(:details, :expected_data_type)
         expected = data.dig(:details, :expected_data_type)
         field = data.dig(:details, :api_name)
+        parent_api_name = data.dig(:details, :parent_api_name)
 
         msg << ", expected #{expected} for '#{field}'"
+        msg << " in #{parent_api_name}" if parent_api_name
       end
 
       msg
