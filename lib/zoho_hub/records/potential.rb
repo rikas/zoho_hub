@@ -7,7 +7,7 @@ module ZohoHub
     attributes :id, :code, :deal_name, :amount, :description, :stage
     attributes :company_age_years, :company_age_months, :term, :use_proceeds, :proceeds_detail
     attributes :currency, :territory, :employee_count, :turnover, :industry, :region
-    attributes :review_outcome, :first_created, :last_modified, :preferred_term
+    attributes :review_outcome, :first_created, :last_modified, :preferred_term, :project_notes
     attributes :campaign_id, :account_id, :contact_id, :campaign_detail, :reviewers_comment
 
     DEFAULTS = {
