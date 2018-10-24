@@ -3,6 +3,8 @@
 require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/string/inflections'
 
+require 'backports/2.3.0/hash' if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('2.3.0')
+
 require 'zoho_hub/version'
 require 'zoho_hub/auth'
 require 'zoho_hub/configuration'
