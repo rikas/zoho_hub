@@ -20,7 +20,14 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+ZohoHub.configure do |config|
+  config.client_id    = 'YOUR_ZOHO_CLIENT_ID'
+  config.secret       = 'YOUR_ZOHO_SECRET'
+  config.redirect_uri = 'YOUR_ZOHO_OAUTH_REDIRECT_URL'
+  # config.debug      = true
+end
+```
 
 ## Development
 
