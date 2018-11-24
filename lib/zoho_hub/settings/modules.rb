@@ -23,9 +23,11 @@ module ZohoHub
 
       REQUEST_PATH = 'settings/modules'
 
-      attr_accessor :convertable, :editable, :deletable, :web_link, :singular_label, :modified_time,
-                    :viewable, :api_supported, :creatable, :plural_label, :api_name, :modified_by,
-                    :generated_type, :id, :module_name
+      ATTRIBUTES = %i[convertable editable deletable web_link singular_label modified_time viewable
+                      api_supported creatable plural_label api_name modified_by generated_type id
+                      module_name]
+
+      attr_accessor *ATTRIBUTES
 
       def self.all
         response = get(REQUEST_PATH)
@@ -35,21 +37,9 @@ module ZohoHub
       end
 
       def initialize(json = {})
-        @convertable = json[:convertable]
-        @editable = json[:editable]
-        @deletable = json[:deletable]
-        @web_link = json[:web_link]
-        @singular_label = json[:singular_label]
-        @modified_time = json[:modified_time]
-        @viewable = json[:viewable]
-        @api_supported = json[:api_supported]
-        @creatable = json[:creatable]
-        @plural_label = json[:plural_label]
-        @api_name = json[:api_name]
-        @modified_by = json[:modified_by]
-        @generated_type = json[:generated_type]
-        @id = json[:id]
-        @module_name = json[:module_name]
+        ATTRIBUTES.each do |attr|
+          self.send("#{attr}=", json[attr])
+        end
       end
     end
   end

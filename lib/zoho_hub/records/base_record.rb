@@ -2,39 +2,19 @@
 
 require 'zoho_hub/response'
 require 'zoho_hub/with_connection'
+require 'zoho_hub/with_attributes'
 require 'zoho_hub/string_tools'
 
 module ZohoHub
   class BaseRecord
     include WithConnection
+    include WithAttributes
 
     class << self
       def request_path(name = nil)
         @request_path = name if name
         @request_path ||= StringTools.pluralize(StringTools.demodulize(to_s))
         @request_path
-      end
-
-      def attributes(*attributes)
-        @attributes ||= []
-
-        return @attributes unless attributes
-
-        attr_accessor(*attributes)
-
-        @attributes += attributes
-      end
-
-      def attribute_translation(translation = nil)
-        @attribute_translation ||= {}
-
-        return @attribute_translation unless translation
-
-        @attribute_translation = translation
-      end
-
-      def zoho_key_translation
-        @attribute_translation.to_a.map(&:rotate).to_h
       end
 
       def find(id)
@@ -96,10 +76,6 @@ module ZohoHub
       end
     end
 
-    def attributes
-      self.class.attributes
-    end
-
     def save
       body = if new_record? # create new record
                post(self.class.request_path, data: [to_params])
@@ -131,24 +107,6 @@ module ZohoHub
 
     def build_response(body)
       self.class.build_response(body)
-    end
-
-    private
-
-    def attr_to_zoho_key(attr_name)
-      translations = self.class.attribute_translation
-
-      return translations[attr_name.to_sym] if translations.key?(attr_name.to_sym)
-
-      attr_name.to_s.split('_').map(&:capitalize).join('_').to_sym
-    end
-
-    def zoho_key_to_attr(zoho_key)
-      translations = self.class.zoho_key_translation
-
-      return translations[zoho_key.to_sym] if translations.key?(zoho_key.to_sym)
-
-      zoho_key.to_sym
     end
   end
 end

@@ -53,6 +53,10 @@ module ZohoHub
     connection.access_token?
   end
 
+  def modules
+    @modules ||= Settings::Modules.all
+  end
+
   def configure
     yield(configuration)
   end
