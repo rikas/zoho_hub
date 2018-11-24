@@ -1,5 +1,9 @@
 # ZohoHub
 
+[![Build Status](https://travis-ci.com/rikas/zoho_hub.svg?branch=master)](https://travis-ci.com/rikas/zoho_hub)
+
+Simple wrapper around Zoho CRM version2, using authentication by [OAuth 2.0 protocol](https://www.zoho.com/crm/help/api/v2/#OAuth2_0).
+
 https://www.zoho.com/crm/help/api-diff/
 
 ## Installation
