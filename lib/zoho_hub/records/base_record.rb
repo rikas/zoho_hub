@@ -1,13 +1,17 @@
 # frozen_string_literal: true
 
 require 'zoho_hub/response'
+require 'zoho_hub/with_connection'
+require 'zoho_hub/string_tools'
 
 module ZohoHub
   class BaseRecord
+    include WithConnection
+
     class << self
       def request_path(name = nil)
         @request_path = name if name
-        @request_path ||= to_s.demodulize.pluralize
+        @request_path ||= StringTools.pluralize(StringTools.demodulize(to_s))
         @request_path
       end
 
@@ -74,18 +78,6 @@ module ZohoHub
         data.map { |info| new(info) }
       end
 
-      def get(path, params = {})
-        ZohoHub.connection.get(path, params)
-      end
-
-      def post(path, params = {})
-        ZohoHub.connection.post(path, params.to_json)
-      end
-
-      def put(path, params = {})
-        ZohoHub.connection.put(path, params.to_json)
-      end
-
       def exists?(id)
         !find(id).nil?
       rescue RecordNotFound
@@ -108,18 +100,6 @@ module ZohoHub
       self.class.attributes
     end
 
-    def get(path, params = {})
-      self.class.get(path, params)
-    end
-
-    def post(path, params = {})
-      self.class.post(path, params)
-    end
-
-    def put(path, params = {})
-      self.class.put(path, params)
-    end
-
     def save
       body = if new_record? # create new record
                post(self.class.request_path, data: [to_params])
@@ -134,7 +114,7 @@ module ZohoHub
     end
 
     def new_record?
-      !id.present?
+      !id
     end
 
     def to_params

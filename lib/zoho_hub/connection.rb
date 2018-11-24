@@ -48,11 +48,11 @@ module ZohoHub
     end
 
     def access_token?
-      @access_token.present?
+      @access_token
     end
 
     def refresh_token?
-      @refresh_token.present?
+      @refresh_token
     end
 
     def log(text)
@@ -73,7 +73,7 @@ module ZohoHub
         log "Refreshing outdated token... #{@access_token}"
         params = ZohoHub::Auth.refresh_token(@refresh_token)
 
-        @on_refresh_cb.call(params) if @on_refresh_cb.present?
+        @on_refresh_cb.call(params) if @on_refresh_cb
 
         @access_token = params[:access_token]
 

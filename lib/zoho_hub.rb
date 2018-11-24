@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require 'active_support/core_ext/object/blank'
-require 'active_support/core_ext/string/inflections'
-
 require 'backports/2.3.0/hash' if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('2.3.0')
 
 require 'zoho_hub/version'
@@ -17,6 +14,9 @@ require 'zoho_hub/records/account'
 require 'zoho_hub/records/quote'
 require 'zoho_hub/records/funder'
 require 'zoho_hub/records/product'
+
+require 'zoho_hub/settings/fields'
+require 'zoho_hub/settings/modules'
 
 module ZohoHub
   module_function
@@ -42,13 +42,13 @@ module ZohoHub
   end
 
   def refresh_token?
-    return false unless connection.present?
+    return false unless connection
 
     connection.refresh_token?
   end
 
   def access_token?
-    return false unless connection.present?
+    return false unless connection
 
     connection.access_token?
   end

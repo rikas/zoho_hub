@@ -25,7 +25,6 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = '>= 2.1.0'
 
-  spec.add_dependency 'activesupport', '>= 3'
   spec.add_dependency 'addressable'
   spec.add_dependency 'faraday'
   spec.add_dependency 'faraday_middleware'
