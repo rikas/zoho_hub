@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'zoho_hub/with_connection'
+require 'zoho_hub/with_attributes'
 
 module ZohoHub
   module Settings
@@ -20,14 +21,13 @@ module ZohoHub
     # More details: https://www.zoho.com/crm/help/api/v2/#Modules-APIs
     class Modules
       include WithConnection
+      include WithAttributes
 
       REQUEST_PATH = 'settings/modules'
 
-      ATTRIBUTES = %i[convertable editable deletable web_link singular_label modified_time viewable
-                      api_supported creatable plural_label api_name modified_by generated_type id
-                      module_name]
-
-      attr_accessor *ATTRIBUTES
+      attributes :convertable, :editable, :deletable, :web_link, :singular_label, :modified_time,
+                 :viewable, :api_supported, :creatable, :plural_label, :api_name, :modified_by,
+                 :generated_type, :id, :module_name
 
       def self.all
         response = get(REQUEST_PATH)
@@ -37,9 +37,7 @@ module ZohoHub
       end
 
       def initialize(json = {})
-        ATTRIBUTES.each do |attr|
-          self.send("#{attr}=", json[attr])
-        end
+        attributes.each { |attr| self.send("#{attr}=", json[attr]) }
       end
     end
   end
