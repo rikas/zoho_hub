@@ -4,7 +4,9 @@
 
 Simple wrapper around Zoho CRM version2, using authentication by [OAuth 2.0 protocol](https://www.zoho.com/crm/help/api/v2/#OAuth2_0).
 
-https://www.zoho.com/crm/help/api-diff/
+This gem reads your Module configuration and builds the corresponding classes for you.
+
+**NOTE: this gem is WIP, please try to use it and open an issue if you run into limitations / problems**
 
 ## Installation
 
@@ -24,12 +26,14 @@ Or install it yourself as:
 
 ## Usage
 
+First you need to have a configuration block like the one below:
+
 ```ruby
 ZohoHub.configure do |config|
   config.client_id    = 'YOUR_ZOHO_CLIENT_ID'
   config.secret       = 'YOUR_ZOHO_SECRET'
   config.redirect_uri = 'YOUR_ZOHO_OAUTH_REDIRECT_URL'
-  # config.debug      = true
+  # config.debug      = true # this will be VERY verbose, but helps to identify bugs / problems
 end
 ```
 
@@ -39,10 +43,7 @@ After checking out the repo, run `bin/setup` to install dependencies. Then, run 
 the tests. You can also run `bin/console` for an interactive prompt that will allow you to
 experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new
-version, update the version number in `version.rb`, and then run `bundle exec rake release`, which
-will create a git tag for the version, push git commits and tags, and push the `.gem` file
-to [rubygems.org](https://rubygems.org).
+To install this gem onto your local machine, run `bundle exec rake install`.
 
 ## Contributing
 
