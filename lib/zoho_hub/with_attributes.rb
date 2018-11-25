@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module ZohoHub
-  # Allows adding attributes to a class, as <tt>attr_accessors</tt> that can then be listed from the class
-  # or an instance of that class.
+  # Allows adding attributes to a class, as <tt>attr_accessors</tt> that can then be listed from the
+  # class or an instance of that class.
   #
   # === Example
   #

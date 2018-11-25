@@ -33,12 +33,12 @@ modules_hashes.each do |hash|
     file.write(JSON.pretty_generate(hash))
   end
 
-  if hash[:api_supported]
-    fields_array = ZohoHub::Settings::Field.all_json_for(hash[:api_name])
-    file_name = File.join(ZohoHub.root, 'cache', 'fields', "#{hash[:api_name]}.json")
+  next unless hash[:api_supported]
 
-    File.open(file_name, 'w') do |file|
-      file.write(JSON.pretty_generate(fields_array))
-    end
+  fields_array = ZohoHub::Settings::Field.all_json_for(hash[:api_name])
+  file_name = File.join(ZohoHub.root, 'cache', 'fields', "#{hash[:api_name]}.json")
+
+  File.open(file_name, 'w') do |file|
+    file.write(JSON.pretty_generate(fields_array))
   end
 end
