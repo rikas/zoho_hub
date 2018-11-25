@@ -6,7 +6,9 @@
 Simple wrapper around Zoho CRM version2, using [OAuth 2.0 protocol](https://www.zoho.com/crm/help/api/v2/#OAuth2_0)
 for authentication.
 
-This gem reads your Module configuration and builds the corresponding classes for you.
+This gem reads your Module configuration and builds the corresponding classes for you, using some
+reflection mechanisms. You should then be able to use simple classes with an API close to
+ActiveRecord, to do CRUD operations.
 
 **NOTE: this gem is WIP, please try to use it and open an issue if you run into limitations / problems**
 
