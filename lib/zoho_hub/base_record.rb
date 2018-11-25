@@ -3,17 +3,26 @@
 require 'zoho_hub/response'
 require 'zoho_hub/with_connection'
 require 'zoho_hub/with_attributes'
-require 'zoho_hub/string_tools'
+require 'zoho_hub/string_utils'
 
 module ZohoHub
   class BaseRecord
     include WithConnection
     include WithAttributes
 
+    # Default nnumber of records when fetching all.
+    DEFAULT_RECORDS_PER_PAGE = 200
+
+    # Default page number when fetching all.
+    DEFAULT_PAGE = 1
+
+    # Minimum number of records to fetch when fetching all.
+    MIN_RECORDS = 2
+
     class << self
       def request_path(name = nil)
         @request_path = name if name
-        @request_path ||= StringTools.pluralize(StringTools.demodulize(to_s))
+        @request_path ||= StringUtils.pluralize(StringUtils.demodulize(to_s))
         @request_path
       end
 
@@ -47,15 +56,16 @@ module ZohoHub
       end
 
       def all(options = {})
-        options[:page] ||= 1
-        options[:per_page] ||= 200
+        options[:page] ||= DEFAULT_PAGE
+        options[:per_page] ||= DEFAULT_RECORDS_PER_PAGE
+        options[:per_page] = MIN_RECORDS if options[:per_page] < MIN_RECORDS
 
         body = get(request_path, options)
         response = build_response(body)
 
         data = response.nil? ? [] : response.data
 
-        data.map { |info| new(info) }
+        data.map { |json| new(json) }
       end
 
       def exists?(id)

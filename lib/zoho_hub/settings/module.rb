@@ -3,6 +3,8 @@
 require 'zoho_hub/with_connection'
 require 'zoho_hub/with_attributes'
 
+require 'zoho_hub/settings/field'
+
 module ZohoHub
   module Settings
     # Zoho CRM has standard modules such as, Leads, Accounts, Contacts, Deals, Forecasts,
@@ -19,7 +21,7 @@ module ZohoHub
     # modified_time: The date and time of changes made by the user.
     #
     # More details: https://www.zoho.com/crm/help/api/v2/#Modules-APIs
-    class Modules
+    class Module
       include WithConnection
       include WithAttributes
 
@@ -27,17 +29,20 @@ module ZohoHub
 
       attributes :convertable, :editable, :deletable, :web_link, :singular_label, :modified_time,
                  :viewable, :api_supported, :creatable, :plural_label, :api_name, :modified_by,
-                 :generated_type, :id, :module_name
+                 :generated_type, :id, :module_name, :fields
 
       def self.all
-        response = get(REQUEST_PATH)
-
-        modules = response[:modules]
+        modules = all_json
         modules.map { |json| new(json) }
       end
 
+      def self.all_json
+        response = get(REQUEST_PATH)
+        response[:modules]
+      end
+
       def initialize(json = {})
-        attributes.each { |attr| self.send("#{attr}=", json[attr]) }
+        attributes.each { |attr| send("#{attr}=", json[attr]) }
       end
     end
   end

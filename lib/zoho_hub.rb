@@ -7,28 +7,28 @@ require 'zoho_hub/auth'
 require 'zoho_hub/configuration'
 require 'zoho_hub/connection'
 require 'zoho_hub/errors'
-require 'zoho_hub/records/contact'
-require 'zoho_hub/records/potential'
-require 'zoho_hub/records/campaign'
-require 'zoho_hub/records/account'
-require 'zoho_hub/records/quote'
-require 'zoho_hub/records/funder'
-require 'zoho_hub/records/product'
+require 'zoho_hub/base_record'
+require 'zoho_hub/settings/module'
+require 'zoho_hub/module_builder'
 
-require 'zoho_hub/settings/fields'
-require 'zoho_hub/settings/modules'
+require 'multi_json'
 
 module ZohoHub
   module_function
+
+  def root
+    File.expand_path(File.join(__dir__, '..'))
+  end
 
   def configuration
     @configuration ||= Configuration.new
   end
 
-  def connection
-    @connection
+  def configure
+    yield(configuration)
   end
 
+  # Callback for when the token is refreshed.
   def on_refresh(&block)
     @connection.on_refresh_cb = block
   end
@@ -36,9 +36,13 @@ module ZohoHub
   def setup_connection(params = {})
     raise "ERROR: #{params[:error]}" if params[:error]
 
-    connection_params = params.slice(:access_token, :expires_in, :api_domain, :refresh_token)
+    connection_params = params.dup.slice(:access_token, :expires_in, :api_domain, :refresh_token)
 
     @connection = Connection.new(connection_params)
+  end
+
+  def connection
+    @connection
   end
 
   def refresh_token?
@@ -51,13 +55,5 @@ module ZohoHub
     return false unless connection
 
     connection.access_token?
-  end
-
-  def modules
-    @modules ||= Settings::Modules.all
-  end
-
-  def configure
-    yield(configuration)
   end
 end

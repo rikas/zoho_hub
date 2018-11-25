@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ZohoHub
   # Adds the ability to do API requests (GET / PUT and POST requests) when included in a class.
   module WithConnection

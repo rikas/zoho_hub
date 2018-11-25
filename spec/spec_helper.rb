@@ -7,7 +7,6 @@ SimpleCov.start do
 end
 
 require 'zoho_hub'
-require 'zoho_hub/string_tools'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

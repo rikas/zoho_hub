@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    zoho_hub (0.1.8)
+    zoho_hub (0.1.9)
       addressable
       faraday
       faraday_middleware
