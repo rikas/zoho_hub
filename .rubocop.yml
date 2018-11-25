@@ -7,6 +7,10 @@ AllCops:
 Style/Documentation:
   Enabled: false
 
+# Safe navigation is not available in older ruby versions
+Style/SafeNavigation:
+  Enabled: false
+
 # A good line length is 100 chars
 Metrics/LineLength:
   Max: 100
