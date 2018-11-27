@@ -1,0 +1,61 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'bundler/setup'
+
+require 'zoho_hub'
+require 'zoho_hub/auth'
+require 'zoho_hub/oauth_callback_server'
+
+require 'launchy'
+require 'optparse'
+
+default_port = ZohoHub::OauthCallbackServer.settings.port
+
+options = {}
+parser = OptionParser.new do |op|
+  op.banner = 'Usage: zoho_hub -c CLIENT_ID -s SECRET [options]'
+
+  op.on('-c', '--client-id=client_id', 'The Zoho client ID') do |client|
+    options[:client_id] = client
+  end
+
+  op.on('-s', '--secret=secret', 'The Zoho secret') do |secret|
+    options[:secret] = secret
+  end
+
+  op.on('-p', '--port=port', "The port for your callback (default #{default_port})") do |port|
+    options[:port] = port
+  end
+
+  op.on_tail('--version', 'Show version') do
+    puts "ZohoHub #{ZohoHub::VERSION}"
+    exit
+  end
+end
+
+parser.parse!
+
+abort(parser.help) if options[:client_id].nil? || options[:secret].nil?
+
+callback_path = ZohoHub::OauthCallbackServer::CALLBACK_PATH
+
+ZohoHub::OauthCallbackServer.set(:port, options[:port]) if options[:port]
+
+bind_port = ZohoHub::OauthCallbackServer.settings.port
+bind_address = ZohoHub::OauthCallbackServer.settings.bind
+
+callback_url = "http://#{bind_address}:#{bind_port}/#{callback_path}"
+
+puts "Callback URL: #{callback_url}"
+
+ZohoHub.configure do |config|
+  config.client_id    = options[:client_id]
+  config.secret       = options[:secret]
+  config.redirect_uri = callback_url
+  config.debug        = true
+end
+
+# Open the URL in the browser
+puts "REQUESTING: #{ZohoHub::Auth.new.auth_url}"
+Launchy.open(ZohoHub::Auth.new.auth_url)
