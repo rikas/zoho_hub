@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Zoho CRM authentication</title>
+    <style media="screen">
+      body {
+        font-family: sans-serif;
+        padding: 20px 50px;
+      }
+
+      ul.variables {
+        padding: 20px;
+        background-color: #eaeaea;
+        font-family: monospace;
+        list-style: none;
+        line-height: 1.5em;
+        margin-bottom: 50px;
+      }
+
+      li.error {
+        color: #aa0000;
+      }
+
+      div.config {
+        padding: 20px;
+        background-color: #eaeaea;
+        font-family: monospace;
+        line-height: 1.5em;
+      }
+
+      pre {
+        margin: 0;
+        padding: 0;
+      }
+
+      code {
+        padding: 0;
+        margin: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h2>Here's what you have to add to your environment variables:</h2>
+
+    <ul class="variables">
+      <li>ZOHO_CLIENT_ID=<%= ZohoHub.configuration.client_id %></li>
+      <li>ZOHO_SECRET=<%= ZohoHub.configuration.secret %></li>
+      <li>ZOHO_API_DOMAIN=<%= @variables[:api_domain] %></li>
+      <% if @variables[:refresh_token] %>
+      <li>ZOHO_REFRESH_TOKEN=<%= @variables[:refresh_token] %></li>
+      <% else %>
+      <li class="error">
+        ZOHO_REFRESH_TOKEN=zoho didn't send the refresh token. Please review your configuration.
+        Check <a href="https://github.com/rikas/zoho_hub">the documentation</a> to understand why
+        this is important and how to solve the problem.
+      </li>
+      <% end %>
+    </ul>
+
+    <h2>Then you need a configuration block like this one:</h2>
+    <div class="config">
+      <pre><code>ZohoHub.configure do |config|
+  config.client_id      = ENV['ZOHO_CLIENT_ID']
+  config.secret         = ENV['ZOHO_SECRET']
+  config.api_domain     = ENV['ZOHO_API_DOMAIN']
+  config.refresh_token  = ENV['ZOHO_REFRESH_TOKEN']
+end</code></pre>
+    </div>
+  </body>
+</html>
