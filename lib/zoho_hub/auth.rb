@@ -6,6 +6,8 @@ require 'faraday_middleware'
 require 'addressable'
 
 module ZohoHub
+  # Class that takes care of authentication using Oauth2 workflow as described here:
+  # https://www.zoho.com/crm/help/api/v2/#oauth-request.
   class Auth
     extend Forwardable
 
@@ -25,16 +27,16 @@ module ZohoHub
 
     def initialize(access_type: nil, scopes: nil)
       @configuration = ZohoHub.configuration
-      @access_type = access_type || ZohoHub.configuration.access_type
+      @access_type = access_type || ZohoHub.configuration.access_type || DEFAULT_ACCESS_TYPE
       @scopes = scopes || DEFAULT_SCOPES
     end
 
     def token_full_uri
-      Addressable::URI.join(@configuration.base_url, TOKEN_PATH)
+      Addressable::URI.join(@configuration.api_domain, TOKEN_PATH)
     end
 
     def auth_full_uri
-      Addressable::URI.join(@configuration.base_url, AUTH_PATH)
+      Addressable::URI.join(@configuration.api_domain, AUTH_PATH)
     end
 
     def auth_url
