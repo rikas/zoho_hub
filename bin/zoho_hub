@@ -57,5 +57,6 @@ ZohoHub.configure do |config|
 end
 
 # Open the URL in the browser
-puts "REQUESTING: #{ZohoHub::Auth.new.auth_url}"
-Launchy.open(ZohoHub::Auth.new.auth_url)
+url = ZohoHub::Auth.auth_url
+puts "REQUESTING: #{url}"
+Launchy.open(url)
