@@ -23,20 +23,24 @@ module ZohoHub
 
     DEFAULT_ACCESS_TYPE = 'offline'
 
-    def_delegators :@configuration, :redirect_uri, :client_id, :secret
+    def_delegators :@configuration, :redirect_uri, :client_id, :secret, :api_domain
 
-    def initialize(access_type: nil, scopes: nil)
+    def initialize(access_type: DEFAULT_ACCESS_TYPE, scopes: DEFAULT_SCOPES)
       @configuration = ZohoHub.configuration
-      @access_type = access_type || ZohoHub.configuration.access_type || DEFAULT_ACCESS_TYPE
-      @scopes = scopes || DEFAULT_SCOPES
+      @access_type = access_type
+      @scopes = scopes
     end
 
     def token_full_uri
-      Addressable::URI.join(@configuration.api_domain, TOKEN_PATH)
+      Addressable::URI.join(api_domain, TOKEN_PATH)
     end
 
     def auth_full_uri
-      Addressable::URI.join(@configuration.api_domain, AUTH_PATH)
+      Addressable::URI.join(api_domain, AUTH_PATH)
+    end
+
+    def self.auth_url(access_type: DEFAULT_ACCESS_TYPE, scopes: DEFAULT_SCOPES)
+      new(access_type: access_type, scopes: scopes).auth_url
     end
 
     def auth_url
