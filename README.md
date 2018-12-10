@@ -41,6 +41,16 @@ ZohoHub.configure do |config|
 end
 ```
 
+By design the access tokens returned by the OAuth flow expire after a period of time (1 hour by
+default), as a safety mechanism. This means that any application that wants to work with a user's
+data needs the user to have recently gone through the OAuth flow, aka be online.
+
+### Offline access
+
+When you request offline access the Zoho API returns a refresh token. Refresh tokens give your
+application the ability to request data on behalf of the user when the user is not present and in
+front of your application. You will only **ask for permission** one.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run
