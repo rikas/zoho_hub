@@ -51,11 +51,20 @@ When you request offline access the Zoho API returns a refresh token. Refresh to
 application the ability to request data on behalf of the user when the user is not present and in
 front of your application. You will only **ask for permission** one.
 
+![](https://duaw26jehqd4r.cloudfront.net/items/1h1i3C1N0k0i02092F0S/Screen%20Shot%202018-11-25%20at%2019.18.38.png)
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run
 the tests. You can also run `bin/console` for an interactive prompt that will allow you to
-experiment.
+experiment. This assumes that you have a `.env` file with every Zoho env variable:
+
+```
+# .env - fill with your credentials
+ZOHO_CLIENT_ID=
+ZOHO_SECRET=
+ZOHO_REFRESH_TOKEN=
+```
 
 To install this gem onto your local machine, run `bundle exec rake install`.
 
