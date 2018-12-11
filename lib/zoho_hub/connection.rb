@@ -22,7 +22,7 @@ module ZohoHub
     def initialize(access_token:, api_domain: DEFAULT_DOMAIN, expires_in: 3600, refresh_token: nil)
       @access_token = access_token
       @expires_in = expires_in
-      @api_domain = api_domain
+      @api_domain = api_domain || DEFAULT_DOMAIN
       @refresh_token ||= refresh_token # do not overwrite if it's already set
     end
 
