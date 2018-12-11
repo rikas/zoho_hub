@@ -13,7 +13,7 @@ require 'zoho_hub/records/potential'
 require 'zoho_hub/records/campaign'
 require 'zoho_hub/records/account'
 require 'zoho_hub/records/quote'
-require 'zoho_hub/records/funder'
+require 'zoho_hub/records/vendor'
 require 'zoho_hub/records/product'
 
 module ZohoHub
