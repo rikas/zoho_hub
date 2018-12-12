@@ -39,7 +39,9 @@ application as described here: https://www.zoho.com/crm/help/api/v2/#oauth-reque
 
 This will give you a **Client ID** and a **secret**, that you'll use in the next step.
 
-### 2. Configure ZohoHub with your credentials
+### 2. Authorization
+
+#### 2.1 Configure ZohoHub with your credentials
 
 You need to have a configuration block like the one below (in rails add a `zoho_hub.rb` in your
 `config/initializers` dir):
@@ -55,7 +57,32 @@ end
 
 **Note:** if you don't know what the `redirect_url` is then **TODO TODO TODO TODO TODO**
 
-### 2. Authorization request
+##### 2.1.1 Configuring for use with a single Zoho CRM database
+
+You can add the following to your `zoho_hub.rb` initializer if you will only be integrating with a single Zoho CRM account:
+
+```ruby
+  if crm = YOUR_AUTHENTICATION_MODEL.zohocrm_scope.first
+    ZohoHub.setup_connection(
+      access_token: crm.token,
+      expires_in: crm.expires_in,
+      refresh_token: crm.refresh_token,
+      api_domain: 'https://www.zohoapis.com' # Only needed if using Zoho CRM in North America
+    )
+    ZohoHub.on_refresh do |params|
+      # Perform logic to refresh access token and persist the data
+      # to the existing record
+      api_client = YOUR_AUTHENTICATION_MODEL.zohocrm_scope.first
+      ZohoHub.setup_connection(
+        access_token: api_client.token,
+        refresh_token: api_client.refresh_token,
+        api_domain: 'https://www.zohoapis.com'
+      )
+    end
+  end
+```
+
+#### 2.2 Authorization request
 
 In order to access data in Zoho CRM you need to authorize ZohoHub to access your account. To do so
 you have to request a specific URL with the right **scope** and **access_type**.
@@ -88,7 +115,7 @@ ZohoHub::Auth.auth_url(scope: ['ZohoCRM.modules.custom.all', 'ZohoCRM.modules.al
 # => "https://accounts.zoho.eu/oauth/v2/auth?access_type=offline&client_id=&redirect_uri=&response_type=code&scope=ZohoCRM.modules.custom.all,ZohoCRM.modules.all"
 ```
 
-#### 2.1 Offline access
+#### 2.3 Offline access
 
 By design the access tokens returned by the OAuth flow expire after a period of time (1 hour by
 default), as a safety mechanism. This means that any application that wants to work with a user's
@@ -108,6 +135,39 @@ ZohoHub::Auth.auth_url(access_type: 'online')
 ```
 
 ## 3. Generate Access Token
+
+**TODO**
+
+## 4. Refreshing Access Token
+
+**TODO**
+
+## Extending the Default API
+
+The base APIs do not provide lots of functionality, especially if your
+CRM data has several custom fields. It is easiest to define what your
+models appear as on Zoho CRM. The 
+[Zoho CRM API v2 docs provide information about their naming conventions](https://www.zoho.com/crm/help/api-diff/),
+which ZohoHub should handle gracefully. If some fields have strange names,
+or names that don't make sense (this can be common with existing CRM databases)
+they can be corrected through the use of the `attribute_translation` method.
+
+For example:
+
+```ruby
+class MyAccount < ZohoHub::Account
+  attributes :id, :account_name
+  attributes :billing_contact_name, :billing_city, :billing_code, :billing_country
+  attributes :shipping_contact, :shipping_phone
+
+  attribute_translation(
+    # class attribute name => zoho crm attribute name
+    shipping_contact: :Main_Contact_Name,
+    shipping_phone: :Phone,
+    billing_contact_name: :BillingContactName
+  )
+end
+```
 
 ## Development
 
