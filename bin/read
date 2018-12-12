@@ -1,10 +1,11 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require 'fileutils'
 require 'bundler/setup'
 require 'zoho_hub'
 require 'zoho_hub/settings/module'
-require 'zoho_hub/records/base_record'
+require 'zoho_hub/base_record'
 
 require 'dotenv'
 Dotenv.load
@@ -12,7 +13,6 @@ Dotenv.load
 ZohoHub.configure do |config|
   config.client_id    = ENV['ZOHO_CLIENT_ID']
   config.secret       = ENV['ZOHO_SECRET']
-  config.redirect_uri = ENV['ZOHO_OAUTH_REDIRECT_URL']
 end
 
 token_params = ZohoHub::Auth.refresh_token(ENV['ZOHO_REFRESH_TOKEN'])
@@ -27,7 +27,9 @@ puts "Found #{modules_hashes.size} modules"
 modules_hashes.each do |hash|
   puts "- Writing configuration for #{hash[:plural_label]}"
 
-  file_name = File.join(ZohoHub.root, 'cache', 'modules', "#{hash[:api_name]}.json")
+  modules_path = File.join(ZohoHub.root, 'cache', 'modules')
+  FileUtils.mkdir_p(modules_path)
+  file_name = File.join(modules_path, "#{hash[:api_name]}.json")
 
   File.open(file_name, 'w') do |file|
     file.write(JSON.pretty_generate(hash))
@@ -36,7 +38,9 @@ modules_hashes.each do |hash|
   next unless hash[:api_supported]
 
   fields_array = ZohoHub::Settings::Field.all_json_for(hash[:api_name])
-  file_name = File.join(ZohoHub.root, 'cache', 'fields', "#{hash[:api_name]}.json")
+  fields_path = File.join(ZohoHub.root, 'cache', 'fields')
+  FileUtils.mkdir_p(fields_path)
+  file_name = File.join(fields_path, "#{hash[:api_name]}.json")
 
   File.open(file_name, 'w') do |file|
     file.write(JSON.pretty_generate(fields_array))
