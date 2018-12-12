@@ -23,7 +23,7 @@ module ZohoHub
         klass = Class.new(ZohoHub::BaseRecord) do
           request_path json[:api_name]
 
-          translations = {}
+          translations = { id: :id }
           fields.each do |field|
             key = StringUtils.underscore(field[:api_name])
 
