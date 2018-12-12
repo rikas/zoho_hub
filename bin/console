@@ -18,5 +18,7 @@ puts 'Refreshing token...'
 token_params = ZohoHub::Auth.refresh_token(ENV['ZOHO_REFRESH_TOKEN'])
 ZohoHub.setup_connection(token_params)
 
+self.send(:include, ZohoHub)
+
 require 'pry'
 Pry.start
