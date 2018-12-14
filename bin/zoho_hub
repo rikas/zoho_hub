@@ -3,60 +3,70 @@
 
 require 'bundler/setup'
 
-require 'zoho_hub'
-require 'zoho_hub/auth'
-require 'zoho_hub/oauth_callback_server'
+require 'zoho_hub/cli/server'
 
-require 'launchy'
-require 'optparse'
+command = ARGV[0]
 
-default_port = ZohoHub::OauthCallbackServer.settings.port
-
-options = {}
-parser = OptionParser.new do |op|
-  op.banner = 'Usage: zoho_hub -c CLIENT_ID -s SECRET [options]'
-
-  op.on('-c', '--client-id=client_id', 'The Zoho client ID') do |client|
-    options[:client_id] = client
-  end
-
-  op.on('-s', '--secret=secret', 'The Zoho secret') do |secret|
-    options[:secret] = secret
-  end
-
-  op.on('-p', '--port=port', "The port for your callback (default #{default_port})") do |port|
-    options[:port] = port
-  end
-
-  op.on_tail('--version', 'Show version') do
-    puts "ZohoHub #{ZohoHub::VERSION}"
-    exit
-  end
+case command
+when 'server'
+  ZohoHub::Cli::Server.new.run(ARGV)
+when 'modules:read'
+else
+  $stdout.puts 'Usage:'
+  $stdout.puts "    zoho_hub [command] [options]\n"
+  $stdout.puts 'where <command> is one of:'
+  $stdout.print "    server".ljust(18)
+  $stdout.puts "run a http server to serve as oauth callback to get a refresh token"
+  $stdout.print "    modules:read".ljust(18)
+  $stdout.puts "read configuration from Zoho CRM and save it locally"
 end
 
-parser.parse!
-
-abort(parser.help) if options[:client_id].nil? || options[:secret].nil?
-
-callback_path = ZohoHub::OauthCallbackServer::CALLBACK_PATH
-
-ZohoHub::OauthCallbackServer.set(:port, options[:port]) if options[:port]
-
-bind_port = ZohoHub::OauthCallbackServer.settings.port
-bind_address = ZohoHub::OauthCallbackServer.settings.bind
-
-callback_url = "http://#{bind_address}:#{bind_port}/#{callback_path}"
-
-puts "Callback URL: #{callback_url}"
-
-ZohoHub.configure do |config|
-  config.client_id    = options[:client_id]
-  config.secret       = options[:secret]
-  config.redirect_uri = callback_url
-  config.debug        = true
-end
-
-# Open the URL in the browser
-url = ZohoHub::Auth.auth_url
-puts "REQUESTING: #{url}"
-Launchy.open(url)
+# options = {}
+# parser = OptionParser.new do |op|
+#   op.banner = 'Usage: zoho_hub server -c CLIENT_ID -s SECRET [options]'
+#
+#   op.on('-c', '--client-id=client_id', 'The Zoho client ID') do |client|
+#     options[:client_id] = client
+#   end
+#
+#   op.on('-s', '--secret=secret', 'The Zoho secret') do |secret|
+#     options[:secret] = secret
+#   end
+#
+#   op.on('-p', '--port=port', "The port for your callback (default #{default_port})") do |port|
+#     options[:port] = port
+#   end
+#
+#   op.on_tail('--version', 'Show version') do
+#     puts "ZohoHub #{ZohoHub::VERSION}"
+#     exit
+#   end
+# end
+#
+# parser.parse!
+#
+# abort(parser.help) unless %w[server read_modules].include?(ARGV[0])
+# abort(parser.help) if options[:client_id].nil? || options[:secret].nil?
+#
+# callback_path = ZohoHub::OauthCallbackServer::CALLBACK_PATH
+#
+# ZohoHub::OauthCallbackServer.set(:port, options[:port]) if options[:port]
+#
+# bind_port = ZohoHub::OauthCallbackServer.settings.port
+# bind_address = ZohoHub::OauthCallbackServer.settings.bind
+#
+# callback_url = "http://#{bind_address}:#{bind_port}/#{callback_path}"
+#
+# puts "Callback URL: #{callback_url}"
+#
+# ZohoHub.configure do |config|
+#   config.client_id    = options[:client_id]
+#   config.secret       = options[:secret]
+#   config.redirect_uri = callback_url
+#   config.debug        = true
+# end
+#
+# # Open the URL in the browser
+# url = ZohoHub::Auth.auth_url
+# puts "REQUESTING: #{url}"
+# Launchy.open(url)

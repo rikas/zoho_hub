@@ -8,10 +8,6 @@ module ZohoHub
 
     CALLBACK_PATH = 'oauth2callback'
 
-    before do
-      content_type :json
-    end
-
     get "/#{CALLBACK_PATH}" do
       grant_token = params[:code]
 
