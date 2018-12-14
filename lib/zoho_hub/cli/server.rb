@@ -4,7 +4,6 @@ require 'launchy'
 require 'optparse'
 
 require 'zoho_hub'
-require 'zoho_hub/auth'
 require 'zoho_hub/oauth_callback_server'
 
 module ZohoHub
