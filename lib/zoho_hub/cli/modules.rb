@@ -7,9 +7,6 @@ require 'json'
 require 'zoho_hub'
 require 'zoho_hub/settings/module'
 
-require 'dotenv'
-Dotenv.load
-
 module ZohoHub
   module Cli
     class Modules

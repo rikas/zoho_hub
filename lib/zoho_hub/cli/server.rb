@@ -49,8 +49,8 @@ module ZohoHub
         puts "Callback URL: #{callback_url}"
 
         ZohoHub.configure do |config|
-          config.client_id    = @options[:client_id]
-          config.secret       = @options[:secret]
+          config.client_id    = @options[:client_id] || ENV['ZOHO_CLIENT_ID']
+          config.secret       = @options[:secret] || ENV['ZOHO_SECRET']
           config.redirect_uri = callback_url
         end
 
