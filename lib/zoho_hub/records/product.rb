@@ -2,11 +2,12 @@
 
 module ZohoHub
   class Product < BaseRecord
-    attributes :id, :description, :vendor_id, :owner_id, :active
+    attributes :id, :description, :vendor_id, :owner_id, :active, :name
 
     attribute_translation(
       id: :id,
-      active: :Product_Active
+      active: :Product_Active,
+      name: :Product_Name
     )
 
     def initialize(params)
