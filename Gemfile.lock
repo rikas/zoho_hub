@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    zoho_hub (0.1.13)
+    zoho_hub (0.1.14)
       activesupport (~> 5.2)
       addressable (~> 2.5)
       faraday (~> 0.15)
@@ -100,4 +100,4 @@ DEPENDENCIES
   zoho_hub!
 
 BUNDLED WITH
-   1.16.6
+   1.17.3

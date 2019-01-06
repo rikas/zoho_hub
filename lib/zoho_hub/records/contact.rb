@@ -4,7 +4,7 @@ require 'zoho_hub/records/base_record'
 
 module ZohoHub
   class Contact < BaseRecord
-    attributes :id, :email, :salutation, :first_name, :mobile, :role, :last_name
+    attributes :id, :email, :salutation, :first_name, :mobile, :role, :last_name, :vendor_id
     attributes :account_id, :owner_id, :campaign_id, :status, :campaign_detail
 
     attribute_translation(
@@ -30,6 +30,7 @@ module ZohoHub
       @account_id ||= params.dig(:Account_Name, :id)
       @owner_id ||= params.dig(:Owner, :id)
       @campaign_id ||= params.dig(:Campaign_Lookup, :id)
+      @vendor_id ||= params.dig(:Vendor_Name, :id)
     end
 
     def to_params
@@ -38,6 +39,7 @@ module ZohoHub
       params[:Account_Name] = { id: @account_id } if @account_id
       params[:Owner] = { id: @owner_id } if @owner_id
       params[:Campaign_Lookup] = { id: @campaign_id } if @campaign_id
+      params[:Vendor_Name] = { id: @vendor_id } if @vendor_id
 
       params
     end
