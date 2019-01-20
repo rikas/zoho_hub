@@ -5,7 +5,7 @@ require 'zoho_hub/records/base_record'
 module ZohoHub
   class Contact < BaseRecord
     attributes :id, :email, :salutation, :first_name, :mobile, :role, :last_name, :vendor_id
-    attributes :account_id, :owner_id, :campaign_id, :status, :campaign_detail
+    attributes :account_id, :owner_id, :campaign_id, :status, :campaign_detail, :phone
 
     attribute_translation(
       id: :id,
