@@ -131,7 +131,12 @@ module ZohoHub
 
       response = build_response(body)
 
-      response.data.dig(:details, :id)
+      id = response.data.dig(:details, :id)
+
+      return id if id
+
+      # Invalid errors
+      response.data
     end
 
     def new_record?
