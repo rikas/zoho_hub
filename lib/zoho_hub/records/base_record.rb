@@ -121,12 +121,17 @@ module ZohoHub
       self.class.put(path, params)
     end
 
-    def save
+    # Save the record to Zoho
+    # trigger: ['workflow', 'approval', 'blueprint']
+    def save(trigger:)
+      json = { data: [to_params] }
+      json[:trigger] = Array(trigger) if trigger
+
       body = if new_record? # create new record
-               post(self.class.request_path, data: [to_params])
+               post(self.class.request_path, json)
              else # update existing record
                path = File.join(self.class.request_path, id)
-               put(path, data: [to_params])
+               put(path, json)
              end
 
       response = build_response(body)
