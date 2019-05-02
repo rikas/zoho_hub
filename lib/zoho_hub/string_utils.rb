@@ -8,7 +8,11 @@ module ZohoHub
       end
 
       def pluralize(text)
-        "#{text}s"
+        if ENV.has_key? 'RAILS_ENV'
+          ActiveSupport::Inflector.pluralize text
+        else
+          "#{text}s"
+        end
       end
 
       def camelize(text)
