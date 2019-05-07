@@ -9,7 +9,8 @@ require 'zoho_hub/connection'
 require 'zoho_hub/errors'
 require 'zoho_hub/base_record'
 require 'zoho_hub/settings/module'
-require 'zoho_hub/module_builder'
+
+require 'zoho_hub/reflection/module_builder'
 
 require 'multi_json'
 

@@ -3,17 +3,20 @@
 
 require 'bundler/setup'
 
-require 'dotenv'
-Dotenv.load
+begin
+  require 'dotenv'
+  Dotenv.load
+rescue LoadError
+end
 
-require 'zoho_hub/cli/server'
-require 'zoho_hub/cli/modules'
+require 'zoho_hub/cli/callback_server'
+require 'zoho_hub/cli/read_modules'
 
 command = ARGV[0]
 
 def print_commands
   commands = [
-    ['server', 'run a http server to serve as oauth callback to get a refresh token'],
+    ['callback-server', 'run a http server to serve as oauth callback to get a refresh token'],
     ['read-modules', 'read the configuration from Zoho CRM and save it locally']
   ]
 
@@ -27,10 +30,10 @@ def print_commands
 end
 
 case command
-when 'server'
-  ZohoHub::Cli::Server.new.run(ARGV)
+when 'callback-server'
+  ZohoHub::Cli::CallbackServer.new.run(ARGV[1..-1])
 when 'read-modules'
-  ZohoHub::Cli::Modules.new.run(ARGV)
+  ZohoHub::Cli::ReadModules.new.run(ARGV[1..-1])
 else
   $stdout.puts 'Usage:'
   $stdout.puts "    zoho_hub [command] [options]\n"

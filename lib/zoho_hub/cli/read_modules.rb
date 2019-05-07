@@ -9,7 +9,7 @@ require 'zoho_hub/settings/module'
 
 module ZohoHub
   module Cli
-    class Modules
+    class ReadModules
       def initialize
         @options = {}
       end
@@ -64,7 +64,19 @@ module ZohoHub
 
         refresh_token = @options[:refresh_token] || ENV['ZOHO_REFRESH_TOKEN']
         token_params = ZohoHub::Auth.refresh_token(refresh_token)
+
+        if configuration_incomplete?(refresh_token)
+          parser.parse %w[--help]
+          exit 1
+        end
+
         ZohoHub.setup_connection(token_params)
+      end
+
+      def configuration_incomplete?(refresh_token)
+        return true unless refresh_token
+
+        !ZohoHub.configuration.client_id || !ZohoHub.configuration.secret
       end
 
       def cache_module_info(info)

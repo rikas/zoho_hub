@@ -8,7 +8,7 @@ require 'zoho_hub/oauth_callback_server'
 
 module ZohoHub
   module Cli
-    class Server
+    class CallbackServer
       def initialize
         @options = {}
       end
@@ -46,19 +46,28 @@ module ZohoHub
 
         callback_url = "http://#{bind_address}:#{bind_port}/#{callback_path}"
 
-        puts "Callback URL: #{callback_url}"
-
         ZohoHub.configure do |config|
           config.client_id    = @options[:client_id] || ENV['ZOHO_CLIENT_ID']
           config.secret       = @options[:secret] || ENV['ZOHO_SECRET']
           config.redirect_uri = callback_url
         end
 
+        if configuration_incomplete?
+          parser.parse %w[--help]
+          exit 1
+        end
+
+        puts "Callback URL: #{callback_url}"
+
         url = ZohoHub::Auth.auth_url
         Launchy.open(url)
 
         puts "Running callback server...."
         ZohoHub::OauthCallbackServer.run!
+      end
+
+      def configuration_incomplete?
+        !ZohoHub.configuration.client_id || !ZohoHub.configuration.secret
       end
 
       def good_run(argv, env)
