@@ -47,6 +47,13 @@ module ZohoHub
       response.body
     end
 
+    def delete(path, params = {})
+      log "DELETE #{path} with #{params}"
+
+      response = with_refresh { adapter.delete(path, params) }
+      response.body
+    end
+
     def access_token?
       @access_token
     end
