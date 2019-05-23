@@ -32,10 +32,6 @@ module ZohoHub
     def data
       data = @params[:data] if @params.dig(:data)
       data ||= @params
-
-      return data.first if data.is_a?(Array) && data.size == 1
-
-      data
     end
 
     def msg
