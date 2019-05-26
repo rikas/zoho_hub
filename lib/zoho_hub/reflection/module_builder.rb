@@ -9,7 +9,7 @@ module ZohoHub
         cached_module_definitions.map do |file|
           json = MultiJson.load(File.read(file), symbolize_keys: true)
 
-          create_module_class(json)
+          eval_module_class(json)
         end
       end
 
@@ -17,7 +17,7 @@ module ZohoHub
         Dir[File.join(ZohoHub.root, 'cache', 'modules', '**')]
       end
 
-      def create_module_class(json)
+      def eval_module_class(json)
         fields = cached_module_fields(json[:api_name])
 
         klass = Class.new(ZohoHub::BaseRecord) do
@@ -27,7 +27,7 @@ module ZohoHub
           fields.each do |field|
             key = StringUtils.underscore(field[:api_name])
 
-            translations[key] = field[:api_name]
+            translations[key.to_sym] = field[:api_name].to_sym
           end
 
           if translations.any?
