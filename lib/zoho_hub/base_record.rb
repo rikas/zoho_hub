@@ -34,16 +34,18 @@ module ZohoHub
           raise RecordNotFound, "Couldn't find #{request_path.singularize} with 'id'=#{id}"
         end
 
-        new(response.data)
+        new(response.data.first)
       end
 
       def where(params)
         path = File.join(request_path, 'search')
 
-        response = get(path, params)
-        data = response[:data]
+        body = get(path, params)
+        response = build_response(body)
 
-        data.map { |info| new(info) }
+        data = response.nil? ? [] : response.data
+
+        data.map { |json| new(json) }
       end
 
       def find_by(params)
@@ -55,12 +57,12 @@ module ZohoHub
         new(params).save
       end
 
-      def all(options = {})
-        options[:page] ||= DEFAULT_PAGE
-        options[:per_page] ||= DEFAULT_RECORDS_PER_PAGE
-        options[:per_page] = MIN_RECORDS if options[:per_page] < MIN_RECORDS
+      def all(params = {})
+        params[:page] ||= DEFAULT_PAGE
+        params[:per_page] ||= DEFAULT_RECORDS_PER_PAGE
+        params[:per_page] = MIN_RECORDS if params[:per_page] < MIN_RECORDS
 
-        body = get(request_path, options)
+        body = get(request_path, params)
         response = build_response(body)
 
         data = response.nil? ? [] : response.data

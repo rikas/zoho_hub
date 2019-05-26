@@ -19,6 +19,10 @@ module ZohoHub
       def put(path, params = {})
         ZohoHub.connection.put(path, params.to_json)
       end
+
+      def delete(path, params = {})
+        ZohoHub.connection.delete(path, params.to_json)
+      end
     end
 
     def get(path, params = {})
@@ -31,6 +35,10 @@ module ZohoHub
 
     def put(path, params = {})
       self.class.put(path, params)
+    end
+
+    def delete(path, params = {})
+      self.class.delete(path, params)
     end
   end
 end
