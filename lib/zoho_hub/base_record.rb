@@ -98,7 +98,7 @@ module ZohoHub
 
       response = build_response(body)
 
-      response.data.dig(:details, :id)
+      response.data.first.dig(:details, :id)
     end
 
     def new_record?
