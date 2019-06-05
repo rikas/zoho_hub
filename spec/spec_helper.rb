@@ -2,10 +2,6 @@
 
 require 'bundler/setup'
 require 'simplecov'
-SimpleCov.start do
-  add_group 'Records', 'zoho_hub/records'
-end
-
 require 'zoho_hub'
 
 RSpec.configure do |config|
