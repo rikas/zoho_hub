@@ -10,6 +10,7 @@ module ZohoHub
     attributes :review_outcome, :first_created, :last_modified, :preferred_term, :project_notes
     attributes :campaign_id, :account_id, :contact_id, :campaign_detail, :reviewers_comment
 
+    # List of default values for some of the attributes, used in the initializer.
     DEFAULTS = {
       currency: 'GBP',
       territory: 'UK all',
