@@ -27,7 +27,7 @@ module ZohoHub
       use_proceeds: :use_proceeds
     )
 
-    def initialize(params)
+    def initialize(params = {})
       attributes.each do |attr|
         zoho_key = attr_to_zoho_key(attr)
 
