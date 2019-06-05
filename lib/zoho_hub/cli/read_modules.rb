@@ -104,7 +104,7 @@ module ZohoHub
         end
       end
 
-      def parse(argv, env)
+      def parse(argv, _env)
         parser.parse!(argv)
         true
       rescue OptionParser::ParseError => error
