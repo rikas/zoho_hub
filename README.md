@@ -52,7 +52,7 @@ block via the `api_domain` method (see step 2.)
 #### 1.2 Authorized Redirect URI
 
 Per Zoho's API documentation, providing a **redirect URI** is optional. Doing so allows a user of
-your application to be redirected back to your app (to the **redirect URI**) with a **grant token** 
+your application to be redirected back to your app (to the **redirect URI**) with a **grant token**
 upon successful authentication.
 
 If you don't provide a **redirect URI**, you'll need to use the [self-client option](https://www.zoho.com/crm/help/developer/api/auth-request.html#plink2)
@@ -200,8 +200,7 @@ TODO
 
 #### 7.2 Subclassing BaseRecord
 
-See `lib/zoho_hub/base_record.rb` and any of the classes in `lib/zoho_hub/deprecated_and_only_for_reference_records/`
-for reference.
+See `lib/zoho_hub/base_record.rb` and any of the classes in `examples/models/` for reference.
 
 For any Zoho module with which you want to interact via ZohoHub, make a class of the same name that
 inherits from `ZohoHub::BaseRecord`. For example, to build a class for the Leads module:
@@ -248,7 +247,7 @@ Lead.all
 * Using a tool such as Postman or curl to issue HTTP requests and verify responses in isolation
   can be a great sanity check during setup.
 * Downloading ZohoHub code (as opposed to the gem) and running `bin/console` is a great way to
-  learn how the code works and test aspects of setup and Zoho's API in isolation. 
+  learn how the code works and test aspects of setup and Zoho's API in isolation.
 * [The Zoho API Documentation](https://www.zoho.com/crm/help/developer/api/overview.html) is your
   friend - especially the sample HTTP requests and responses in the various sections under "Rest
   API" on the left.
