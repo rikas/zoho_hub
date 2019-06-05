@@ -2,6 +2,8 @@
 
 require 'bundler/setup'
 require 'simplecov'
+SimpleCov.start
+
 require 'zoho_hub'
 
 RSpec.configure do |config|
