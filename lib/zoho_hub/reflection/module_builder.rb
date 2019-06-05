@@ -27,21 +27,17 @@ module ZohoHub
           fields.each do |field|
             key = StringUtils.underscore(field[:api_name]).to_sym
 
-            translations[key.to_sym] = field[:api_name].to_sym
-          end
+            translations[key] = field[:api_name].to_sym
 
-          if translations.any?
-            attributes(*translations.keys)
-            attribute_translation(translations)
-          end
+            add_validation(key, validate: :length, length: field[:length]) if field[:length]
 
-          def initialize(params)
-            attributes.each do |attr|
-              zoho_key = attr_to_zoho_key(attr)
-
-              send("#{attr}=", params[zoho_key] || params[attr])
+            if field[:data_type] == 'picklist'
+              add_validation(key, validate: :picklist, list: field[:pick_list_values])
             end
           end
+
+          attributes(*translations.keys)
+          attribute_translation(translations)
         end
 
         ZohoHub.const_set(StringUtils.camelize(json[:singular_label]), klass)
