@@ -33,11 +33,3 @@ RSpec/ExampleLength:
 
 RSpec/MultipleExpectations:
   Max: 10
-
-RSpec/RepeatedExample:
-  Exclude:
-    - 'spec/policies/**/*'
-
-RSpec/RepeatedDescription:
-  Exclude:
-    - 'spec/policies/**/*'
