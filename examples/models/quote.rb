@@ -6,6 +6,8 @@ module ZohoHub
   class Quote < BaseRecord
     attributes :id, :stage, :subject, :potential_id
 
+    # The translation from attribute name to the JSON field on Zoho. The default behaviour will be
+    # to Camel_Case the attribute so on this list we should only have exceptions to this rule.
     attribute_translation(
       id: :id,
       stage: :Quote_Stage
