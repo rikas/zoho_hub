@@ -25,7 +25,7 @@ module ZohoHub
 
           translations = { id: :id }
           fields.each do |field|
-            key = StringUtils.underscore(field[:api_name])
+            key = StringUtils.underscore(field[:api_name]).to_sym
 
             translations[key.to_sym] = field[:api_name].to_sym
           end
