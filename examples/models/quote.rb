@@ -4,8 +4,7 @@ require 'zoho_hub/records/base_record'
 
 module ZohoHub
   class Quote < BaseRecord
-    attributes :id, :stage, :subject
-    attributes :potential_id
+    attributes :id, :stage, :subject, :potential_id
 
     attribute_translation(
       id: :id,
@@ -13,7 +12,6 @@ module ZohoHub
     )
 
     def initialize(params)
-      puts Rainbow(params).bright.red
       attributes.each do |attr|
         zoho_key = attr_to_zoho_key(attr)
 
