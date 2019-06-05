@@ -13,12 +13,8 @@ module ZohoHub
       stage: :Quote_Stage
     )
 
-    def initialize(params)
-      attributes.each do |attr|
-        zoho_key = attr_to_zoho_key(attr)
-
-        send("#{attr}=", params[zoho_key] || params[attr])
-      end
+    def initialize(params = {})
+      super
 
       @potential_id ||= params.dig(:Deal_Name, :id)
       @lender_organisation_id ||= params.dig(:Account_Name, :id)
