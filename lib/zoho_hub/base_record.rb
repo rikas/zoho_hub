@@ -3,12 +3,14 @@
 require 'zoho_hub/response'
 require 'zoho_hub/with_connection'
 require 'zoho_hub/with_attributes'
+require 'zoho_hub/with_validations'
 require 'zoho_hub/string_utils'
 
 module ZohoHub
   class BaseRecord
     include WithConnection
     include WithAttributes
+    include WithValidations
 
     # Default nnumber of records when fetching all.
     DEFAULT_RECORDS_PER_PAGE = 200
@@ -88,12 +90,19 @@ module ZohoHub
       end
     end
 
+    def initialize(params = {})
+      attributes.each do |attr|
+        zoho_key = attr_to_zoho_key(attr)
+
+        send("#{attr}=", params[zoho_key] || params[attr])
+      end
+    end
+
     def save
       body = if new_record? # create new record
                post(self.class.request_path, data: [to_params])
              else # update existing record
-               path = File.join(self.class.request_path, id)
-               put(path, data: [to_params])
+               put(File.join(self.class.request_path, id), data: [to_params])
              end
 
       response = build_response(body)
