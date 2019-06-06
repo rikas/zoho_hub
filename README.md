@@ -208,7 +208,7 @@ inherits from `ZohoHub::BaseRecord`. For example, to build a class for the Leads
 ```ruby
 # lead.rb
 
-class Lead < BaseRecord
+class Lead < ZohoHub::BaseRecord
   ...
 end
 ```
@@ -218,28 +218,34 @@ Specify this module's fields as attributes:
 ```ruby
 # lead.rb
 
-class Lead < BaseRecord
+class Lead < ZohoHub::BaseRecord
   attributes: :id, :first_name, :last_name, :phone, :email, :source, # etc.
-end
-```
-
-Define an `initialize` method to populate attributes:
-
-```ruby
-def initialize(params)
-  attributes.each do |attr|
-    zoho_key = attr_to_zoho_key(attr)
-
-    send("#{attr}=", params[zoho_key] || params[attr] || DEFAULTS[attr])
-  end
 end
 ```
 
 Now you can issue requests more easily with your record class, e.g.:
 
 ```ruby
-# request a (paginated) list of all Lead records
+# Request a (paginated) list of all Lead records
 Lead.all
+
+# Get the Lead instance with a specific ID
+Lead.find('78265000003433063')
+```
+
+And even create new Lead entries in Zoho:
+
+```ruby
+lead = Lead.new(
+  first_name: 'First name',
+  last_name: 'Last name',
+  phone: '+35197736281',
+  email: 'myemail@gmail.com',
+  source: 'Homepage'
+)
+
+# Creates the new lead
+lead.save
 ```
 
 ## Tips and suggestions
