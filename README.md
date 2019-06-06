@@ -252,7 +252,7 @@ Lead.all
   friend - especially the sample HTTP requests and responses in the various sections under "Rest
   API" on the left.
 * If you're manually implementing your record classes (rather than using the reflection mechanism),
-  the files in `/lib/zoho_hub/deprecated_and_only_for_reference_records/` can help you get started.
+  the files in `/examples/models/` can help you get started.
 * Requests can be issued to Zoho CRM's [Sandbox](https://help.zoho.com/portal/kb/articles/using-sandbox)
   by configuring `https://crmsandbox.zoho.com/crm` (or regional equivalent) as the `api_domain`.
 
