@@ -50,5 +50,28 @@ RSpec.describe ZohoHub::StringUtils do
   end
 
   describe '.underscore' do
+    it 'returns the same string if the given text has no words or dashes' do
+      text = '1238|#$%&@!;'
+
+      result = described_class.underscore(text)
+
+      expect(result).to eq(text)
+    end
+
+    it 'replaces dashes with underscores' do
+      text = 'hello-world-this-is-a-test'
+
+      result = described_class.underscore(text)
+
+      expect(result).to eq('hello_world_this_is_a_test')
+    end
+
+    it 'returns a lowercased string with underscores when case changes' do
+      text = 'HelloWORLD'
+
+      result = described_class.underscore(text)
+
+      expect(result).to eq('hello_world')
+    end
   end
 end
