@@ -43,6 +43,11 @@ module ZohoHub
         @attribute_translation = translation
       end
 
+      def attr_to_zoho_key(attr_name)
+       return attribute_translation[attr_name.to_sym] if attribute_translation.key?(attr_name.to_sym)
+       attr_name.to_s.split('_').map(&:capitalize).join('_').to_sym
+      end
+
       def zoho_key_translation
         @attribute_translation.to_a.map(&:rotate).to_h
       end
@@ -56,11 +61,7 @@ module ZohoHub
     private
 
     def attr_to_zoho_key(attr_name)
-      translations = self.class.attribute_translation
-
-      return translations[attr_name.to_sym] if translations.key?(attr_name.to_sym)
-
-      attr_name.to_s.split('_').map(&:capitalize).join('_').to_sym
+      self.class.attr_to_zoho_key(attr_name)
     end
 
     def zoho_key_to_attr(zoho_key)
