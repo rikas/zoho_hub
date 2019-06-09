@@ -8,7 +8,7 @@ module ZohoHub
       end
 
       def pluralize(text)
-        if ENV.key?('RAILS_ENV')
+        if defined?(ActiveSupport::Inflector)
           ActiveSupport::Inflector.pluralize(text)
         else
           "#{text}s"
