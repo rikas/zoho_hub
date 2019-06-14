@@ -42,6 +42,17 @@ module ZohoHub
       def where(params)
         path = File.join(request_path, 'search')
 
+        if params.size == 1
+          params = case params.keys.first
+                   when :criteria, :email, :phone, :word
+                     # these attributes are directly handled by Zoho
+                     # see https://www.zoho.com/crm/help/developer/api/search-records.html
+                     params
+                   else
+                     { criteria: "#{attr_to_zoho_key(params.keys.first)}:equals:#{params.values.first}" }
+                   end
+        end
+
         body = get(path, params)
         response = build_response(body)
 
