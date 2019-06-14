@@ -121,6 +121,11 @@ module ZohoHub
       response.data.first.dig(:details, :id)
     end
 
+    def update(params)
+      params.map { |key, value| send("#{key}=", value) }
+      save
+    end
+
     def new_record?
       !id
     end
