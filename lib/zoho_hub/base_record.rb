@@ -70,6 +70,10 @@ module ZohoHub
         new(params).save
       end
 
+      def update(id, params)
+        new(id: id).update(params)
+      end
+
       def all(params = {})
         params[:page] ||= DEFAULT_PAGE
         params[:per_page] ||= DEFAULT_RECORDS_PER_PAGE
@@ -119,6 +123,11 @@ module ZohoHub
       response = build_response(body)
 
       response.data.first.dig(:details, :id)
+    end
+
+    def update(params)
+      zoho_params = params.transform_keys { |key| attr_to_zoho_key(key) }
+      put(File.join(self.class.request_path, id), data: [zoho_params])
     end
 
     def new_record?
