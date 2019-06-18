@@ -7,22 +7,15 @@ module ZohoHub
     end
 
     def invalid_data?
-      return false if data.is_a?(Array)
-
-      data[:code] == 'INVALID_DATA'
+      error_code?('INVALID_DATA')
     end
 
-    # {:code=>"INVALID_TOKEN", :details=>{}, :message=>"invalid oauth token", :status=>"error"}
     def invalid_token?
-      return false if data.is_a?(Array)
-
-      data[:code] == 'INVALID_TOKEN'
+      error_code?('INVALID_TOKEN')
     end
 
     def authentication_failure?
-      return false if data.is_a?(Array)
-
-      data[:code] == 'AUTHENTICATION_FAILURE'
+      error_code?('AUTHENTICATION_FAILURE')
     end
 
     def empty?
@@ -35,18 +28,31 @@ module ZohoHub
     end
 
     def msg
-      msg = data[:message]
+      first_data = data.is_a?(Array) ? data.first : data
+      msg = first_data[:message]
 
-      if data.dig(:details, :expected_data_type)
-        expected = data.dig(:details, :expected_data_type)
-        field = data.dig(:details, :api_name)
-        parent_api_name = data.dig(:details, :parent_api_name)
+      if first_data.dig(:details, :expected_data_type)
+        expected = first_data.dig(:details, :expected_data_type)
+        field = first_data.dig(:details, :api_name)
+        parent_api_name = first_data.dig(:details, :parent_api_name)
 
         msg << ", expected #{expected} for '#{field}'"
         msg << " in #{parent_api_name}" if parent_api_name
       end
 
       msg
+    end
+
+    # error response examples:
+    # {"data":[{"code":"INVALID_DATA","details":{},"message":"the id given seems to be invalid","status":"error"}]}
+    # {:code=>"INVALID_TOKEN", :details=>{}, :message=>"invalid oauth token", :status=>"error"}
+    def error_code?(code)
+      if data.is_a?(Array)
+        return false if data.size > 1
+        return data.first[:code] == code
+      end
+
+      data[:code] == code
     end
   end
 end
