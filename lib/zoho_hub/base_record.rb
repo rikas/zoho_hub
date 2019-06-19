@@ -127,7 +127,8 @@ module ZohoHub
 
     def update(params)
       zoho_params = params.transform_keys { |key| attr_to_zoho_key(key) }
-      put(File.join(self.class.request_path, id), data: [zoho_params])
+      body = put(File.join(self.class.request_path, id), data: [zoho_params])
+      response = build_response(body)
     end
 
     def new_record?
