@@ -21,7 +21,7 @@ module ZohoHub
       end
 
       def delete(path, params = {})
-        ZohoHub.connection.delete(path, params.to_json)
+        ZohoHub.connection.delete(path, params)
       end
     end
 

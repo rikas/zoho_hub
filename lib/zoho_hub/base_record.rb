@@ -42,6 +42,17 @@ module ZohoHub
       def where(params)
         path = File.join(request_path, 'search')
 
+        if params.size == 1
+          params = case params.keys.first
+                   when :criteria, :email, :phone, :word
+                     # these attributes are directly handled by Zoho
+                     # see https://www.zoho.com/crm/help/developer/api/search-records.html
+                     params
+                   else
+                     { criteria: "#{attr_to_zoho_key(params.keys.first)}:equals:#{params.values.first}" }
+                   end
+        end
+
         body = get(path, params)
         response = build_response(body)
 
@@ -57,6 +68,10 @@ module ZohoHub
 
       def create(params)
         new(params).save
+      end
+
+      def update(id, params)
+        new(id: id).update(params)
       end
 
       def all(params = {})
@@ -108,6 +123,12 @@ module ZohoHub
       response = build_response(body)
 
       response.data.first.dig(:details, :id)
+    end
+
+    def update(params)
+      zoho_params = params.transform_keys { |key| attr_to_zoho_key(key) }
+      body = put(File.join(self.class.request_path, id), data: [zoho_params])
+      response = build_response(body)
     end
 
     def new_record?
