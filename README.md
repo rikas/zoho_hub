@@ -12,6 +12,22 @@ ActiveRecord, to do CRUD operations.
 
 **NOTE: this gem is WIP, please try to use it and open an issue if you run into limitations / problems**
 
+## Table of Contents
+
+* [Installation](#installation)
+* [Setup](#setup-process)
+  1. [Register your application](#1-register-your-application)
+  2. [Configure ZohoHub with your credentials](#2-configure-zohohub-with-your-credentials)
+  3. [Authorization request](#3-authorization-request)
+  4. [Access token](#4-access-token)
+  5. [Refresh token](#5-refresh-token)
+  6. [BasicZohoHub flow](#6-basic-zohohub-flow)
+  7. [BaseRecord and record classes](#7-baserecord-and-record-classes)
+* [Tips and suggestions](#tips-and-suggestions)
+* [Development](#development)
+* [Contributing](#contributing)
+* [License](#license)
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -35,19 +51,20 @@ Or install it yourself as:
 If you want to access your Zoho CRM account from your application you first need to create your
 application as described here: https://www.zoho.com/crm/help/developer/api/register-client.html.
 
-This will give you a **Client ID** and a **secret**, that you'll use in step 2.
+This will give you a **Client ID** and a **secret**, that you'll use in [step 2](#2-configure-zohohub-with-your-credentials).
 
 #### 1.1 Zoho Accounts URL
 
 Registration and authorization requests are made to Zoho's domain-specific Accounts URL which
 varies depending on your region:
 
-* EU: https://accounts.zoho.eu
-* US: https://accounts.zoho.com
 * China: https://accounts.zoho.com.cn
+* EU: https://accounts.zoho.eu
+* India: https://accounts.zoho.in
+* US: https://accounts.zoho.com
 
 ZohoHub uses the EU Account URL by default, but this can be overriden in a `ZohoHub.configure`
-block via the `api_domain` method (see step 2.)
+block via the `api_domain` method ([step 2](#2-configure-zohohub-with-your-credentials).)
 
 #### 1.2 Authorized Redirect URI
 
@@ -55,8 +72,8 @@ Per Zoho's API documentation, providing a **redirect URI** is optional. Doing so
 your application to be redirected back to your app (to the **redirect URI**) with a **grant token**
 upon successful authentication.
 
-If you don't provide a **redirect URI**, you'll need to use the [self-client option](https://www.zoho.com/crm/help/developer/api/auth-request.html#plink2)
-for authorization (see 3.2 below.)
+If you don't provide a **redirect URI**, you'll need to use the [self-client option](https://www.zoho.com/crm/help/developer/api/auth-request.html#self-client)
+for authorization (see [3.2](#32-self-client-authorization).)
 
 ### 2. Configure ZohoHub with your credentials
 
@@ -65,7 +82,7 @@ for authorization (see 3.2 below.)
 > code directly by referencing them via environment variables. Use something like the dotenv gem or
 > encrypted credentials in Rails to keep them as secret and secure as possible.
 
-You need to have a configuration block like the one below (in rails add a `zoho_hub.rb` in your
+You need to have a configuration block like the one below (in Rails add a `zoho_hub.rb` in your
 `config/initializers` directory):
 
 ```ruby
@@ -109,7 +126,7 @@ as follows (the value after `code=` is the **grant token**):
 
 If you don't have a **redirect URI** or you want your application to be able to authorize with Zoho
 programmatically (without a user required to be present and click the "Accept" prompt), Zoho
-provides a [self-client option](https://www.zoho.com/crm/help/developer/api/auth-request.html#plink2)
+provides a [self-client option](https://www.zoho.com/crm/help/developer/api/auth-request.html#self-client)
 for authentication which will provide a **grant token**.
 
 #### 3.3 More on scopes
@@ -131,7 +148,7 @@ ZohoHub::Auth.auth_url(scope: ['ZohoCRM.modules.custom.all', 'ZohoCRM.modules.al
 # => "https://accounts.zoho.eu/oauth/v2/auth?access_type=offline&client_id=&redirect_uri=&response_type=code&scope=ZohoCRM.modules.custom.all,ZohoCRM.modules.all"
 ```
 
-Refer to [Zoho's API documentation on scopes](https://www.zoho.com/crm/help/developer/api/oauth-overview.html#plink5) for detailed information.
+Refer to [Zoho's API documentation on scopes](https://www.zoho.com/crm/help/developer/api/oauth-overview.html#scopes) for detailed information.
 
 #### 3.4 Offline access
 
