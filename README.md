@@ -3,8 +3,8 @@
 [![Build Status](https://travis-ci.com/rikas/zoho_hub.svg?branch=master)](https://travis-ci.com/rikas/zoho_hub)
 [![Gem Version](https://badge.fury.io/rb/zoho_hub.svg)](https://badge.fury.io/rb/zoho_hub)
 
-Simple wrapper around Zoho CRM version2, using [OAuth 2.0 protocol](https://www.zoho.com/crm/help/developer/api/oauth-overview.html)
-for authentication.
+Simple wrapper around Zoho CRM version2, using
+[OAuth 2.0 protocol](https://www.zoho.com/crm/help/developer/api/oauth-overview.html) for authentication.
 
 This gem reads your Module configuration and builds the corresponding classes for you, using some
 reflection mechanisms. You should then be able to use simple classes with an API close to
@@ -24,6 +24,8 @@ ActiveRecord, to do CRUD operations.
   6. [BasicZohoHub flow](#6-basic-zohohub-flow)
   7. [BaseRecord and record classes](#7-baserecord-and-record-classes)
 * [Tips and suggestions](#tips-and-suggestions)
+* [Examples](#examples)
+  1. [Setup auth token and request CurrentUser](#setup-auth-token-and-request-currentuser)
 * [Development](#development)
 * [Contributing](#contributing)
 * [License](#license)
@@ -51,7 +53,8 @@ Or install it yourself as:
 If you want to access your Zoho CRM account from your application you first need to create your
 application as described here: https://www.zoho.com/crm/help/developer/api/register-client.html.
 
-This will give you a **Client ID** and a **secret**, that you'll use in [step 2](#2-configure-zohohub-with-your-credentials).
+This will give you a **Client ID** and a **secret**, that you'll use in
+[step 2](#2-configure-zohohub-with-your-credentials).
 
 #### 1.1 Zoho Accounts URL
 
@@ -63,8 +66,8 @@ varies depending on your region:
 * India: https://accounts.zoho.in
 * US: https://accounts.zoho.com
 
-ZohoHub uses the EU Account URL by default, but this can be overriden in a `ZohoHub.configure`
-block via the `api_domain` method ([step 2](#2-configure-zohohub-with-your-credentials).)
+ZohoHub uses the EU Account URL by default, but this can be overriden in a `ZohoHub.configure` block
+via the `api_domain` method ([step 2](#2-configure-zohohub-with-your-credentials).)
 
 #### 1.2 Authorized Redirect URI
 
@@ -72,8 +75,11 @@ Per Zoho's API documentation, providing a **redirect URI** is optional. Doing so
 your application to be redirected back to your app (to the **redirect URI**) with a **grant token**
 upon successful authentication.
 
-If you don't provide a **redirect URI**, you'll need to use the [self-client option](https://www.zoho.com/crm/help/developer/api/auth-request.html#self-client)
-for authorization (see [3.2](#32-self-client-authorization).)
+If you don't provide a **redirect URI**, you'll need to use the
+[self-client option](https://www.zoho.com/crm/help/developer/api/auth-request.html#self-client) for
+authorization (see [3.2](#32-self-client-authorization).)
+
+---
 
 ### 2. Configure ZohoHub with your credentials
 
@@ -95,6 +101,8 @@ ZohoHub.configure do |config|
 end
 ```
 
+---
+
 ### 3. Authorization request
 
 In order to access data in Zoho CRM you need to authorize ZohoHub to access your account. To do so
@@ -111,7 +119,8 @@ ZohoHub::Auth.auth_url
 # => "https://accounts.zoho.eu/oauth/v2/auth?access_type=offline&client_id=&redirect_uri=&response_type=code&scope=ZohoCRM.modules.custom.all,ZohoCRM.settings.all,ZohoCRM.modules.contacts.all,ZohoCRM.modules.all"
 ```
 
-If you request this generated URL you should see a screen like this one, where you have to click on "Accept":
+If you request this generated URL you should see a screen like this one, where you have to click on
+"Accept":
 
 ![](https://duaw26jehqd4r.cloudfront.net/items/1h1i3C1N0k0i02092F0S/Screen%20Shot%202018-11-25%20at%2019.18.38.png)
 
@@ -126,7 +135,8 @@ as follows (the value after `code=` is the **grant token**):
 
 If you don't have a **redirect URI** or you want your application to be able to authorize with Zoho
 programmatically (without a user required to be present and click the "Accept" prompt), Zoho
-provides a [self-client option](https://www.zoho.com/crm/help/developer/api/auth-request.html#self-client)
+provides a
+[self-client option](https://www.zoho.com/crm/help/developer/api/auth-request.html#self-client)
 for authentication which will provide a **grant token**.
 
 #### 3.3 More on scopes
@@ -148,7 +158,9 @@ ZohoHub::Auth.auth_url(scope: ['ZohoCRM.modules.custom.all', 'ZohoCRM.modules.al
 # => "https://accounts.zoho.eu/oauth/v2/auth?access_type=offline&client_id=&redirect_uri=&response_type=code&scope=ZohoCRM.modules.custom.all,ZohoCRM.modules.all"
 ```
 
-Refer to [Zoho's API documentation on scopes](https://www.zoho.com/crm/help/developer/api/oauth-overview.html#scopes) for detailed information.
+Refer to
+[Zoho's API documentation on scopes](https://www.zoho.com/crm/help/developer/api/oauth-overview.html#scopes)
+for detailed information.
 
 #### 3.4 Offline access
 
@@ -156,9 +168,9 @@ By design the **access tokens** returned by the OAuth flow expire after a period
 default), as a safety mechanism. This means that any application that wants to work with a user's
 data needs the user to have recently gone through the OAuth flow, aka be online.
 
-When you request offline access the Zoho API returns a **refresh token**. **Refresh tokens** give your
-application the ability to request data on behalf of the user when the user is not present and in
-front of your application.
+When you request offline access the Zoho API returns a **refresh token**. **Refresh tokens** give
+your application the ability to request data on behalf of the user when the user is not present and
+in front of your application.
 
 **By default `ZohoHub::Auth.auth_url` will request offline access**
 
@@ -168,6 +180,8 @@ You can force "online" access by using `#auth_url` with a `access_type` argument
 ZohoHub::Auth.auth_url(access_type: 'online')
 # => "https://accounts.zoho.eu/oauth/v2/auth?access_type=online&client_id=&redirect_uri=&response_type=code&scope=ZohoCRM.modules.custom.all,ZohoCRM.settings.all,ZohoCRM.modules.contacts.all,ZohoCRM.modules.all"
 ```
+
+---
 
 ### 4. Access token
 
@@ -180,10 +194,13 @@ To use an **access token** in a manual request, include it as a request header a
 To use an **access token** with ZohoHub, pass it to the `ZohoHub.setup_connection` method as the
 `access_token` parameter.
 
+---
 
 ### 5. Refresh token
 
 TODO
+
+---
 
 ### 6. Basic ZohoHub flow
 
@@ -203,7 +220,10 @@ Now you can issue requests to Zoho's API with the Connection object, e.g.:
 ZohoHub.connection.get 'Leads'
 ```
 
-A successful request will receive a response like the sample here: https://www.zoho.com/crm/help/developer/api/get-records.html.
+A successful request will receive a response like the sample here:
+https://www.zoho.com/crm/help/developer/api/get-records.html.
+
+---
 
 ### 7. BaseRecord and record classes
 
@@ -276,8 +296,92 @@ lead.save
   API" on the left.
 * If you're manually implementing your record classes (rather than using the reflection mechanism),
   the files in `/examples/models/` can help you get started.
-* Requests can be issued to Zoho CRM's [Sandbox](https://help.zoho.com/portal/kb/articles/using-sandbox)
+* Requests can be issued to Zoho CRM's
+  [Sandbox](https://help.zoho.com/portal/kb/articles/using-sandbox)
   by configuring `https://crmsandbox.zoho.com/crm` (or regional equivalent) as the `api_domain`.
+
+## Examples
+
+### Setup auth token and request CurrentUser
+
+> This example assumes use of the dotenv gem and is written directly into
+> ZohoHub's root directory (rather than using ZohoHub as a gem) for simplicity.
+
+1. Edit `bin/console` to comment out refreshing the token and setting up the connection:
+
+```ruby
+# bin/console
+
+...
+# puts 'Refreshing token...'
+# token_params = ZohoHub::Auth.refresh_token(ENV['ZOHO_REFRESH_TOKEN'])
+# ZohoHub.setup_connection(token_params)
+...
+```
+
+2. [Register your application](#1-register-your-application) to obtain a **client ID** and
+**secret**. (Leave the [Zoho API Credentials page](https://accounts.zoho.com/developerconsole) open;
+you'll need it in step 5.)
+3. Determine your [Zoho Accounts URL](#11-zoho-accounts-url).
+4. Add your registration and account URL information to a `.env` file:
+
+```
+# .env
+
+ZOHO_CLIENT_ID=YOUR_CLIENT_ID
+ZOHO_SECRET=YOUR_SECRET
+ZOHO_API_DOMAIN=YOUR_ZOHO_ACCOUNTS_URL
+```
+
+5. On the [Zoho API Credentials page](https://accounts.zoho.com/developerconsole) from step 1, click
+the three vertical dots and select `Self client`.
+6. Paste this into the `Scope` field: `ZohoCRM.users.ALL`, choose an expiration time, and click
+`View Code`; this is your **Grant token**.
+7. Run the ZohoHub console from your terminal: `bin/console`
+8. Issue a token request with the **grant token** (notice the quotes around the token value):
+
+```ruby
+ZohoHub::Auth.get_token('paste_your_grant_token_here')
+```
+
+This should return a response with an **access token**, e.g.:
+
+```ruby
+=> {:access_token=>"ACCESS_TOKEN_VALUE",
+ :expires_in_sec=>3600,
+ :api_domain=>"https://www.zohoapis.com",
+ :token_type=>"Bearer"
+ }
+```
+
+exit the console with `exit`.
+
+9. Add the access token to your `.env` file:
+
+```
+# .env
+
+ZOHO_CLIENT_ID=YOUR_CLIENT_ID
+ZOHO_SECRET=YOUR_SECRET
+ZOHO_API_DOMAIN=YOUR_ZOHO_ACCOUNTS_URL
+ZOHO_ACCESS_TOKEN=YOUR_ACCESS_TOKEN
+```
+
+10. Edit `bin/console` to add a new `setup_connection` after the previously commented out one:
+
+```ruby
+# bin/console
+
+...
+# ZohoHub.setup_connection(token_params)
+
+ZohoHub.setup_connection(access_token: ENV['ZOHO_ACCESS_TOKEN'])
+...
+```
+
+11. Start the console again: `bin/console`.
+
+12. Issue a request for the current user: `ZohoHub.connection.get 'users?type=CurrentUser'`
 
 ## Development
 
@@ -293,4 +397,5 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/rikas/
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+The gem is available as open source under the terms of the
+[MIT License](https://opensource.org/licenses/MIT).
