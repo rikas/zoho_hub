@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'pry'
 require 'zoho_hub/connection'
 
 RSpec.describe ZohoHub::Connection do
