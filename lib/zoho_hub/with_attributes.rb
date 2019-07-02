@@ -58,6 +58,18 @@ module ZohoHub
       self.class.attributes
     end
 
+    # This method and the correponding private methods are inspired from Rails ActiveModel
+    # github.com/rails/rails/blob/master/activemodel/lib/active_model/attribute_assignment.rb
+    def assign_attributes(new_attributes)
+      unless new_attributes.is_a?(Hash)
+        raise ArgumentError, "When assigning attributes, you must pass a hash as an argument"
+      end
+      return if new_attributes.empty?
+
+      attributes = new_attributes.transform_keys{ |key| key.to_s }
+      _assign_attributes(attributes.to_h)
+    end
+
     private
 
     def attr_to_zoho_key(attr_name)
@@ -70,6 +82,21 @@ module ZohoHub
       return translations[zoho_key.to_sym] if translations.key?(zoho_key.to_sym)
 
       zoho_key.to_sym
+    end
+
+    def _assign_attributes(attributes)
+      attributes.each do |k, v|
+        _assign_attribute(k, v)
+      end
+    end
+
+    def _assign_attribute(k, v)
+      setter = :"#{k}="
+      if respond_to?(setter)
+        public_send(setter, v)
+      else
+        raise ArgumentError, "Unknown attribute #{k}"
+      end
     end
   end
 end
