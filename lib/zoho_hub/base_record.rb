@@ -126,9 +126,9 @@ module ZohoHub
     end
 
     def update(params)
-      zoho_params = Hash[params.map { |k, v| [attr_to_zoho_key(k), v] } ]
+      zoho_params = Hash[params.map { |k, v| [attr_to_zoho_key(k), v] }]
       body = put(File.join(self.class.request_path, id), data: [zoho_params])
-      response = build_response(body)
+      build_response(body)
     end
 
     def new_record?
