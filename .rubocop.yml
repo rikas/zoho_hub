@@ -3,6 +3,13 @@ require: rubocop-rspec
 AllCops:
   TargetRubyVersion: 2.5.1
 
+Gemspec/RequiredRubyVersion:
+  Enabled: false
+
+Lint/HandleExceptions:
+  Exclude:
+    - bin/*
+
 # Don't force top level comments in every class
 Style/Documentation:
   Enabled: false
