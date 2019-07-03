@@ -49,7 +49,11 @@ module ZohoHub
                      # see https://www.zoho.com/crm/help/developer/api/search-records.html
                      params
                    else
-                     { criteria: "#{attr_to_zoho_key(params.keys.first)}:equals:#{params.values.first}" }
+                     key = attr_to_zoho_key(params.keys.first)
+
+                     {
+                       criteria: "#{key}:equals:#{params.values.first}"
+                     }
                    end
         end
 

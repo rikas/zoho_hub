@@ -44,8 +44,11 @@ module ZohoHub
       end
 
       def attr_to_zoho_key(attr_name)
-       return attribute_translation[attr_name.to_sym] if attribute_translation.key?(attr_name.to_sym)
-       attr_name.to_s.split('_').map(&:capitalize).join('_').to_sym
+        if attribute_translation.key?(attr_name.to_sym)
+          return attribute_translation[attr_name.to_sym]
+        end
+
+        attr_name.to_s.split('_').map(&:capitalize).join('_').to_sym
       end
 
       def zoho_key_translation
@@ -62,8 +65,9 @@ module ZohoHub
     # github.com/rails/rails/blob/master/activemodel/lib/active_model/attribute_assignment.rb
     def assign_attributes(new_attributes)
       unless new_attributes.is_a?(Hash)
-        raise ArgumentError, "When assigning attributes, you must pass a hash as an argument"
+        raise ArgumentError, 'When assigning attributes, you must pass a hash as an argument'
       end
+
       return if new_attributes.empty?
 
       attributes = Hash[new_attributes.map { |k, v| [k.to_s, v] }]
@@ -86,13 +90,12 @@ module ZohoHub
       zoho_key.to_sym
     end
 
-    def assign_attribute(k, v)
-      setter = :"#{k}="
-      if respond_to?(setter)
-        public_send(setter, v)
-      else
-        raise ArgumentError, "Unknown attribute #{k}"
-      end
+    def assign_attribute(key, value)
+      setter = :"#{key}="
+
+      public_send(setter, value) if respond_to?(setter)
+
+      raise ArgumentError, "Unknown attribute #{key}"
     end
   end
 end

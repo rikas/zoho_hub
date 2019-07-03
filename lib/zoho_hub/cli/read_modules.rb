@@ -107,13 +107,13 @@ module ZohoHub
       def parse(argv, _env)
         parser.parse!(argv)
         true
-      rescue OptionParser::ParseError => error
-        error_output(error)
+      rescue OptionParser::ParseError => e
+        error_output(e)
       end
 
       def error_output(error)
-        $stderr.puts "Error: #{error}"
-        $stderr.puts "Try `#{parser.program_name} server --help' for more information"
+        warn "Error: #{error}"
+        warn "Try `#{parser.program_name} server --help' for more information"
 
         false
       end
