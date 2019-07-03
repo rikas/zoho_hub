@@ -9,6 +9,18 @@ require 'zoho_hub/response'
 
 module ZohoHub
   class Connection
+    class << self
+      def infer_api_domain
+        case ZohoHub.configuration.api_domain
+        when 'https://accounts.zoho.com'    then 'https://www.zohoapis.com'
+        when 'https://accounts.zoho.com.cn' then 'https://www.zohoapis.com.cn'
+        when 'https://accounts.zoho.in'     then 'https://www.zohoapis.in'
+        when 'https://accounts.zoho.eu'     then 'https://www.zohoapis.eu'
+        else DEFAULT_DOMAIN
+        end
+      end
+    end
+
     attr_accessor :debug, :access_token, :expires_in, :api_domain, :refresh_token
 
     # This is a block to be run when the token is refreshed. This way you can do whatever you want
@@ -19,10 +31,10 @@ module ZohoHub
 
     BASE_PATH = '/crm/v2/'
 
-    def initialize(access_token:, api_domain: DEFAULT_DOMAIN, expires_in: 3600, refresh_token: nil)
+    def initialize(access_token:, api_domain: nil, expires_in: 3600, refresh_token: nil)
       @access_token = access_token
       @expires_in = expires_in
-      @api_domain = api_domain
+      @api_domain = api_domain || self.class.infer_api_domain
       @refresh_token ||= refresh_token # do not overwrite if it's already set
     end
 
