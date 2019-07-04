@@ -67,7 +67,9 @@ module ZohoHub
       return if new_attributes.empty?
 
       attributes = Hash[new_attributes.map { |k, v| [k.to_s, v] }]
-      _assign_attributes(attributes)
+      attributes.each do |k, v|
+        assign_attribute(k, v)
+      end
     end
 
     private
@@ -84,13 +86,7 @@ module ZohoHub
       zoho_key.to_sym
     end
 
-    def _assign_attributes(attributes)
-      attributes.each do |k, v|
-        _assign_attribute(k, v)
-      end
-    end
-
-    def _assign_attribute(k, v)
+    def assign_attribute(k, v)
       setter = :"#{k}="
       if respond_to?(setter)
         public_send(setter, v)
