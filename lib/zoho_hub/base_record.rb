@@ -131,6 +131,12 @@ module ZohoHub
       build_response(body)
     end
 
+    def blueprint_transition(transition_id, data = {})
+      body = put(File.join(self.class.request_path, id, 'actions/blueprint'),
+                 blueprint: [{ transition_id: transition_id, data: data }])
+      build_response(body)
+    end
+
     def new_record?
       !id
     end
