@@ -18,6 +18,18 @@ module ZohoHub
       error_code?('AUTHENTICATION_FAILURE')
     end
 
+    def invalid_module?
+      error_code?('INVALID_MODULE')
+    end
+
+    def no_permission?
+      error_code?('NO_PERMISSION')
+    end
+
+    def mandatory_not_found?
+      error_code?('MANDATORY_NOT_FOUND')
+    end
+
     def empty?
       @params.empty?
     end
