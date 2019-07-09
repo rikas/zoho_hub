@@ -100,6 +100,9 @@ module ZohoHub
 
         raise InvalidTokenError, response.msg if response.invalid_token?
         raise RecordInvalid, response.msg if response.invalid_data?
+        raise InvalidModule, response.msg if response.invalid_module?
+        raise NoPermission, response.msg if response.no_permission?
+        raise MandatoryNotFound, response.msg if response.mandatory_not_found?
 
         response
       end
