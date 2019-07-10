@@ -74,6 +74,10 @@ module ZohoHub
         new(id: id).update(params)
       end
 
+      def blueprint_transition(id, transition_id, data = {})
+        new(id: id).blueprint_transition(transition_id, data)
+      end
+
       def all(params = {})
         params[:page] ||= DEFAULT_PAGE
         params[:per_page] ||= DEFAULT_RECORDS_PER_PAGE
@@ -103,6 +107,7 @@ module ZohoHub
         raise InvalidModule, response.msg if response.invalid_module?
         raise NoPermission, response.msg if response.no_permission?
         raise MandatoryNotFound, response.msg if response.mandatory_not_found?
+        raise RecordInBlueprint, response.msg if response.record_in_blueprint?
 
         response
       end
