@@ -30,6 +30,10 @@ module ZohoHub
       error_code?('MANDATORY_NOT_FOUND')
     end
 
+    def record_in_blueprint?
+      error_code?('RECORD_IN_BLUEPRINT')
+    end
+
     def empty?
       @params.empty?
     end

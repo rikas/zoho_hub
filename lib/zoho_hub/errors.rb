@@ -19,6 +19,9 @@ module ZohoHub
   class MandatoryNotFound < StandardError
   end
 
+  class RecordInBlueprint < StandardError
+  end
+
   class ZohoAPIError < StandardError
   end
 end
