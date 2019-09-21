@@ -39,7 +39,7 @@ module ZohoHub
         new(response.data.first)
       end
 
-      def where(params)
+      def where(params, starts_with = nil)
         path = File.join(request_path, 'search')
 
         if params.size == 1
@@ -49,7 +49,7 @@ module ZohoHub
                      # see https://www.zoho.com/crm/help/developer/api/search-records.html
                      params
                    else
-                     { criteria: "#{attr_to_zoho_key(params.keys.first)}:equals:#{params.values.first}" }
+                     { criteria: "#{attr_to_zoho_key(params.keys.first)}:#{starts_with ? 'starts_with' : 'equals'}:#{params.values.first}" }
                    end
         end
 
@@ -63,6 +63,11 @@ module ZohoHub
 
       def find_by(params)
         records = where(params)
+        records.first
+      end
+
+      def starts_with(params)
+        records = where(params, true)
         records.first
       end
 
