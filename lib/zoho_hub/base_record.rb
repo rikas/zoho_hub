@@ -78,6 +78,10 @@ module ZohoHub
         new(id: id).update(params)
       end
 
+      def blueprint_transition(id, transition_id, data = {})
+        new(id: id).blueprint_transition(transition_id, data)
+      end
+
       def all(params = {})
         params[:page] ||= DEFAULT_PAGE
         params[:per_page] ||= DEFAULT_RECORDS_PER_PAGE
@@ -103,7 +107,12 @@ module ZohoHub
         response = Response.new(body)
 
         raise InvalidTokenError, response.msg if response.invalid_token?
+        raise InternalError, response.msg if response.internal_error?
         raise RecordInvalid, response.msg if response.invalid_data?
+        raise InvalidModule, response.msg if response.invalid_module?
+        raise NoPermission, response.msg if response.no_permission?
+        raise MandatoryNotFound, response.msg if response.mandatory_not_found?
+        raise RecordInBlueprint, response.msg if response.record_in_blueprint?
 
         response
       end
@@ -132,6 +141,12 @@ module ZohoHub
     def update(params)
       zoho_params = Hash[params.map { |k, v| [attr_to_zoho_key(k), v] }]
       body = put(File.join(self.class.request_path, id), data: [zoho_params])
+      build_response(body)
+    end
+
+    def blueprint_transition(transition_id, data = {})
+      body = put(File.join(self.class.request_path, id, 'actions/blueprint'),
+                 blueprint: [{ transition_id: transition_id, data: data }])
       build_response(body)
     end
 

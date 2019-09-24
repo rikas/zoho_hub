@@ -10,6 +10,21 @@ module ZohoHub
   class InvalidTokenError < StandardError
   end
 
+  class InternalError < StandardError
+  end
+
+  class InvalidModule < StandardError
+  end
+
+  class NoPermission < StandardError
+  end
+
+  class MandatoryNotFound < StandardError
+  end
+
+  class RecordInBlueprint < StandardError
+  end
+
   class ZohoAPIError < StandardError
   end
 end
