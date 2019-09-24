@@ -26,7 +26,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = '>= 2.1.0'
 
   spec.add_dependency 'addressable'
-  spec.add_dependency 'backports' if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('2.3.0')
+  spec.add_dependency 'backports'
   spec.add_dependency 'faraday'
   spec.add_dependency 'faraday_middleware'
   spec.add_dependency 'launchy'
