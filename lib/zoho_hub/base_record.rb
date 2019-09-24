@@ -103,6 +103,7 @@ module ZohoHub
         response = Response.new(body)
 
         raise InvalidTokenError, response.msg if response.invalid_token?
+        raise InternalError, response.msg if response.internal_error?
         raise RecordInvalid, response.msg if response.invalid_data?
         raise InvalidModule, response.msg if response.invalid_module?
         raise NoPermission, response.msg if response.no_permission?

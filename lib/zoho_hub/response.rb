@@ -14,6 +14,10 @@ module ZohoHub
       error_code?('INVALID_TOKEN')
     end
 
+    def internal_error?
+      error_code?('INTERNAL_ERROR')
+    end
+
     def authentication_failure?
       error_code?('AUTHENTICATION_FAILURE')
     end
