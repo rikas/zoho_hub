@@ -93,9 +93,11 @@ module ZohoHub
     def assign_attribute(key, value)
       setter = :"#{key}="
 
-      public_send(setter, value) if respond_to?(setter)
-
-      raise ArgumentError, "Unknown attribute #{key}"
+      if respond_to?(setter)
+        public_send(setter, value)
+      else
+        raise ArgumentError, "Unknown attribute #{key}"
+      end
     end
   end
 end

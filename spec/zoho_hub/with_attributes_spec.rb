@@ -34,6 +34,13 @@ RSpec.describe ZohoHub::WithAttributes do
   end
 
   describe '#assign_attributes' do
+    context 'when the argument is not a hash' do
+      it 'raises an ArgumentError' do
+        test = TestClass.new
+        expect { test.assign_attributes('one: 1, two: 2') }.to raise_exception(ArgumentError)
+      end
+    end
+
     it 'assign the object attributes' do
       test = TestClass.new
       test.assign_attributes(one: 1, two: 2)
