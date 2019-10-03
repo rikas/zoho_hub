@@ -47,6 +47,11 @@ module ZohoHub
       data || @params
     end
 
+    def info
+      info = @params[:info] if @params.dig(:info)
+      info || @params
+    end
+
     def msg
       first_data = data.is_a?(Array) ? data.first : data
       msg = first_data[:message]
