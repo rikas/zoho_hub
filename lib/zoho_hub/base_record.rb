@@ -12,7 +12,7 @@ module ZohoHub
     include WithAttributes
     include WithValidations
 
-    # Default nnumber of records when fetching all.
+    # Default number of records when fetching all.
     DEFAULT_RECORDS_PER_PAGE = 200
 
     # Default page number when fetching all.
