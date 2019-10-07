@@ -265,6 +265,8 @@ Now you can issue requests more easily with your record class, e.g.:
 ```ruby
 # Request a (paginated) list of all Lead records
 Lead.all
+# If you want to get really all, you can set to `recursive: true`
+Lead.all(recursive: true)
 
 # Get the Lead instance with a specific ID
 Lead.find('78265000003433063')

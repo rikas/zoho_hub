@@ -39,7 +39,9 @@ module ZohoHub
         new(response.data.first)
       end
 
-      def where(params)
+      def where(params:, recursive: false)
+        add_pagination_params(params)
+
         path = File.join(request_path, 'search')
 
         if params.size == 1
@@ -62,7 +64,17 @@ module ZohoHub
 
         data = response.nil? ? [] : response.data
 
-        data.map { |json| new(json) }
+        result = data.map { |json| new(json) }
+
+        next_pages_results = if recursive && exists_more_records?(response)
+                               new_params = params.dup
+                               new_params[:page] = params[:page] + 1
+                               where(params: new_params, recursive: true)
+                             else
+                               []
+                             end
+
+        result + next_pages_results
       end
 
       def find_by(params)
@@ -82,17 +94,24 @@ module ZohoHub
         new(id: id).blueprint_transition(transition_id, data)
       end
 
-      def all(params = {})
-        params[:page] ||= DEFAULT_PAGE
-        params[:per_page] ||= DEFAULT_RECORDS_PER_PAGE
-        params[:per_page] = MIN_RECORDS if params[:per_page] < MIN_RECORDS
+      def all(params: {}, recursive: false)
+        add_pagination_params(params)
 
         body = get(request_path, params)
         response = build_response(body)
 
         data = response.nil? ? [] : response.data
 
-        data.map { |json| new(json) }
+        result = data.map { |json| new(json) }
+        next_pages_results = if recursive && exists_more_records?(response)
+                               new_params = params.dup
+                               new_params[:page] = params[:page] + 1
+                               all(params: new_params, recursive: true)
+                             else
+                               []
+                             end
+
+        result + next_pages_results
       end
 
       def exists?(id)
@@ -115,6 +134,18 @@ module ZohoHub
         raise RecordInBlueprint, response.msg if response.record_in_blueprint?
 
         response
+      end
+
+      def exists_more_records?(response)
+        !response.nil? && response.info[:more_records]
+      end
+
+      private
+
+      def add_pagination_params(params)
+        params[:page] ||= DEFAULT_PAGE
+        params[:per_page] ||= DEFAULT_RECORDS_PER_PAGE
+        params[:per_page] = MIN_RECORDS if params[:per_page] < MIN_RECORDS
       end
     end
 
