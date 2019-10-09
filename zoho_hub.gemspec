@@ -26,7 +26,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = '>= 2.1.0'
 
   spec.add_dependency 'addressable'
-  spec.add_dependency 'backports' if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('2.3.0')
+  spec.add_dependency 'backports'
   spec.add_dependency 'faraday'
   spec.add_dependency 'faraday_middleware'
   spec.add_dependency 'launchy'
@@ -34,6 +34,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'rainbow'
   spec.add_dependency 'sinatra'
 
+  spec.add_development_dependency 'activesupport'
   spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'dotenv'
   spec.add_development_dependency 'pry-byebug'
@@ -42,4 +43,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop'
   spec.add_development_dependency 'rubocop-rspec'
   spec.add_development_dependency 'simplecov'
+  spec.add_development_dependency 'vcr'
+  spec.add_development_dependency 'webmock'
 end

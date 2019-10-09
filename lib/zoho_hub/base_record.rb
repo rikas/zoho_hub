@@ -12,7 +12,7 @@ module ZohoHub
     include WithAttributes
     include WithValidations
 
-    # Default nnumber of records when fetching all.
+    # Default number of records when fetching all.
     DEFAULT_RECORDS_PER_PAGE = 200
 
     # Default page number when fetching all.
@@ -49,7 +49,11 @@ module ZohoHub
                      # see https://www.zoho.com/crm/help/developer/api/search-records.html
                      params
                    else
-                     { criteria: "#{attr_to_zoho_key(params.keys.first)}:equals:#{params.values.first}" }
+                     key = attr_to_zoho_key(params.keys.first)
+
+                     {
+                       criteria: "#{key}:equals:#{params.values.first}"
+                     }
                    end
         end
 

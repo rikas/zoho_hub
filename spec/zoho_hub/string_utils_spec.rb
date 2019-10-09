@@ -23,6 +23,24 @@ RSpec.describe ZohoHub::StringUtils do
     end
   end
 
+  describe '.pluralize' do
+    it 'returns the given text with an ending "s"' do
+      result = described_class.pluralize('test')
+
+      expect(result).to eq('tests')
+    end
+
+    context 'when Rails is available' do
+      it 'uses ActiveSupport::Inflector' do
+        require 'active_support/inflector'
+
+        result = described_class.pluralize('octopus')
+
+        expect(result).to eq('octopi')
+      end
+    end
+  end
+
   describe '.camelize' do
     it 'returns a CamelCase word instead of snake_case' do
       result = described_class.camelize('snake_case_word')

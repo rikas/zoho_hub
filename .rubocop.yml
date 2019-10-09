@@ -3,6 +3,13 @@ require: rubocop-rspec
 AllCops:
   TargetRubyVersion: 2.5.1
 
+Gemspec/RequiredRubyVersion:
+  Enabled: false
+
+Lint/HandleExceptions:
+  Exclude:
+    - bin/*
+
 # Don't force top level comments in every class
 Style/Documentation:
   Enabled: false
@@ -24,6 +31,12 @@ Metrics/ClassLength:
 
 Metrics/MethodLength:
   Max: 20
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+Metrics/PerceivedComplexity:
+  Max: 10
 
 Metrics/AbcSize:
   Max: 30
