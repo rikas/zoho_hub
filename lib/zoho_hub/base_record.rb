@@ -82,6 +82,11 @@ module ZohoHub
         new(id: id).blueprint_transition(transition_id, data)
       end
 
+      def add_note(id:, title: '', content: '')
+        path = File.join(request_path, id, 'Notes')
+        post(path, data: [{ Note_Title: title, Note_Content: content }])
+      end
+
       def all(params = {})
         params[:page] ||= DEFAULT_PAGE
         params[:per_page] ||= DEFAULT_RECORDS_PER_PAGE
