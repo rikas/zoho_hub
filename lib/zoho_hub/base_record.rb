@@ -28,8 +28,11 @@ module ZohoHub
         @request_path
       end
 
+      # block will be passed the farady request, to use for further configuration
+      #   example: Account.where('...zoho_id...'){|req| req}
       def find(id)
-        body = get(File.join(request_path, id.to_s))
+        # @example
+        body = get(File.join(request_path, id.to_s), &block)
         response = build_response(body)
 
         if response.empty?
@@ -39,7 +42,9 @@ module ZohoHub
         new(response.data.first)
       end
 
-      def where(params)
+      # block will be passed the farady request, to use for further configuration
+      #   example: Account.where('...zoho_id...'){|req| req.params['limit'] = 25}
+      def where(params, &block)
         path = File.join(request_path, 'search')
 
         if params.size == 1
@@ -57,7 +62,7 @@ module ZohoHub
                    end
         end
 
-        body = get(path, params)
+        body = get(path, params, &block)
         response = build_response(body)
 
         data = response.nil? ? [] : response.data
@@ -65,8 +70,10 @@ module ZohoHub
         data.map { |json| new(json) }
       end
 
-      def find_by(params)
-        records = where(params)
+      # block will be passed the farady request, to use for further configuration
+      #   example: Account.where('...zoho_id...'){|req| req.approved = false}
+      def find_by(params, &block)
+        records = where(params, &block)
         records.first
       end
 
@@ -87,12 +94,14 @@ module ZohoHub
         post(path, data: [{ Note_Title: title, Note_Content: content }])
       end
 
-      def all(params = {})
+      # block will be passed the farady request, to use for further configuration
+      # ZohoHub::Account.all{|req| req.headers['If-Modified-Since'] = ::Account.maximum(:created_at).iso8601}
+      def all(params = {}, &block)
         params[:page] ||= DEFAULT_PAGE
         params[:per_page] ||= DEFAULT_RECORDS_PER_PAGE
         params[:per_page] = MIN_RECORDS if params[:per_page] < MIN_RECORDS
 
-        body = get(request_path, params)
+        body = get(request_path, params, &block)
         response = build_response(body)
 
         data = response.nil? ? [] : response.data
