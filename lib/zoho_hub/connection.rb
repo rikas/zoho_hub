@@ -38,31 +38,31 @@ module ZohoHub
       @refresh_token ||= refresh_token # do not overwrite if it's already set
     end
 
-    def get(path, params = {})
+    def get(path, params = {}, &block)
       log "GET #{path} with #{params}"
 
-      response = with_refresh { adapter.get(path, params) }
+      response = with_refresh { adapter.get(path, params, &block) }
       response.body
     end
 
-    def post(path, params = {})
+    def post(path, params = {}, &block)
       log "POST #{path} with #{params}"
 
-      response = with_refresh { adapter.post(path, params) }
+      response = with_refresh { adapter.post(path, params, &block) }
       response.body
     end
 
-    def put(path, params = {})
+    def put(path, params = {}, &block)
       log "PUT #{path} with #{params}"
 
-      response = with_refresh { adapter.put(path, params) }
+      response = with_refresh { adapter.put(path, params, &block) }
       response.body
     end
 
-    def delete(path, params = {})
+    def delete(path, params = {}, &block)
       log "DELETE #{path} with #{params}"
 
-      response = with_refresh { adapter.delete(path, params) }
+      response = with_refresh { adapter.delete(path, params, &block) }
       response.body
     end
 

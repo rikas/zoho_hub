@@ -21,6 +21,9 @@ module ZohoHub
     # Minimum number of records to fetch when fetching all.
     MIN_RECORDS = 2
 
+    # Valid attributes for search
+    SEARCH_ATTRS = [:criteria, :email, :phone, :word, :converted, :approved, :page, :per_page]
+
     class << self
       def request_path(name = nil)
         @request_path = name if name
@@ -28,8 +31,11 @@ module ZohoHub
         @request_path
       end
 
+      # block will be passed the farady request, to use for further configuration
+      #   example: Account.where('...zoho_id...'){|req| req}
       def find(id)
-        body = get(File.join(request_path, id.to_s))
+        # @example
+        body = get(File.join(request_path, id.to_s), &block)
         response = build_response(body)
 
         if response.empty?
@@ -39,25 +45,26 @@ module ZohoHub
         new(response.data.first)
       end
 
-      def where(params)
+      # block will be passed the farady request, to use for further configuration
+      #   example: Account.where({account_name_: 'Whiting'}){|req| req.params['limit'] = 25}
+      #   note, ending a criteria name with an underscore use start_with instead of equals
+      def where(params, &block)
         path = File.join(request_path, 'search')
-
-        if params.size == 1
-          params = case params.keys.first
-                   when :criteria, :email, :phone, :word
-                     # these attributes are directly handled by Zoho
-                     # see https://www.zoho.com/crm/help/developer/api/search-records.html
-                     params
-                   else
-                     key = attr_to_zoho_key(params.keys.first)
-
-                     {
-                       criteria: "#{key}:equals:#{params.values.first}"
-                     }
-                   end
+        # fix what happens if params[:criteria] is already set
+        whereParams = params.entries.reduce({criteria: []}) do |hsh, (k, v)|
+          if SEARCH_ATTRS.include? k
+            hsh[k] = v
+            return hsh
+          end
+          if k.ends_with? '_'
+            hsh[:criteria].push("(#{attr_to_zoho_key(k.gsub(/_$/,''))}:starts_with:#{v})")
+          else
+            hsh[:criteria].push("(#{attr_to_zoho_key(k)}:equals:#{v})")
+          end
         end
+        whereParams[:criteria] = whereParams[:criteria].join('and')
 
-        body = get(path, params)
+        body = get(path, params, &block)
         response = build_response(body)
 
         data = response.nil? ? [] : response.data
@@ -65,8 +72,10 @@ module ZohoHub
         data.map { |json| new(json) }
       end
 
-      def find_by(params)
-        records = where(params)
+      # block will be passed the farady request, to use for further configuration
+      #   example: Account.where('...zoho_id...'){|req| req.approved = false}
+      def find_by(params, &block)
+        records = where(params, &block)
         records.first
       end
 
@@ -87,12 +96,14 @@ module ZohoHub
         post(path, data: [{ Note_Title: title, Note_Content: content }])
       end
 
-      def all(params = {})
+      # block will be passed the farady request, to use for further configuration
+      # ZohoHub::Account.all{|req| req.headers['If-Modified-Since'] = ::Account.maximum(:created_at).iso8601}
+      def all(params = {}, &block)
         params[:page] ||= DEFAULT_PAGE
         params[:per_page] ||= DEFAULT_RECORDS_PER_PAGE
         params[:per_page] = MIN_RECORDS if params[:per_page] < MIN_RECORDS
 
-        body = get(request_path, params)
+        body = get(request_path, params, &block)
         response = build_response(body)
 
         data = response.nil? ? [] : response.data
