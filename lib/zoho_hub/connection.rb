@@ -123,6 +123,7 @@ module ZohoHub
     def adapter
       Faraday.new(url: base_url) do |conn|
         conn.headers = authorization_header if access_token?
+        conn.use FaradayMiddleware::EncodeJson
         conn.use FaradayMiddleware::ParseJson
         conn.response :json, parser_options: { symbolize_names: true }
         conn.response :logger if ZohoHub.configuration.debug?

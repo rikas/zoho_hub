@@ -9,9 +9,7 @@ RSpec.describe ZohoHub::BaseRecord do
 
   describe '#build_response' do
     context 'with an empty string and a "false" boolean' do
-      # rubocop:disable Style/HashSyntax
-      let(:body) { { :data => [{ :My_String => '', :My_Bool => false }] } }
-      # rubocop:enable Style/HashSyntax
+      let(:body) { { data: [{ My_String: '', My_Bool: false }] } }
 
       it 'correctly construct the record' do
         response = test_class.build_response(body)
