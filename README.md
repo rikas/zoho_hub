@@ -198,7 +198,9 @@ To use an **access token** with ZohoHub, pass it to the `ZohoHub.setup_connectio
 
 ### 5. Refresh token
 
-TODO
+This gem automatically refresh the access token.
+
+If you want automatic refresh, use the refresh_token argument as in the next chapter.
 
 ---
 
@@ -210,7 +212,8 @@ token**, setup a ZohoHub connection:
 ```ruby
 ZohoHub.setup_connection access_token: 'ACCESS_TOKEN',
                          expires_in: 'EXPIRES_IN_SEC',
-                         api_domain: 'API_DOMAIN'
+                         api_domain: 'API_DOMAIN',
+                         refresh_token: 'REFRESH_TOKEN'
 ```
 
 Now you can issue requests to Zoho's API with the Connection object, e.g.:
