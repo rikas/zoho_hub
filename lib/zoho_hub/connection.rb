@@ -82,13 +82,13 @@ module ZohoHub
 
     private
 
-    def with_refresh(authentication_failure_retry = false)
+    def with_refresh
       http_response = yield
 
       response = Response.new(http_response.body)
 
       # Try to refresh the token and try again
-      if response.invalid_token? && refresh_token?
+      if (response.invalid_token? || response.authentication_failure?) && refresh_token?
         log "Refreshing outdated token... #{@access_token}"
         params = ZohoHub::Auth.refresh_token(@refresh_token)
 
@@ -98,14 +98,7 @@ module ZohoHub
 
         http_response = yield
       elsif response.authentication_failure?
-        raise ZohoAPIError, response.msg if authentication_failure_retry
-
-        # Sometimes (rarely), Zoho API reply with AUTHENTICATION_FAILURE instead of INVALID_TOKEN.
-        # If this happens, we retry the same call once.
-        # The `authentication_failure_retry` parameter is set to `true`
-        # so that we raise if the second call fails.
-        log 'Authentication failure. Retrying once...'
-        with_refresh(true) { yield }
+        raise ZohoAPIError, response.msg
       end
 
       http_response

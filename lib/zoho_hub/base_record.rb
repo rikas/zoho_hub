@@ -87,6 +87,36 @@ module ZohoHub
         post(path, data: [{ Note_Title: title, Note_Content: content }])
       end
 
+      def all_related(parent_module:, parent_id:)
+        body = get(File.join(parent_module.constantize.request_path, parent_id, request_path))
+        response = build_response(body)
+
+        data = response.nil? ? [] : response.data
+
+        data.map { |json| new(json) }
+      end
+
+      def update_related(parent_module:, parent_id:, related_id:, data:)
+        path = File.join(
+          parent_module.constantize.request_path, parent_id, request_path, related_id
+        )
+        body = put(path, data: data)
+        build_response(body)
+      end
+
+      def add_related(parent_module:, parent_id:, related_id:)
+        update_related(
+          parent_module: parent_module, parent_id: parent_id, related_id: related_id, data: [{}]
+        )
+      end
+
+      def remove_related(parent_module:, parent_id:, related_id:)
+        body = delete(
+          File.join(parent_module.constantize.request_path, parent_id, request_path, related_id)
+        )
+        build_response(body)
+      end
+
       def all(params = {})
         params[:page] ||= DEFAULT_PAGE
         params[:per_page] ||= DEFAULT_RECORDS_PER_PAGE
