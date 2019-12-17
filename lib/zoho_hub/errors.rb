@@ -19,6 +19,9 @@ module ZohoHub
   class NoPermission < StandardError
   end
 
+  class AuthenticationFailure < StandardError
+  end
+
   class MandatoryNotFound < StandardError
   end
 

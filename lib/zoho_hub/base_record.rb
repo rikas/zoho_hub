@@ -154,6 +154,7 @@ module ZohoHub
         raise RecordInvalid, response.msg if response.invalid_data?
         raise InvalidModule, response.msg if response.invalid_module?
         raise NoPermission, response.msg if response.no_permission?
+        raise AuthenticationFailure, response.msg if response.authentication_failure?
         raise MandatoryNotFound, response.msg if response.mandatory_not_found?
         raise RecordInBlueprint, response.msg if response.record_in_blueprint?
 
