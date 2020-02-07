@@ -13,11 +13,11 @@ module ZohoHub
       end
 
       def post(path, params = {})
-        ZohoHub.connection.post(path, params.to_json)
+        ZohoHub.connection.post(path, params)
       end
 
       def put(path, params = {})
-        ZohoHub.connection.put(path, params.to_json)
+        ZohoHub.connection.put(path, params)
       end
 
       def delete(path, params = {})

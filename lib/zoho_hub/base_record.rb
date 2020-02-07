@@ -12,7 +12,7 @@ module ZohoHub
     include WithAttributes
     include WithValidations
 
-    # Default nnumber of records when fetching all.
+    # Default number of records when fetching all.
     DEFAULT_RECORDS_PER_PAGE = 200
 
     # Default page number when fetching all.
@@ -82,6 +82,41 @@ module ZohoHub
         new(id: id).blueprint_transition(transition_id, data)
       end
 
+      def add_note(id:, title: '', content: '')
+        path = File.join(request_path, id, 'Notes')
+        post(path, data: [{ Note_Title: title, Note_Content: content }])
+      end
+
+      def all_related(parent_module:, parent_id:)
+        body = get(File.join(parent_module.constantize.request_path, parent_id, request_path))
+        response = build_response(body)
+
+        data = response.nil? ? [] : response.data
+
+        data.map { |json| new(json) }
+      end
+
+      def update_related(parent_module:, parent_id:, related_id:, data:)
+        path = File.join(
+          parent_module.constantize.request_path, parent_id, request_path, related_id
+        )
+        body = put(path, data: data)
+        build_response(body)
+      end
+
+      def add_related(parent_module:, parent_id:, related_id:)
+        update_related(
+          parent_module: parent_module, parent_id: parent_id, related_id: related_id, data: [{}]
+        )
+      end
+
+      def remove_related(parent_module:, parent_id:, related_id:)
+        body = delete(
+          File.join(parent_module.constantize.request_path, parent_id, request_path, related_id)
+        )
+        build_response(body)
+      end
+
       def all(params = {})
         params[:page] ||= DEFAULT_PAGE
         params[:per_page] ||= DEFAULT_RECORDS_PER_PAGE
@@ -121,8 +156,9 @@ module ZohoHub
     def initialize(params = {})
       attributes.each do |attr|
         zoho_key = attr_to_zoho_key(attr)
+        value = params[zoho_key].nil? ? params[attr] : params[zoho_key]
 
-        send("#{attr}=", params[zoho_key] || params[attr])
+        send("#{attr}=", value)
       end
     end
 
