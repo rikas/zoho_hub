@@ -4,7 +4,7 @@ require 'zoho_hub/records/base_record'
 
 module ZohoHub
   class Quote < BaseRecord
-    attributes :id, :stage, :subject, :potential_id, :owner_id, :product_id, :account_id
+    attributes :id, :stage, :subject, :potential_id, :owner_id, :product_id, :account_id, :extra_info
 
     attribute_translation(
       id: :id,
