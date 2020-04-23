@@ -117,6 +117,14 @@ module ZohoHub
         build_response(body)
       end
 
+      def update_all(records)
+        zoho_params = records.map do |record|
+          Hash[record.map { |k, v| [attr_to_zoho_key(k), v] }]
+        end
+        body = put(File.join(request_path), data: zoho_params)
+        build_response(body)
+      end
+
       def all(params = {})
         params[:page] ||= DEFAULT_PAGE
         params[:per_page] ||= DEFAULT_RECORDS_PER_PAGE
