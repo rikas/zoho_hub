@@ -8,7 +8,7 @@ RSpec.describe ZohoHub::WithConnection do
   describe '.get' do
     it 'fires a get request with ZohoHub::Connection' do
       VCR.use_cassette('modules_get') do
-        result = TestClass.get('/settings/modules')
+        TestClass.get('/settings/modules')
       end
     end
   end
