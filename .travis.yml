@@ -1,11 +1,15 @@
 sudo: false
 language: ruby
 rvm:
-  - 2.4.10
-  - 2.5.8
-  - 2.6.6
-  - 2.7.1
+- 2.4.10
+- 2.5.8
+- 2.6.6
+- 2.7.1
 script:
-  - bundle exec rubocop --version
-  - bundle exec rubocop -c .rubocop.yml
-  - bundle exec rspec
+- bundle exec rubocop --version
+- bundle exec rubocop -c .rubocop.yml
+- bundle exec rspec
+env:
+  global:
+  - secure: W3Xn79LH/hOPyVxIGOo3OlW5Sn1vD/AgU2h66byg42l3l9iAi0hwznpcMVNNAnEbDY5peB0e/YvvT+nk33D+BgDTX3zYhSSAoYpGPtP8hF1nwgT2aOFg11/7O/9b2ek16SNFl8Q4Pchcc2v/R3+R0dwI/DGsGmMDLakV8EUbDlKm/rxvZzj/s8E2+Lc/P+zOiby8ZbTxDpB+dIe8VYghiBArwdXw4EgOwbJlO9aaFOTOsvbC10kAWEL6TynjJvESeqSlQ8czJEOxgwsHpiC5Uf8rN3gkyucE87exkHFcew/qqZRzTilFlYrD5hHnQ0GdKkgj6t7s9gIyRwVNl0i1HiCgKZrsINgAwhDEdMZb/DYUEtYj+xkb99mZl0jMFqC5UE/1ML63HF+Ic7XUeG3pRTmCVv5Y7DPwPeg/952R1k6NIMLvLdlGdIU4KJav5o75xcke1jqxtX8VFOXhhEele4+EDYm7/WFTmNvoev3GjI30XAmPSCbYOZG90MqLWmLzzlbvXsBtOlZCAUBM3T6ykjurBKB8RaK+rUNqQ5YCd9UJcZ0lzWCWrTzSVeUm/5p3UVZ0eAmh99YskXDoYBgfS9uKvJm/Meujd8BgNHH93hB+PCBW5TMc1nhc6hv86VstRYpwuEZiOj3YTX38tcPfqUagGeqIzhR7gwwcGB4SCHc=
+  - secure: L+LKENpnoxmjrVnQdMXwRfwpvwwPi3CsUk6zNhd6sYrID4Ma7yfTK7VWfm7i8aEaoJBgnNe+YWG28rISxm05DFD6I01RFum+j6GY63bwKjE0v8ciZW2E9lNFPXkeqJDdwEAKMMFAPDprwnMBEVdaf3ZhB3N/Ykfbsf4DlwtTqHhepEOD7z2zkxRlWfGIvxZBr/t9czxv1crzXfWG8lcFnuASF/tSIhZEolkfRbLYHjBCF4xYZEG2C0jjnjpIn/F/COKC5syB6KNizz0ruRyijjpzXlWkkulbtZg/Vl4qOMUOX/6EIuH0/VTPihLJ5+s2YhMhP+5O/Pag80M510G1o4o9Kjy7h2vLd0CVLX0me2otPbAhwfij7HNFK2UCgNJI62qwRObQMJ/hF5YgwVOMa+fazxUxenB+rS5p/ZFFfK4zYWJT9X9CZmyCCznMiGHRasPDoWxGQR6sGIg2Tb/CuRURxJOwBZ7TZ0NFhPdBWLUhHQxKOhT/xcRMZefMX8wkWMrTtrqzCdIBkHbyqYLudDAl7/XXmPoXjipmBRsf9SHBv3UPeaaWtGCfZU1yyKQnvsvlTwfPu+mELnV5u/HqdiGx292wy9zMOa038wFbnOEU+vzzdNlrRHQJJqobnfO8YLgG0jXBiO1vBkLbSXvLtrk0DktnWhEC37KTGcsvIXE=
