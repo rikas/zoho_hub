@@ -16,7 +16,6 @@ ZohoHub.configure do |config|
 end
 
 token_params = ZohoHub::Auth.refresh_token(ENV['ZOHO_REFRESH_TOKEN'])
-puts token_params
 ZohoHub.setup_connection(token_params)
 
 RSpec.configure do |config|
