@@ -9,6 +9,8 @@ module ZohoHub
     attributes :currency, :territory, :employee_count, :turnover, :industry, :region
     attributes :review_outcome, :first_created, :last_modified, :preferred_term, :project_notes
     attributes :campaign_id, :account_id, :contact_id, :campaign_detail, :reviewers_comment
+    attributes :accounting_software, :banking_provider
+    attributes :guarantee_types, :home_ownership_status
 
     DEFAULTS = {
       currency: 'GBP',
