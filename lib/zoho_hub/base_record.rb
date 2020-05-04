@@ -78,6 +78,10 @@ module ZohoHub
         new(id: id).update(params)
       end
 
+      def delete_record(id)
+        new(id: id).delete_record
+      end
+
       def blueprint_transition(id, transition_id, data = {})
         new(id: id).blueprint_transition(transition_id, data)
       end
@@ -192,6 +196,12 @@ module ZohoHub
     def update(params)
       zoho_params = Hash[params.map { |k, v| [attr_to_zoho_key(k), v] }]
       body = put(File.join(self.class.request_path, id), data: [zoho_params])
+
+      build_response(body)
+    end
+
+    def delete_record
+      body = delete(File.join(self.class.request_path, id))
 
       build_response(body)
     end
