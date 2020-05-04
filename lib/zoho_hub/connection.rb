@@ -26,24 +26,30 @@ module ZohoHub
       @refresh_token ||= refresh_token # do not overwrite if it's already set
     end
 
-    def get(path, params = {})
+    def get(path, params = {}, &block)
       log "GET #{path} with #{params}"
 
-      response = with_refresh { adapter.get(path, params) }
+      response = with_refresh do
+        adapter(&block).get(path, params)
+      end
       response.body
     end
 
-    def post(path, params = {})
+    def post(path, params = {}, &block)
       log "POST #{path} with #{params}"
 
-      response = with_refresh { adapter.post(path, params) }
+      response = with_refresh do
+        adapter(&block).post(path, params)
+      end
       response.body
     end
 
-    def put(path, params = {})
+    def put(path, params = {}, &block)
       log "PUT #{path} with #{params}"
 
-      response = with_refresh { adapter.put(path, params) }
+      response = with_refresh do
+        adapter(&block).put(path, params)
+      end
       response.body
     end
 
@@ -98,6 +104,7 @@ module ZohoHub
       Faraday.new(url: base_url) do |conn|
         conn.headers = authorization_header if access_token?
         conn.use FaradayMiddleware::ParseJson
+        yield conn if block_given?
         conn.response :json, parser_options: { symbolize_names: true }
         conn.response :logger if ZohoHub.configuration.debug?
         conn.adapter Faraday.default_adapter
