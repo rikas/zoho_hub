@@ -15,6 +15,7 @@ require 'zoho_hub/records/account'
 require 'zoho_hub/records/quote'
 require 'zoho_hub/records/vendor'
 require 'zoho_hub/records/product'
+require 'zoho_hub/records/attachment'
 
 module ZohoHub
   module_function

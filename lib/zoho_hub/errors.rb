@@ -12,4 +12,7 @@ module ZohoHub
 
   class ZohoAPIError < StandardError
   end
+
+  class AttachmentLinkTakenError < StandardError
+  end
 end

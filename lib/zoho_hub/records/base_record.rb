@@ -75,16 +75,16 @@ module ZohoHub
         data.map { |info| new(info) }
       end
 
-      def get(path, params = {})
-        ZohoHub.connection.get(path, params)
+      def get(path, params = {}, &block)
+        ZohoHub.connection.get(path, params, &block)
       end
 
-      def post(path, params = {})
-        ZohoHub.connection.post(path, params.to_json)
+      def post(path, params = {}, &block)
+        ZohoHub.connection.post(path, params.to_json, &block)
       end
 
-      def put(path, params = {})
-        ZohoHub.connection.put(path, params.to_json)
+      def put(path, params = {}, &block)
+        ZohoHub.connection.put(path, params.to_json, &block)
       end
 
       def exists?(id)
@@ -124,14 +124,11 @@ module ZohoHub
     # Save the record to Zoho
     # trigger: ['workflow', 'approval', 'blueprint']
     def save(trigger:)
-      json = { data: [to_params] }
-      json[:trigger] = Array(trigger) if trigger
-
       body = if new_record? # create new record
-               post(self.class.request_path, json)
+               post(self.class.request_path, to_input(trigger: trigger))
              else # update existing record
                path = File.join(self.class.request_path, id)
-               put(path, json)
+               put(path, to_input(trigger: trigger))
              end
 
       response = build_response(body)
@@ -142,6 +139,13 @@ module ZohoHub
 
       # Invalid errors
       response.data
+    end
+
+    def to_input(trigger:)
+      json = { data: [to_params] }
+      json[:trigger] = Array(trigger) if trigger
+
+      json
     end
 
     def new_record?
