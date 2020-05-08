@@ -77,6 +77,16 @@ module ZohoHub
       raise NotImplementedError
     end
 
+    def save(*)
+      super
+    rescue => e
+      if e.message.include?('Attachment link already exists')
+        raise AttachmentLinkTakenError, e.message
+      else
+        raise e
+      end
+    end
+
     def to_params
       { attachmentUrl: attachment_url }
     end
