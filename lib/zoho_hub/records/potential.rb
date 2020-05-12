@@ -11,6 +11,7 @@ module ZohoHub
     attributes :campaign_id, :account_id, :contact_id, :campaign_detail, :reviewers_comment
     attributes :accounting_software, :banking_provider
     attributes :guarantee_types, :home_ownership_status
+    attributes :accountant_id, :vat_registration
 
     DEFAULTS = {
       currency: 'GBP',
@@ -25,7 +26,8 @@ module ZohoHub
       code: :Project_Ref_No,
       description: :Project_description,
       employee_count: :Number_of_Employees,
-      use_proceeds: :use_proceeds
+      use_proceeds: :use_proceeds,
+      vat_registration: :Pick_List_15
     )
 
     def initialize(params)
@@ -39,6 +41,7 @@ module ZohoHub
       @account_id ||= params.dig(:Account_Name, :id)
       @contact_id ||= params.dig(:Contact_Name, :id)
       @campaign_id ||= params.dig(:Campaign_Source, :id)
+      @accountant_id ||= params.dig(:Accountant_Name, :id)
     end
 
     def to_params
@@ -47,6 +50,7 @@ module ZohoHub
       params[:Campaign_Source] = { id: @campaign_id } if @campaign_id
       params[:Account_Name] = { id: @account_id } if @account_id
       params[:Contact_Name] = { id: @contact_id } if @contact_id
+      params[:Accountant_Name] = { id: @accountant_id } if @accountant_id
 
       params
     end
