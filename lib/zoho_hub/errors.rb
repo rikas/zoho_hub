@@ -13,6 +13,9 @@ module ZohoHub
   class InternalError < StandardError
   end
 
+  class InvalidRequestError < StandardError
+  end
+
   class InvalidModule < StandardError
   end
 
