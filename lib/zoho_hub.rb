@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'backports/2.3.0/hash' if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('2.3.0')
+require 'backports/2.5.0/hash' if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('2.5.0')
 
 require 'zoho_hub/version'
 require 'zoho_hub/auth'
@@ -8,6 +9,7 @@ require 'zoho_hub/configuration'
 require 'zoho_hub/connection'
 require 'zoho_hub/errors'
 require 'zoho_hub/base_record'
+require 'zoho_hub/modules/attachment'
 require 'zoho_hub/settings/module'
 
 require 'zoho_hub/reflection/module_builder'

@@ -286,6 +286,66 @@ lead = Lead.new(
 
 # Creates the new lead
 lead.save
+
+# Or in one step:
+lead = Lead.create(first_name: 'First name', ...)
+```
+
+Updating records:
+
+```ruby
+Lead.update(id: lead.id, first_name: "...", last_name: "...")
+
+# Or
+lead.update(first_name: "...", last_name: "...")
+
+# Or update up to 100 records in one call:
+leads = [{ id: id1, phone: "123" }, { id: id2, first_name: "..." }]
+Lead.update_all(leads)
+```
+
+Blueprint transition:
+
+```ruby
+Lead.blueprint_transition(lead.id, transition_id)
+
+# Or
+lead.blueprint_transition(transition_id)
+```
+
+Adding notes:
+
+```ruby
+Lead.add_note(id: lead.id, title: 'Note title', content: 'Note content')
+```
+
+Related records:
+
+```ruby
+Product.all_related(parent_module: 'Lead', parent_id: lead.id)
+Product.add_related(
+  parent_module: 'Lead',
+  parent_id: lead.id,
+  related_id: product.id
+)
+Product.remove_related(
+  parent_module: 'Lead',
+  parent_id: lead.id,
+  related_id: product.id
+)
+Product.update_related(...)
+```
+
+Attachments (`ZohoHub::Attachment` is defined in the gem):
+
+```ruby
+Lead.related_attachments(parent_id: lead.id)
+# -> Array of Attachments
+
+attachment = Lead.download_attachment(parent_id: lead.id, attachment_id:attachment.id)
+# -> Attachment (attachment.file contains the file as a Tempfile)
+
+#NB: Lead.upload_attachment not implemented yet
 ```
 
 ## Tips and suggestions

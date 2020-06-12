@@ -6,7 +6,7 @@ AllCops:
 Gemspec/RequiredRubyVersion:
   Enabled: false
 
-Lint/HandleExceptions:
+Lint:
   Exclude:
     - bin/*
 
