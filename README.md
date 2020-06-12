@@ -354,7 +354,7 @@ Zoho allows you to receive a notification when a record of a module changes. Sup
 
 ### 8.1 Enable notifications
 In order to receive notifications, you have to enable them first.
-```
+```ruby
 # Enable notifications for a given channel:
 notification_url = 'https://example.org/api/notifications' # Zoho will send notifications by POST to this url
 token = '123abc' # Zoho will send this token back to you, so you can ensure that the notification is from Zoho
@@ -372,7 +372,7 @@ For a list of an in-depth description of the response, check the [Zoho documenta
 ### 8.2 List notifications
 You can also retrieve all notifications that are currently enabled and that you are receiving uppdates for.
 
-```
+```ruby
 # Get all enabled notifications
 ZohoHub::Notifications.all
 ```
