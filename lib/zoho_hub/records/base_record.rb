@@ -49,7 +49,7 @@ module ZohoHub
 
         response = get(path, params)
 
-        data = response.nil? ? [] : response[:data]
+        data = response.nil? ? [] : response.fetch(:data, [])
 
         data.map { |info| new(info) }
       end
