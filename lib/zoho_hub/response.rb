@@ -42,6 +42,10 @@ module ZohoHub
       error_code?('RECORD_IN_BLUEPRINT')
     end
 
+    def too_many_requests?
+      error_code?('TOO_MANY_REQUESTS')
+    end
+
     def empty?
       @params.empty?
     end

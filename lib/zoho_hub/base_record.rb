@@ -168,6 +168,7 @@ module ZohoHub
         raise AuthenticationFailure, response.msg if response.authentication_failure?
         raise MandatoryNotFound, response.msg if response.mandatory_not_found?
         raise RecordInBlueprint, response.msg if response.record_in_blueprint?
+        raise TooManyRequestsError, response.msg if response.too_many_requests?
 
         response
       end

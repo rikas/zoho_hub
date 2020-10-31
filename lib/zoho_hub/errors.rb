@@ -31,6 +31,9 @@ module ZohoHub
   class RecordInBlueprint < StandardError
   end
 
+  class TooManyRequestsError < StandardError
+  end
+
   class ZohoAPIError < StandardError
   end
 end
