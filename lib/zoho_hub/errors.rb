@@ -34,6 +34,9 @@ module ZohoHub
   class TooManyRequestsError < StandardError
   end
 
+  class RecordNotInProcessError < StandardError
+  end
+
   class ZohoAPIError < StandardError
   end
 end
