@@ -46,6 +46,10 @@ module ZohoHub
       error_code?('TOO_MANY_REQUESTS')
     end
 
+    def record_not_in_process?
+      error_code?('RECORD_NOT_IN_PROCESS')
+    end
+
     def empty?
       @params.empty?
     end

@@ -169,6 +169,7 @@ module ZohoHub
         raise MandatoryNotFound, response.msg if response.mandatory_not_found?
         raise RecordInBlueprint, response.msg if response.record_in_blueprint?
         raise TooManyRequestsError, response.msg if response.too_many_requests?
+        raise RecordNotInProcessError, response.msg if response.record_not_in_process?
 
         response
       end
