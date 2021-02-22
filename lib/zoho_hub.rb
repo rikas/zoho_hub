@@ -16,6 +16,8 @@ require 'zoho_hub/records/quote'
 require 'zoho_hub/records/vendor'
 require 'zoho_hub/records/product'
 require 'zoho_hub/records/attachment'
+require 'zoho_hub/records/credit_score'
+require 'zoho_hub/records/adverse_criteria'
 
 module ZohoHub
   module_function

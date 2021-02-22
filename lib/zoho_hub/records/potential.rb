@@ -12,6 +12,7 @@ module ZohoHub
     attributes :accounting_software, :banking_provider
     attributes :guarantee_types, :home_ownership_status
     attributes :accountant_id, :vat_registration
+    attributes :credit_risk_band, :live_ccjs, :satisfied_ccjs
 
     DEFAULTS = {
       currency: 'GBP',
@@ -27,7 +28,9 @@ module ZohoHub
       description: :Project_description,
       employee_count: :Number_of_Employees,
       use_proceeds: :use_proceeds,
-      vat_registration: :Pick_List_15
+      vat_registration: :Pick_List_15,
+      live_ccjs: :Live_CCJs,
+      satisfied_ccjs: :Satisfied_CCJs
     )
 
     def initialize(params)
