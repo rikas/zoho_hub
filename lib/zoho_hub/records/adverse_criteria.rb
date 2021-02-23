@@ -29,13 +29,13 @@ module ZohoHub
       end
 
       # Setup values as they come from the Zoho API if needed
-      @account_id ||= params.dig(:Account_Name, :id)
+      @account_id ||= params.dig(:Account, :id)
     end
 
     def to_params
       params = super
 
-      params[:Account_Name] = { id: @account_id } if @account_id
+      params[:Account] = { id: @account_id } if @account_id
 
       params
     end
