@@ -28,6 +28,8 @@ module ZohoHub
     )
 
     def initialize(params = {})
+      super
+
       attributes.each do |attr|
         zoho_key = attr_to_zoho_key(attr)
 
