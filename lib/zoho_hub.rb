@@ -41,7 +41,7 @@ module ZohoHub
 
     connection_params = params.dup.slice(:access_token, :expires_in, :api_domain, :refresh_token)
 
-    @connection = Connection.new(connection_params)
+    @connection = Connection.new(**connection_params)
   end
 
   def connection

@@ -70,7 +70,7 @@ module ZohoHub
 
       return if new_attributes.empty?
 
-      attributes = Hash[new_attributes.map { |k, v| [k.to_s, v] }]
+      attributes = new_attributes.transform_keys(&:to_s)
       attributes.each do |k, v|
         assign_attribute(k, v)
       end
