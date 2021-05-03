@@ -122,9 +122,7 @@ module ZohoHub
       end
 
       def update_all(records)
-        zoho_params = records.map do |record|
-          Hash[record.map { |key, value| [attr_to_zoho_key(key), value] }]
-        end
+        zoho_params = records.transform_keys { |key| attr_to_zoho_key(key) }
 
         body = put(File.join(request_path), data: zoho_params)
 
@@ -189,7 +187,7 @@ module ZohoHub
     end
 
     def update(params)
-      zoho_params = Hash[params.map { |k, v| [attr_to_zoho_key(k), v] }]
+      zoho_params = params.transform_keys { |key| attr_to_zoho_key(key) }
       body = put(File.join(self.class.request_path, id), data: [zoho_params])
 
       build_response(body)
