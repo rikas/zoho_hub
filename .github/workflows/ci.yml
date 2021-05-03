@@ -1,0 +1,40 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: "2.5"
+        bundler-cache: true
+    - name: rubocop version
+      timeout-minutes: 1
+      run: bundle exec rubocop --version
+    - name: rubocop
+      timeout-minutes: 5
+      run: bundle exec rubocop -c .rubocop.yml
+
+  test:
+    runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: ["2.5", "2.6", "2.7", "3.0", "jruby"]
+        experimental: [false]
+        include:
+        - ruby: "truffleruby"
+          experimental: true
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{matrix.ruby}}
+        bundler-cache: true
+    - name: Run tests
+      timeout-minutes: 5
+      run: ${{matrix.env}} bundle exec rspec
