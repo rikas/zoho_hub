@@ -260,7 +260,7 @@ Specify this module's fields as attributes:
 # lead.rb
 
 class Lead < ZohoHub::BaseRecord
-  attributes: :id, :first_name, :last_name, :phone, :email, :source, # etc.
+  attributes :id, :first_name, :last_name, :phone, :email, :source, # etc.
 end
 ```
 

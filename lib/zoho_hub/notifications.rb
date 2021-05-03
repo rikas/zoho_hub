@@ -29,8 +29,7 @@ module ZohoHub
         body = get(request_path, params)
         return [] if body.nil?
 
-        response = build_response(body)
-        response
+        build_response(body)
       end
 
       def enable(notify_url, channel_id, events, channel_expiry = nil, token = nil)
@@ -39,9 +38,7 @@ module ZohoHub
                                             events: events,
                                             channel_expiry: channel_expiry,
                                             token: token }])
-        response = build_response(body)
-
-        response
+        build_response(body)
       end
 
       def build_response(body)
