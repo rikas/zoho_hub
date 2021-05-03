@@ -4,6 +4,7 @@ require 'bundler/setup'
 require 'simplecov'
 SimpleCov.start
 
+require 'webmock/rspec'
 require 'dotenv'
 Dotenv.load
 
@@ -15,8 +16,10 @@ ZohoHub.configure do |config|
   config.redirect_uri = ENV['ZOHO_REDIRECT_URI']
 end
 
-token_params = ZohoHub::Auth.refresh_token(ENV['ZOHO_REFRESH_TOKEN'])
-ZohoHub.setup_connection(token_params)
+ZohoHub.setup_connection(access_token: ENV['ZOHO_ACCESS_TOKEN'],
+                         refresh_token: ENV['ZOHO_REFRESH_TOKEN'],
+                         expires_in: ENV['ZOHO_EXPIRES_IN'],
+                         api_domain: ENV['ZOHO_API_DOMAIN'] || 'https://crmsandbox.zoho.eu')
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -27,15 +30,5 @@ RSpec.configure do |config|
 
   config.expect_with :rspec do |c|
     c.syntax = :expect
-  end
-end
-
-require 'vcr'
-
-VCR.configure do |config|
-  config.cassette_library_dir = 'spec/cassettes'
-  config.hook_into :webmock
-  config.filter_sensitive_data('<TOKEN>') do
-    token_params[:access_token]
   end
 end
