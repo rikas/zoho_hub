@@ -14,22 +14,35 @@ ActiveRecord, to do CRUD operations.
 
 ## Table of Contents
 
-* [Installation](#installation)
-* [Setup](#setup-process)
-  1. [Register your application](#1-register-your-application)
-  2. [Configure ZohoHub with your credentials](#2-configure-zohohub-with-your-credentials)
-  3. [Authorization request](#3-authorization-request)
-  4. [Access token](#4-access-token)
-  5. [Refresh token](#5-refresh-token)
-  6. [BasicZohoHub flow](#6-basic-zohohub-flow)
-  7. [BaseRecord and record classes](#7-baserecord-and-record-classes)
-  8. [Notifications](#8-notifications)
-* [Tips and suggestions](#tips-and-suggestions)
-* [Examples](#examples)
-  1. [Setup auth token and request CurrentUser](#setup-auth-token-and-request-currentuser)
-* [Development](#development)
-* [Contributing](#contributing)
-* [License](#license)
+- [ZohoHub](#zohohub)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+  - [Setup process](#setup-process)
+    - [1. Register your application](#1-register-your-application)
+      - [1.1 Zoho Accounts URL](#11-zoho-accounts-url)
+      - [1.2 Authorized Redirect URI](#12-authorized-redirect-uri)
+    - [2. Configure ZohoHub with your credentials](#2-configure-zohohub-with-your-credentials)
+    - [3. Authorization request](#3-authorization-request)
+      - [3.1 Redirection based authentication](#31-redirection-based-authentication)
+      - [3.2 Self-Client Authorization](#32-self-client-authorization)
+      - [3.3 More on scopes](#33-more-on-scopes)
+      - [3.4 Offline access](#34-offline-access)
+    - [4. Access token](#4-access-token)
+    - [5. Refresh token](#5-refresh-token)
+    - [6. Basic ZohoHub flow](#6-basic-zohohub-flow)
+    - [7. BaseRecord and record classes](#7-baserecord-and-record-classes)
+      - [7.1 Reflection](#71-reflection)
+      - [7.2 Subclassing BaseRecord](#72-subclassing-baserecord)
+  - [8 Notifications](#8-notifications)
+    - [8.1 Enable notifications](#81-enable-notifications)
+    - [8.2 List notifications](#82-list-notifications)
+    - [8.3 Caveats](#83-caveats)
+  - [Tips and suggestions](#tips-and-suggestions)
+  - [Examples](#examples)
+    - [Setup auth token and request CurrentUser](#setup-auth-token-and-request-currentuser)
+  - [Development](#development)
+  - [Contributing](#contributing)
+  - [License](#license)
 
 ## Installation
 
@@ -350,7 +363,7 @@ attachment = Lead.download_attachment(parent_id: lead.id, attachment_id:attachme
 ```
 
 ## 8 Notifications
-Zoho allows you to receive a notification when a record of a module changes. Supported operation types are create, delete, edit, all. 
+Zoho allows you to receive a notification when a record of a module changes. Supported operation types are create, delete, edit, all.
 
 ### 8.1 Enable notifications
 In order to receive notifications, you have to enable them first.
@@ -367,7 +380,7 @@ ZohoHub::Notifications.enable(notification_url, channel_id, events, channel_expi
 
 After enabling notifications, Zoho will execute a POST request to the provided notification_url every time the requested event occurs.
 
-For a list of an in-depth description of the response, check the [Zoho documentation](https://www.zoho.com/crm/developer/docs/api/notifications/overview.html)  
+For a list of an in-depth description of the response, check the [Zoho documentation](https://www.zoho.com/crm/developer/docs/api/notifications/overview.html)
 
 ### 8.2 List notifications
 You can also retrieve all notifications that are currently enabled and that you are receiving uppdates for.
@@ -379,7 +392,7 @@ ZohoHub::Notifications.all
 
 ### 8.3 Caveats
 
-* Zoho does not notify you when records are merged. 
+* Zoho does not notify you when records are merged.
 * Since Zoho does not tell you what changed, you will have to request the record by yourself. Due to this you can miss changes, when they occur quickly after another. This is especially important for status changes, as you might miss state changes.
 
 ## Tips and suggestions
