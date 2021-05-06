@@ -214,7 +214,7 @@ To use an **access token** with ZohoHub, pass it to the `ZohoHub.setup_connectio
 
 This gem automatically refresh the access token.
 
-If you want automatic refresh, use the refresh_token argument as in the next chapter.
+If you want automatic refresh, use the `refresh_token` argument as in the next chapter.
 
 ---
 
