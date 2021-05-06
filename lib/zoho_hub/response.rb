@@ -43,7 +43,7 @@ module ZohoHub
     end
 
     def data
-      data = @params[:data] if @params.dig(:data)
+      data = @params[:data] if @params[:data]
       data || @params
     end
 
