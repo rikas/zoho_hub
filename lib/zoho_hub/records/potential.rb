@@ -11,7 +11,7 @@ module ZohoHub
     attributes :campaign_id, :account_id, :contact_id, :campaign_detail, :reviewers_comment
     attributes :accounting_software, :banking_provider
     attributes :guarantee_types, :home_ownership_status
-    attributes :accountant_id, :vat_registration
+    attributes :accountant_id, :vat_registration, :published_all_of_market
     attributes :credit_risk_band, :live_ccjs, :satisfied_ccjs
 
     DEFAULTS = {
@@ -30,7 +30,8 @@ module ZohoHub
       use_proceeds: :use_proceeds,
       vat_registration: :Pick_List_15,
       live_ccjs: :Live_CCJs,
-      satisfied_ccjs: :Satisfied_CCJs
+      satisfied_ccjs: :Satisfied_CCJs,
+      published_all_of_market: :Published_all_of_Market
     )
 
     def initialize(params)
