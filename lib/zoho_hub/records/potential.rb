@@ -31,7 +31,7 @@ module ZohoHub
       vat_registration: :Pick_List_15,
       live_ccjs: :Live_CCJs,
       satisfied_ccjs: :Satisfied_CCJs,
-      published_all_of_market: :Published_all_of_Market
+      published_all_of_market: :Published_to_All_of_Market
     )
 
     def initialize(params)
