@@ -78,6 +78,10 @@ module ZohoHub
         new(id: id).update(params)
       end
 
+      def delete_record(id)
+        new(id: id).delete_record
+      end
+
       def blueprint_transition(id, transition_id, data = {})
         new(id: id).blueprint_transition(transition_id, data)
       end
@@ -155,9 +159,11 @@ module ZohoHub
 
         raise InvalidTokenError, response.msg if response.invalid_token?
         raise InternalError, response.msg if response.internal_error?
+        raise InvalidRequestError, response.msg if response.invalid_request?
         raise RecordInvalid, response.msg if response.invalid_data?
         raise InvalidModule, response.msg if response.invalid_module?
         raise NoPermission, response.msg if response.no_permission?
+        raise AuthenticationFailure, response.msg if response.authentication_failure?
         raise MandatoryNotFound, response.msg if response.mandatory_not_found?
         raise RecordInBlueprint, response.msg if response.record_in_blueprint?
 
@@ -189,6 +195,12 @@ module ZohoHub
     def update(params)
       zoho_params = params.transform_keys { |key| attr_to_zoho_key(key) }
       body = put(File.join(self.class.request_path, id), data: [zoho_params])
+
+      build_response(body)
+    end
+
+    def delete_record
+      body = delete(File.join(self.class.request_path, id))
 
       build_response(body)
     end

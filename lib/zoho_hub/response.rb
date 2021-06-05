@@ -18,6 +18,10 @@ module ZohoHub
       error_code?('INTERNAL_ERROR')
     end
 
+    def invalid_request?
+      error_code?('INVALID_REQUEST')
+    end
+
     def authentication_failure?
       error_code?('AUTHENTICATION_FAILURE')
     end
