@@ -1,0 +1,68 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://www.zohoapis.com/crm/v2/Leads/123456789/Notes
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Authorization:
+      - Zoho-oauthtoken <TOKEN>
+      User-Agent:
+      - Faraday v1.7.0
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 204
+      message: ''
+    headers:
+      Server:
+      - ZGS
+      Date:
+      - Tue, 17 Aug 2021 14:02:08 GMT
+      Content-Type:
+      - application/json;charset=utf-8
+      Connection:
+      - keep-alive
+      Set-Cookie:
+      - 1ccad04dca=d12247a40ab7e0fe716c262964de2ae1; Path=/
+      - JSESSIONID=7FF432DC4D2594CBB4C0AD54F7160412; Path=/; Secure
+      - _zcsr_tmp=7180ed13-9dee-4964-b57b-6bab746af566;path=/;SameSite=Strict;Secure;priority=high
+      - crmcsr=7180ed13-9dee-4964-b57b-6bab746af566;path=/;SameSite=None;Secure;priority=high
+      Referrer-Policy:
+      - strict-origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      Pragma:
+      - no-cache
+      Cache-Control:
+      - no-store, no-cache, must-revalidate, private
+      Expires:
+      - Thu, 01 Jan 1970 00:00:00 GMT
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Accesstoken-Reset:
+      - '2021-08-17T17:01:59+02:00'
+      Clientversion:
+      - '4286035'
+      Clientsubversion:
+      - 53c1debf49cab243329c64c462569a86
+      Content-Disposition:
+      - attachment; filename=response.json
+      X-Download-Options:
+      - noopen
+      Content-Language:
+      - en-US
+      Strict-Transport-Security:
+      - max-age=63072000
+    body:
+      encoding: UTF-8
+      string: ''
+  recorded_at: Tue, 17 Aug 2021 14:02:08 GMT
+recorded_with: VCR 6.0.0

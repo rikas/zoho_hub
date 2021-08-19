@@ -9,6 +9,7 @@ require 'zoho_hub/configuration'
 require 'zoho_hub/connection'
 require 'zoho_hub/errors'
 require 'zoho_hub/base_record'
+require 'zoho_hub/modules/note'
 require 'zoho_hub/modules/attachment'
 require 'zoho_hub/settings/module'
 

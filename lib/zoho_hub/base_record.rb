@@ -90,11 +90,6 @@ module ZohoHub
         new(id: id).blueprint_transitions
       end
 
-      def add_note(id:, title: '', content: '')
-        path = File.join(request_path, id, 'Notes')
-        post(path, data: [{ Note_Title: title, Note_Content: content }])
-      end
-
       def all_related(parent_module:, parent_id:)
         body = get(File.join(parent_module.constantize.request_path, parent_id, request_path))
         response = build_response(body)

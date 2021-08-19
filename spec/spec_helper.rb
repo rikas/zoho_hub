@@ -13,6 +13,7 @@ ZohoHub.configure do |config|
   config.client_id    = ENV['ZOHO_CLIENT_ID']
   config.secret       = ENV['ZOHO_SECRET']
   config.redirect_uri = ENV['ZOHO_REDIRECT_URI']
+  config.api_domain   = ENV['ZOHO_API_DOMAIN'] if ENV['ZOHO_API_DOMAIN']
 end
 
 token_params = ZohoHub::Auth.refresh_token(ENV['ZOHO_REFRESH_TOKEN'])
