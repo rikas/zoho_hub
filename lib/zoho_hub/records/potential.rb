@@ -13,6 +13,7 @@ module ZohoHub
     attributes :guarantee_types, :home_ownership_status
     attributes :accountant_id, :vat_registration, :published_all_of_market
     attributes :credit_risk_band, :live_ccjs, :satisfied_ccjs
+    attributes :state, :number_of_connections
 
     DEFAULTS = {
       currency: 'GBP',
@@ -31,7 +32,9 @@ module ZohoHub
       vat_registration: :Pick_List_15,
       live_ccjs: :Live_CCJs,
       satisfied_ccjs: :Satisfied_CCJs,
-      published_all_of_market: :Published_to_All_of_Market
+      published_all_of_market: :Published_to_All_of_Market,
+      state: :State1,
+      number_of_connections: :Number_of_Connections
     )
 
     def initialize(params)
