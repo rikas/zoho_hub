@@ -165,6 +165,7 @@ module ZohoHub
         raise RecordInBlueprint, response.msg if response.record_in_blueprint?
         raise TooManyRequestsError, response.msg if response.too_many_requests?
         raise RecordNotInProcessError, response.msg if response.record_not_in_process?
+        raise RecordNotFound, response.msg if response.record_not_found?
 
         response
       end

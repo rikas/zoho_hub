@@ -50,6 +50,10 @@ module ZohoHub
       error_code?('RECORD_NOT_IN_PROCESS')
     end
 
+    def record_not_found?
+      error_code?('RESOURCE_NOT_FOUND')
+    end
+
     def empty?
       @params.empty?
     end
