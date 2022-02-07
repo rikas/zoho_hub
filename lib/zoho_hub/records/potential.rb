@@ -14,6 +14,7 @@ module ZohoHub
     attributes :accountant_id, :vat_registration, :published_all_of_market
     attributes :credit_risk_band, :live_ccjs, :satisfied_ccjs
     attributes :state, :number_of_connections
+    attributes :submitted_to_lender_panel
 
     DEFAULTS = {
       currency: 'GBP',
@@ -34,6 +35,7 @@ module ZohoHub
       satisfied_ccjs: :Satisfied_CCJs,
       published_all_of_market: :Published_to_All_of_Market,
       state: :State1,
+      submitted_to_lender_panel: :Submitted_to_Lender_Panel,
       number_of_connections: :Number_of_Connections
     )
 
