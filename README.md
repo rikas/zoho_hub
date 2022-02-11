@@ -168,7 +168,7 @@ ZohoCRM.modules.all
 To get the URL for a different scope you can provide a `scope` argument:
 
 ```ruby
-ZohoHub::Auth.auth_url(scope: ['ZohoCRM.modules.custom.all', 'ZohoCRM.modules.all'])
+ZohoHub::Auth.auth_url(scopes: ['ZohoCRM.modules.custom.all', 'ZohoCRM.modules.all'])
 # => "https://accounts.zoho.eu/oauth/v2/auth?access_type=offline&client_id=&redirect_uri=&response_type=code&scope=ZohoCRM.modules.custom.all,ZohoCRM.modules.all"
 ```
 
