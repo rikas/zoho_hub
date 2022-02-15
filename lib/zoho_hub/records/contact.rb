@@ -6,6 +6,7 @@ module ZohoHub
   class Contact < BaseRecord
     attributes :id, :email, :salutation, :first_name, :mobile, :role, :last_name, :vendor_id
     attributes :account_id, :owner_id, :campaign_id, :status, :campaign_detail, :phone
+    attributes :date_of_birth, :relationship_to_business
 
     attribute_translation(
       id: :id,
