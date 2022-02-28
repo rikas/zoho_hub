@@ -35,7 +35,7 @@ module ZohoHub
       satisfied_ccjs: :Satisfied_CCJs,
       published_all_of_market: :Published_to_All_of_Market,
       state: :State1,
-      submitted_to_lender_panel: :Submitted_to_Lender_Panel,
+      submitted_to_lender_panel: :Submitted_to_Lender_Panel1,
       number_of_connections: :Number_of_Connections,
       turnover_figure: :Turnover_figure
     )
