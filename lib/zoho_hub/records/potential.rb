@@ -6,7 +6,7 @@ module ZohoHub
   class Potential < BaseRecord
     attributes :id, :code, :deal_name, :amount, :description, :stage
     attributes :company_age_years, :company_age_months, :term, :use_proceeds, :proceeds_detail
-    attributes :currency, :territory, :employee_count, :turnover, :industry, :region
+    attributes :currency, :territory, :employee_count, :turnover, :industry, :region, :turnover_figure
     attributes :review_outcome, :first_created, :last_modified, :preferred_term, :project_notes
     attributes :campaign_id, :account_id, :contact_id, :campaign_detail, :reviewers_comment
     attributes :accounting_software, :banking_provider
@@ -36,7 +36,8 @@ module ZohoHub
       published_all_of_market: :Published_to_All_of_Market,
       state: :State1,
       submitted_to_lender_panel: :Submitted_to_Lender_Panel,
-      number_of_connections: :Number_of_Connections
+      number_of_connections: :Number_of_Connections,
+      turnover_figure: :Turnover_figure
     )
 
     def initialize(params)
