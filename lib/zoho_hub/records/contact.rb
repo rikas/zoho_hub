@@ -13,7 +13,8 @@ module ZohoHub
       id: :id,
       role: :platform_cont_type,
       status: :platform_cont_status,
-      use_proceeds: :use_proceeds
+      use_proceeds: :use_proceeds,
+      date_of_birth: :Date_of_Birth
     )
 
     DEFAULTS = {
