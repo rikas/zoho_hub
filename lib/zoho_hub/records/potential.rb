@@ -14,7 +14,7 @@ module ZohoHub
     attributes :accountant_id, :vat_registration, :published_all_of_market
     attributes :credit_risk_band, :live_ccjs, :satisfied_ccjs
     attributes :state, :number_of_connections
-    attributes :submitted_to_lender_panel
+    attributes :submitted_to_lender_panel, :last_attachment_uploaded
 
     DEFAULTS = {
       currency: 'GBP',
@@ -38,6 +38,7 @@ module ZohoHub
       submitted_to_lender_panel: :Submitted_to_Lender_Panel1,
       number_of_connections: :Number_of_Connections,
       turnover_figure: :Turnover_figure
+      last_attachment_uploaded: :Last_Attachment_Uploaded
     )
 
     def initialize(params)
