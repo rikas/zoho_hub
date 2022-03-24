@@ -37,7 +37,7 @@ module ZohoHub
       state: :State1,
       submitted_to_lender_panel: :Submitted_to_Lender_Panel1,
       number_of_connections: :Number_of_Connections,
-      turnover_figure: :Turnover_figure
+      turnover_figure: :Turnover_figure,
       last_attachment_uploaded: :Last_Attachment_Uploaded
     )
 
