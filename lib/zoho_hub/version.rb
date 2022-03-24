@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 module ZohoHub
-  VERSION = '0.1.40'
+  VERSION = '0.1.41'
 end
