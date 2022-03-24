@@ -14,7 +14,8 @@ module ZohoHub
       role: :platform_cont_type,
       status: :platform_cont_status,
       use_proceeds: :use_proceeds,
-      date_of_birth: :Date_of_Birth
+      date_of_birth: :Date_of_Birth,
+      relationship_to_business: :Relationship_to_Business
     )
 
     DEFAULTS = {
