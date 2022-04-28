@@ -122,7 +122,7 @@ module ZohoHub
       end
 
       def update_all(records)
-        zoho_params = records.transform_keys { |key| attr_to_zoho_key(key) }
+        zoho_params = records.map{ |record| record.transform_keys { |key| attr_to_zoho_key(key) } }
 
         body = put(File.join(request_path), data: zoho_params)
 
