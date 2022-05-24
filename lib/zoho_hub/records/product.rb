@@ -11,8 +11,6 @@ module ZohoHub
     )
 
     def initialize(params)
-      puts Rainbow(params).magenta
-
       attributes.each do |attr|
         zoho_key = attr_to_zoho_key(attr)
 

@@ -18,6 +18,7 @@ require 'zoho_hub/records/product'
 require 'zoho_hub/records/attachment'
 require 'zoho_hub/records/credit_score'
 require 'zoho_hub/records/adverse_criteria'
+require 'zoho_hub/records/sms_message'
 
 module ZohoHub
   module_function
