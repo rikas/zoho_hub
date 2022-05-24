@@ -4,7 +4,7 @@ require 'zoho_hub/records/base_record'
 
 module ZohoHub
   class SMSMessage < BaseRecord
-    attributes :id, :template, :state, :text, :contact_id, :potential_id, :name
+    attributes :id, :template, :state, :text, :contact_id, :potential_id, :name, :sent_by
 
     attribute_translation id: :id
 
