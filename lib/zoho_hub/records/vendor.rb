@@ -3,7 +3,7 @@
 module ZohoHub
   class Vendor < BaseRecord
     attributes :id, :email, :description, :vendor_name, :website, :owner_id, :phone, :currency
-    attributes :company_reg_no
+    attributes :company_reg_no, :created_time, :modified_time, :lender_status
 
     attribute_translation(
       id: :id
