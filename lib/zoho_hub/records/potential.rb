@@ -15,6 +15,7 @@ module ZohoHub
     attributes :credit_risk_band, :live_ccjs, :satisfied_ccjs
     attributes :state, :number_of_connections
     attributes :submitted_to_lender_panel, :last_attachment_uploaded, :funds_timeline
+    attributes :cancellation_reason
 
     DEFAULTS = {
       currency: 'GBP',
@@ -39,7 +40,8 @@ module ZohoHub
       number_of_connections: :Number_of_Connections,
       turnover_figure: :Turnover_figure,
       last_attachment_uploaded: :Last_Attachment_Uploaded,
-      funds_timeline: :When_will_you_needs_the_funds
+      funds_timeline: :When_will_you_needs_the_funds,
+      cancellation_reason: :If_Application_Cancelled_select_reason
     )
 
     def initialize(params)

@@ -5,10 +5,12 @@ require 'zoho_hub/records/base_record'
 module ZohoHub
   class Quote < BaseRecord
     attributes :id, :stage, :subject, :potential_id, :owner_id, :product_id, :account_id, :extra_info
+    attributes :funding_amount, :financed_on
 
     attribute_translation(
       id: :id,
-      stage: :Quote_Stage
+      stage: :Quote_Stage,
+      financed_on: :Financed_on
     )
 
     def initialize(params)
