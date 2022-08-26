@@ -149,6 +149,9 @@ module ZohoHub
 
       alias exist? exists?
 
+      # rubocop:disable Metrics/AbcSize
+      # rubocop:disable Metrics/CyclomaticComplexity
+      # rubocop:disable Metrics/PerceivedComplexity
       def build_response(body)
         response = Response.new(body)
 
@@ -167,6 +170,9 @@ module ZohoHub
 
         response
       end
+      # rubocop:enable Metrics/AbcSize
+      # rubocop:enable Metrics/CyclomaticComplexity
+      # rubocop:enable Metrics/PerceivedComplexity
     end
 
     def initialize(params = {})
