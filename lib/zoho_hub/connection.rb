@@ -21,7 +21,7 @@ module ZohoHub
       end
     end
 
-    attr_accessor :debug, :access_token, :expires_in, :api_domain, :refresh_token
+    attr_accessor :debug, :access_token, :expires_in, :api_domain, :api_version, :refresh_token
 
     # This is a block to be run when the token is refreshed. This way you can do whatever you want
     # with the new parameters returned by the refresh method.
@@ -29,12 +29,13 @@ module ZohoHub
 
     DEFAULT_DOMAIN = 'https://www.zohoapis.eu'
 
-    BASE_PATH = '/crm/v2/'
+    BASE_PATH = '/crm/'
 
-    def initialize(access_token:, api_domain: nil, expires_in: 3600, refresh_token: nil)
+    def initialize(access_token:, api_domain: nil, api_version: nil, expires_in: 3600, refresh_token: nil)
       @access_token = access_token
       @expires_in = expires_in
       @api_domain = api_domain || self.class.infer_api_domain
+      @api_version = api_version || ZohoHub.configuration.api_version
       @refresh_token ||= refresh_token # do not overwrite if it's already set
     end
 
@@ -105,7 +106,7 @@ module ZohoHub
     end
 
     def base_url
-      Addressable::URI.join(@api_domain, BASE_PATH).to_s
+      Addressable::URI.join(api_domain, BASE_PATH, api_version).to_s
     end
 
     # The authorization header that must be added to every request for authorized requests.
