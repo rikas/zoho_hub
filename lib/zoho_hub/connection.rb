@@ -31,7 +31,8 @@ module ZohoHub
 
     BASE_PATH = '/crm/'
 
-    def initialize(access_token:, api_domain: nil, api_version: nil, expires_in: 3600, refresh_token: nil)
+    def initialize(access_token: nil, api_domain: nil, api_version: nil, expires_in: 3600,
+                   refresh_token: nil)
       @access_token = access_token
       @expires_in = expires_in
       @api_domain = api_domain || self.class.infer_api_domain

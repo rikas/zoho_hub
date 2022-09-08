@@ -32,21 +32,26 @@ RSpec.describe ZohoHub::BaseRecord do
     end
 
     it 'fetchs notes from the record' do
-      VCR.use_cassette('notes_get') do
-        notes = test_instance.notes
-        expect(notes.class).to eq Array
-        expect(notes.first.class).to eq ZohoHub::Note
-        expect(notes.first.content).to eq 'en attente des docs'
-      end
+      get_stub = \
+        stub_request(:get, "https://crmsandbox.zoho.eu/crm/v2/Leads/#{test_instance.id}/Notes")
+        .to_return(status: 200,
+                   body: { data: [{ Note_Title: 'Title', Note_Content: 'content' }] }.to_json)
+      notes = test_instance.notes
+      expect(notes.class).to eq Array
+      expect(notes.first.class).to eq ZohoHub::Note
+      expect(notes.first.content).to eq 'content'
+      expect(get_stub).to have_been_requested
     end
 
     context 'without any notes' do
       it 'returns empty array' do
-        VCR.use_cassette('notes_get_none') do
-          notes = test_instance.notes
-          expect(notes.class).to eq Array
-          expect(notes).to be_empty
-        end
+        get_stub = \
+          stub_request(:get, "https://crmsandbox.zoho.eu/crm/v2/Leads/#{test_instance.id}/Notes")
+          .to_return(status: 200, body: '')
+        notes = test_instance.notes
+        expect(notes.class).to eq Array
+        expect(notes).to be_empty
+        expect(get_stub).to have_been_requested
       end
     end
   end

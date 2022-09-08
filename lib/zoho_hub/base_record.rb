@@ -121,9 +121,7 @@ module ZohoHub
       end
 
       def update_all(records)
-        zoho_params = records.map do |record|
-          Hash[record.map { |key, value| [attr_to_zoho_key(key), value] }]
-        end
+        zoho_params = records.map { |record| record.transform_keys { |key| attr_to_zoho_key(key) } }
 
         body = put(File.join(request_path), data: zoho_params)
 
@@ -151,6 +149,9 @@ module ZohoHub
 
       alias exist? exists?
 
+      # rubocop:disable Metrics/AbcSize
+      # rubocop:disable Metrics/CyclomaticComplexity
+      # rubocop:disable Metrics/PerceivedComplexity
       def build_response(body)
         response = Response.new(body)
 
@@ -169,6 +170,9 @@ module ZohoHub
 
         response
       end
+      # rubocop:enable Metrics/AbcSize
+      # rubocop:enable Metrics/CyclomaticComplexity
+      # rubocop:enable Metrics/PerceivedComplexity
     end
 
     def initialize(params = {})
@@ -193,7 +197,7 @@ module ZohoHub
     end
 
     def update(params)
-      zoho_params = Hash[params.map { |k, v| [attr_to_zoho_key(k), v] }]
+      zoho_params = params.transform_keys { |key| attr_to_zoho_key(key) }
       body = put(File.join(self.class.request_path, id), data: [zoho_params])
 
       build_response(body)

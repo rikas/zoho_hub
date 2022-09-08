@@ -1,6 +1,5 @@
 # ZohoHub
 
-[![Build Status](https://travis-ci.com/rikas/zoho_hub.svg?branch=master)](https://travis-ci.com/rikas/zoho_hub)
 [![Gem Version](https://badge.fury.io/rb/zoho_hub.svg)](https://badge.fury.io/rb/zoho_hub)
 
 Simple wrapper around Zoho CRM version2, using
@@ -14,21 +13,35 @@ ActiveRecord, to do CRUD operations.
 
 ## Table of Contents
 
-* [Installation](#installation)
-* [Setup](#setup-process)
-  1. [Register your application](#1-register-your-application)
-  2. [Configure ZohoHub with your credentials](#2-configure-zohohub-with-your-credentials)
-  3. [Authorization request](#3-authorization-request)
-  4. [Access token](#4-access-token)
-  5. [Refresh token](#5-refresh-token)
-  6. [BasicZohoHub flow](#6-basic-zohohub-flow)
-  7. [BaseRecord and record classes](#7-baserecord-and-record-classes)
-* [Tips and suggestions](#tips-and-suggestions)
-* [Examples](#examples)
-  1. [Setup auth token and request CurrentUser](#setup-auth-token-and-request-currentuser)
-* [Development](#development)
-* [Contributing](#contributing)
-* [License](#license)
+- [ZohoHub](#zohohub)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+  - [Setup process](#setup-process)
+    - [1. Register your application](#1-register-your-application)
+      - [1.1 Zoho Accounts URL](#11-zoho-accounts-url)
+      - [1.2 Authorized Redirect URI](#12-authorized-redirect-uri)
+    - [2. Configure ZohoHub with your credentials](#2-configure-zohohub-with-your-credentials)
+    - [3. Authorization request](#3-authorization-request)
+      - [3.1 Redirection based authentication](#31-redirection-based-authentication)
+      - [3.2 Self-Client Authorization](#32-self-client-authorization)
+      - [3.3 More on scopes](#33-more-on-scopes)
+      - [3.4 Offline access](#34-offline-access)
+    - [4. Access token](#4-access-token)
+    - [5. Refresh token](#5-refresh-token)
+    - [6. Basic ZohoHub flow](#6-basic-zohohub-flow)
+    - [7. BaseRecord and record classes](#7-baserecord-and-record-classes)
+      - [7.1 Reflection](#71-reflection)
+      - [7.2 Subclassing BaseRecord](#72-subclassing-baserecord)
+  - [8 Notifications](#8-notifications)
+    - [8.1 Enable notifications](#81-enable-notifications)
+    - [8.2 List notifications](#82-list-notifications)
+    - [8.3 Caveats](#83-caveats)
+  - [Tips and suggestions](#tips-and-suggestions)
+  - [Examples](#examples)
+    - [Setup auth token and request CurrentUser](#setup-auth-token-and-request-currentuser)
+  - [Development](#development)
+  - [Contributing](#contributing)
+  - [License](#license)
 
 ## Installation
 
@@ -61,10 +74,10 @@ This will give you a **Client ID** and a **secret**, that you'll use in
 Registration and authorization requests are made to Zoho's domain-specific Accounts URL which
 varies depending on your region:
 
-* China: https://accounts.zoho.com.cn
-* EU: https://accounts.zoho.eu
-* India: https://accounts.zoho.in
-* US: https://accounts.zoho.com
+- China: https://accounts.zoho.com.cn
+- EU: https://accounts.zoho.eu
+- India: https://accounts.zoho.in
+- US: https://accounts.zoho.com
 
 ZohoHub uses the EU Account URL by default, but this can be overriden in a `ZohoHub.configure` block
 via the `api_domain` method ([step 2](#2-configure-zohohub-with-your-credentials).)
@@ -83,8 +96,8 @@ authorization (see [3.2](#32-self-client-authorization).)
 
 ### 2. Configure ZohoHub with your credentials
 
-> **Note:** Treat these credentials like an important password. It is *strongly* recommended to not
-> paste them anywhere in plain text. Do *not* add them to version control; keep them out of your
+> **Note:** Treat these credentials like an important password. It is _strongly_ recommended to not
+> paste them anywhere in plain text. Do _not_ add them to version control; keep them out of your
 > code directly by referencing them via environment variables. Use something like the dotenv gem or
 > encrypted credentials in Rails to keep them as secret and secure as possible.
 
@@ -154,7 +167,7 @@ ZohoCRM.modules.all
 To get the URL for a different scope you can provide a `scope` argument:
 
 ```ruby
-ZohoHub::Auth.auth_url(scope: ['ZohoCRM.modules.custom.all', 'ZohoCRM.modules.all'])
+ZohoHub::Auth.auth_url(scopes: ['ZohoCRM.modules.custom.all', 'ZohoCRM.modules.all'])
 # => "https://accounts.zoho.eu/oauth/v2/auth?access_type=offline&client_id=&redirect_uri=&response_type=code&scope=ZohoCRM.modules.custom.all,ZohoCRM.modules.all"
 ```
 
@@ -200,7 +213,7 @@ To use an **access token** with ZohoHub, pass it to the `ZohoHub.setup_connectio
 
 This gem automatically refresh the access token.
 
-If you want automatic refresh, use the refresh_token argument as in the next chapter.
+If you want automatic refresh, use the `refresh_token` argument as in the next chapter.
 
 ---
 
@@ -259,7 +272,7 @@ Specify this module's fields as attributes:
 # lead.rb
 
 class Lead < ZohoHub::BaseRecord
-  attributes: :id, :first_name, :last_name, :phone, :email, :source, # etc.
+  attributes :id, :first_name, :last_name, :phone, :email, :source, # etc.
 end
 ```
 
@@ -348,18 +361,55 @@ attachment = Lead.download_attachment(parent_id: lead.id, attachment_id:attachme
 #NB: Lead.upload_attachment not implemented yet
 ```
 
+## 8 Notifications
+
+Zoho allows you to receive a notification when a record of a module changes. Supported operation types are create, delete, edit, all.
+
+### 8.1 Enable notifications
+
+In order to receive notifications, you have to enable them first.
+
+```ruby
+# Enable notifications for a given channel:
+notification_url = 'https://example.org/api/notifications' # Zoho will send notifications by POST to this url
+token = '123abc' # Zoho will send this token back to you, so you can ensure that the notification is from Zoho
+channel_id = 1 # Choose a channel to handle the response
+events = %w[Leads.create Deals.edit Contacts.delete Sales_Orders.all] # Which events to receive notifications for
+channel_expiry = (DateTime.now + 1.day).iso8601 # choose a date when the channel should expire. 24h is the maximum, default is one hour
+
+ZohoHub::Notifications.enable(notification_url, channel_id, events, channel_expiry, token)
+```
+
+After enabling notifications, Zoho will execute a POST request to the provided notification_url every time the requested event occurs.
+
+For a list of an in-depth description of the response, check the [Zoho documentation](https://www.zoho.com/crm/developer/docs/api/notifications/overview.html)
+
+### 8.2 List notifications
+
+You can also retrieve all notifications that are currently enabled and that you are receiving uppdates for.
+
+```ruby
+# Get all enabled notifications
+ZohoHub::Notifications.all
+```
+
+### 8.3 Caveats
+
+- Zoho does not notify you when records are merged.
+- Since Zoho does not tell you what changed, you will have to request the record by yourself. Due to this you can miss changes, when they occur quickly after another. This is especially important for status changes, as you might miss state changes.
+
 ## Tips and suggestions
 
-* Using a tool such as Postman or curl to issue HTTP requests and verify responses in isolation
+- Using a tool such as Postman or curl to issue HTTP requests and verify responses in isolation
   can be a great sanity check during setup.
-* Downloading ZohoHub code (as opposed to the gem) and running `bin/console` is a great way to
+- Downloading ZohoHub code (as opposed to the gem) and running `bin/console` is a great way to
   learn how the code works and test aspects of setup and Zoho's API in isolation.
-* [The Zoho API Documentation](https://www.zoho.com/crm/help/developer/api/overview.html) is your
+- [The Zoho API Documentation](https://www.zoho.com/crm/help/developer/api/overview.html) is your
   friend - especially the sample HTTP requests and responses in the various sections under "Rest
   API" on the left.
-* If you're manually implementing your record classes (rather than using the reflection mechanism),
+- If you're manually implementing your record classes (rather than using the reflection mechanism),
   the files in `/examples/models/` can help you get started.
-* Requests can be issued to Zoho CRM's
+- Requests can be issued to Zoho CRM's
   [Sandbox](https://help.zoho.com/portal/kb/articles/using-sandbox)
   by configuring `https://crmsandbox.zoho.com/crm` (or regional equivalent) as the `api_domain`.
 
@@ -383,8 +433,8 @@ attachment = Lead.download_attachment(parent_id: lead.id, attachment_id:attachme
 ```
 
 2. [Register your application](#1-register-your-application) to obtain a **client ID** and
-**secret**. (Leave the [Zoho API Credentials page](https://accounts.zoho.com/developerconsole) open;
-you'll need it in step 5.)
+   **secret**. (Leave the [Zoho API Credentials page](https://accounts.zoho.com/developerconsole) open;
+   you'll need it in step 5.)
 3. Determine your [Zoho Accounts URL](#11-zoho-accounts-url).
 4. Add your registration and account URL information to a `.env` file:
 
@@ -397,9 +447,9 @@ ZOHO_API_DOMAIN=YOUR_ZOHO_ACCOUNTS_URL
 ```
 
 5. On the [Zoho API Credentials page](https://accounts.zoho.com/developerconsole) from step 1, click
-the three vertical dots and select `Self client`.
+   the three vertical dots and select `Self client`.
 6. Paste this into the `Scope` field: `ZohoCRM.users.ALL`, choose an expiration time, and click
-`View Code`; this is your **Grant token**.
+   `View Code`; this is your **Grant token**.
 7. Run the ZohoHub console from your terminal: `bin/console`
 8. Issue a token request with the **grant token** (notice the quotes around the token value):
 

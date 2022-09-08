@@ -9,9 +9,12 @@ RSpec.describe ZohoHub::WithConnection do
 
   describe '.get' do
     it 'fires a get request with ZohoHub::Connection' do
-      VCR.use_cassette('modules_get') do
-        test_class.get('/settings/modules')
-      end
+      get_stub = stub_request(:get, 'https://crmsandbox.zoho.eu/settings/modules')
+                 .to_return(status: 200, body: '', headers: {})
+
+      test_class.get('/settings/modules')
+
+      expect(get_stub).to have_been_requested.once
     end
   end
 end

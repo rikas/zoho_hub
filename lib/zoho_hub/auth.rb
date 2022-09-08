@@ -20,6 +20,7 @@ module ZohoHub
       ZohoCRM.settings.all
       ZohoCRM.modules.contacts.all
       ZohoCRM.modules.all
+      ZohoCRM.notifications.all
     ].freeze
 
     DEFAULT_ACCESS_TYPE = 'offline'
