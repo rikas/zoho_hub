@@ -6,7 +6,7 @@ module ZohoHub
   class Account < BaseRecord
     attributes :id, :name, :territories, :company_number, :employee_count, :company_type, :industry
     attributes :billing_city, :billing_code, :billing_country, :billing_street, :billing_state
-    attributes :account_type
+    attributes :account_type, :industry_section, :region
 
     # This is the ID to be used when the borrower has no organisation (unlikely) or belongs to
     # multiple organisations.
