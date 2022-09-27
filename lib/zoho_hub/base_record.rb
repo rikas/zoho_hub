@@ -128,6 +128,12 @@ module ZohoHub
         build_response(body)
       end
 
+      def delete_all(array_of_ids)
+        body = delete(File.join(request_path), ids: array_of_ids.join(','))
+
+        build_response(body)
+      end
+
       def all(params = {})
         params[:page] ||= DEFAULT_PAGE
         params[:per_page] ||= DEFAULT_RECORDS_PER_PAGE

@@ -21,6 +21,20 @@ RSpec.describe ZohoHub::BaseRecord do
     end
   end
 
+  describe '#delete_all' do
+    before { allow(test_class).to receive(:request_path).and_return('Leads') }
+
+    let!(:stub_delete_request) do
+      stub_request(:delete, 'https://crmsandbox.zoho.eu/crm/v2/Leads?ids=1,2')
+        .to_return(status: 200, body: '', headers: {})
+    end
+
+    it 'sends delete request delete for ids' do
+      test_class.delete_all([1, 2])
+      expect(stub_delete_request).to have_been_requested
+    end
+  end
+
   describe '#notes' do
     let(:test_instance) do
       described_class.new
