@@ -54,6 +54,10 @@ module ZohoHub
       error_code?('RESOURCE_NOT_FOUND')
     end
 
+    def oauth_scope_mismatch?
+      error_code?('OAUTH_SCOPE_MISMATCH')
+    end
+
     def empty?
       @params.empty?
     end

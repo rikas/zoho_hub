@@ -1,42 +1,33 @@
 # frozen_string_literal: true
 
 module ZohoHub
-  class RecordNotFound < StandardError
-  end
+  class Error < StandardError; end
 
-  class RecordInvalid < StandardError
-  end
+  class RecordNotFound < Error; end
 
-  class InvalidTokenError < StandardError
-  end
+  class RecordInvalid < Error; end
 
-  class InternalError < StandardError
-  end
+  class InvalidTokenError < Error; end
 
-  class InvalidRequestError < StandardError
-  end
+  class InternalError < Error; end
 
-  class InvalidModule < StandardError
-  end
+  class InvalidRequestError < Error; end
 
-  class NoPermission < StandardError
-  end
+  class InvalidModule < Error; end
 
-  class AuthenticationFailure < StandardError
-  end
+  class NoPermission < Error; end
 
-  class MandatoryNotFound < StandardError
-  end
+  class AuthenticationFailure < Error; end
 
-  class RecordInBlueprint < StandardError
-  end
+  class MandatoryNotFound < Error; end
 
-  class TooManyRequestsError < StandardError
-  end
+  class RecordInBlueprint < Error; end
 
-  class RecordNotInProcessError < StandardError
-  end
+  class TooManyRequestsError < Error; end
 
-  class ZohoAPIError < StandardError
-  end
+  class RecordNotInProcessError < Error; end
+
+  class OauthScopeMismatch < Error; end
+
+  class ZohoAPIError < Error; end
 end
