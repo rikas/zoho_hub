@@ -39,6 +39,18 @@ module ZohoHub
         new(response.data.first)
       end
 
+      def find_all(ids)
+        ids = Array(ids).join(',')
+        body = get(File.join(request_path), ids: ids)
+        response = build_response(body)
+
+        if response.empty?
+          raise RecordNotFound, "Couldn't find #{request_path.singularize} with 'ids'=#{ids}"
+        end
+
+        response.data.map { |json| new(json) }
+      end
+
       def where(params)
         path = File.join(request_path, 'search')
 

@@ -35,6 +35,26 @@ RSpec.describe ZohoHub::BaseRecord do
     end
   end
 
+  describe '#find_all' do
+    before { allow(test_class).to receive(:request_path).and_return('Leads') }
+
+    let(:data) { [{ My_String: 'a', id: '1' }, { My_String: 'b', id: '2' }] }
+    let(:body) { { data: data } }
+
+    let!(:stub_find_all_request) do
+      stub_request(:get, 'https://crmsandbox.zoho.eu/crm/v2/Leads?ids=1,2')
+        .to_return(status: 200, body: body.to_json)
+    end
+
+    it 'fetches several records' do
+      records = test_class.find_all(data.map { |r| r[:id] })
+      expect(records).to be_a Array
+      expect(records.size).to eq data.size
+      expect(records.map(&:my_string)).to eq %w[a b]
+      expect(stub_find_all_request).to have_been_requested
+    end
+  end
+
   describe '#notes' do
     let(:test_instance) do
       described_class.new
