@@ -94,8 +94,8 @@ module ZohoHub
         new(id: id).delete_record
       end
 
-      def blueprint_transition(id, transition_id, data = {})
-        new(id: id).blueprint_transition(transition_id, data)
+      def blueprint_transition(id, next_field_value, data = {})
+        new(id: id).blueprint_transition(next_field_value, data)
       end
 
       def blueprint_transitions(id)
@@ -228,9 +228,19 @@ module ZohoHub
       build_response(body)
     end
 
-    def blueprint_transition(transition_id, data = {})
+    def transition_id(next_field_value)
+      response = blueprint_transitions
+      transition = response.data[:blueprint][:transitions].find do |t|
+        t[:next_field_value] == next_field_value
+      end
+      raise "Unknown Account Blueprint transition: #{next_field_value}" unless transition
+
+      transition[:id]
+    end
+
+    def blueprint_transition(next_field_value, data = {})
       body = put(File.join(self.class.request_path, id, 'actions/blueprint'),
-                 blueprint: [{ transition_id: transition_id, data: data }])
+                 blueprint: [{ transition_id: transition_id(next_field_value), data: data }])
 
       build_response(body)
     end
