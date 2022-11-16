@@ -233,7 +233,7 @@ module ZohoHub
       transition = response.data[:blueprint][:transitions].find do |t|
         t[:next_field_value] == next_field_value
       end
-      raise "Unknown Account Blueprint transition: #{next_field_value}" unless transition
+      raise BlueprintTransitionNotFound, next_field_value unless transition
 
       transition[:id]
     end

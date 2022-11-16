@@ -30,4 +30,14 @@ module ZohoHub
   class OauthScopeMismatch < Error; end
 
   class ZohoAPIError < Error; end
+
+  class BlueprintTransitionNotFound < Error
+    attr_reader :new_status
+
+    def initialize(new_status)
+      @new_status = new_status
+      @message = "Could not find Blueprint transition to status #{new_status}"
+      super()
+    end
+  end
 end
