@@ -90,7 +90,7 @@ module ZohoHub
       response = Response.new(http_response.body)
 
       # Try to refresh the token and try again
-      if (response.invalid_token? || response.authentication_failure?) && refresh_token?
+      if response.authentication_error? && refresh_token?
         log "Refreshing outdated token... #{@access_token}"
         params = ZohoHub::Auth.refresh_token(@refresh_token)
 
@@ -99,7 +99,7 @@ module ZohoHub
         @access_token = params[:access_token]
 
         http_response = yield
-      elsif response.authentication_failure?
+      elsif response.authentication_error?
         raise ZohoAPIError, response.msg
       end
 

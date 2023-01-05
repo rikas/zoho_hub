@@ -4,6 +4,78 @@ RSpec.describe ZohoHub::BaseRecord do
   let(:test_class) do
     Class.new(described_class) do
       attributes :my_string, :my_bool, :id
+
+      attribute_translation id: :id
+    end
+  end
+
+  let(:id) { generate(:zoho_id) }
+
+  describe '.find' do
+    before { allow(test_class).to receive(:request_path).and_return('Leads') }
+
+    context "with an existing record" do
+      let!(:stub_get_request) do
+        stub_request(:get, "https://crmsandbox.zoho.eu/crm/v2/Leads/#{id}")
+          .to_return(status: 200, body: { data: [{ id: id }] }.to_json)
+      end
+
+      it 'gets the record' do
+        record = test_class.find(id)
+        expect(stub_get_request).to have_been_requested
+        expect(record.id).to eq id
+      end
+    end
+
+    context "with a not found record" do
+      let!(:stub_get_request) do
+        stub_request(:get, "https://crmsandbox.zoho.eu/crm/v2/Leads/#{id}")
+          .to_return(status: 404, body: { status: 'error', code: 'RESOURCE_NOT_FOUND' }.to_json)
+      end
+
+      it 'raises a record not found error' do
+        expect do
+          test_class.find(id)
+        end.to raise_error(ZohoHub::RecordNotFound)
+      end
+    end
+  end
+
+  describe '.where' do
+    before { allow(test_class).to receive(:request_path).and_return('Leads') }
+
+    context 'with built-in criteria' do
+      let(:email) { "test@example.com" }
+
+      context "with an existing record" do
+        let!(:stub_search_request) do
+          stub_request(:get, "https://crmsandbox.zoho.eu/crm/v2/Leads/search?email=#{email}")
+            .to_return(status: 200, body: { data: [{ id: generate(:zoho_id) }] }.to_json)
+        end
+
+        it 'gets the records' do
+          records = test_class.where(email: email)
+          expect(records).to be_a Array
+          expect(records.size).to eq 1
+          expect(stub_search_request).to have_been_requested
+        end
+      end
+    end
+
+    context 'with criteria' do
+      context "with an existing record" do
+        let!(:stub_search_request) do
+          stub_request(:get, "https://crmsandbox.zoho.eu/crm/v2/Leads/search?criteria=My_String:equals:foo")
+            .to_return(status: 200, body: { data: [{ id: generate(:zoho_id) }] }.to_json)
+        end
+
+        it 'gets the records' do
+          records = test_class.where(my_string: 'foo')
+          expect(records).to be_a Array
+          expect(records.size).to eq 1
+          expect(stub_search_request).to have_been_requested
+        end
+      end
     end
   end
 
@@ -56,7 +128,7 @@ RSpec.describe ZohoHub::BaseRecord do
   end
 
   describe '#blueprint_transition' do
-    let(:test_instance) { test_class.new(id: '123456789') }
+    let(:test_instance) { test_class.new(id: id) }
     let!(:get_transition_id_stub) do
       stub_request(:get, "https://crmsandbox.zoho.eu/crm/v2/Leads/#{test_instance.id}/actions/blueprint")
         .to_return(status: 200,
@@ -80,7 +152,7 @@ RSpec.describe ZohoHub::BaseRecord do
   end
 
   describe '#notes' do
-    let(:test_instance) { test_class.new(id: '123456789') }
+    let(:test_instance) { test_class.new(id: id) }
     let(:data_notes) { { data: [{ Note_Title: 'Title', Note_Content: 'content' }] } }
     let!(:get_notes_stub) do
       stub_request(:get, "https://crmsandbox.zoho.eu/crm/v2/Leads/#{test_instance.id}/Notes")

@@ -6,58 +6,6 @@ module ZohoHub
       @params = params || {}
     end
 
-    def invalid_data?
-      error_code?('INVALID_DATA')
-    end
-
-    def invalid_token?
-      error_code?('INVALID_TOKEN')
-    end
-
-    def internal_error?
-      error_code?('INTERNAL_ERROR')
-    end
-
-    def invalid_request?
-      error_code?('INVALID_REQUEST')
-    end
-
-    def authentication_failure?
-      error_code?('AUTHENTICATION_FAILURE')
-    end
-
-    def invalid_module?
-      error_code?('INVALID_MODULE')
-    end
-
-    def no_permission?
-      error_code?('NO_PERMISSION')
-    end
-
-    def mandatory_not_found?
-      error_code?('MANDATORY_NOT_FOUND')
-    end
-
-    def record_in_blueprint?
-      error_code?('RECORD_IN_BLUEPRINT')
-    end
-
-    def too_many_requests?
-      error_code?('TOO_MANY_REQUESTS')
-    end
-
-    def record_not_in_process?
-      error_code?('RECORD_NOT_IN_PROCESS')
-    end
-
-    def record_not_found?
-      error_code?('RESOURCE_NOT_FOUND')
-    end
-
-    def oauth_scope_mismatch?
-      error_code?('OAUTH_SCOPE_MISMATCH')
-    end
-
     def empty?
       @params.empty?
     end
@@ -86,14 +34,30 @@ module ZohoHub
     # Error response examples:
     # {"data":[{"code":"INVALID_DATA","details":{},"message":"the id given...","status":"error"}]}
     # {:code=>"INVALID_TOKEN", :details=>{}, :message=>"invalid oauth token", :status=>"error"}
-    def error_code?(code)
+    def error?
       if data.is_a?(Array)
         return false if data.size > 1
-
-        return data.first[:code] == code
+        return data.first[:status] == 'error'
       end
 
-      data[:code] == code
+      data[:status] == 'error'
+    end
+
+    def error_code
+      if data.is_a?(Array)
+        return if data.size > 1
+        return data.first[:code]
+      end
+
+      data[:code]
+    end
+
+    def error_class
+      ERROR_CLASSES_MAPPING.fetch(error_code, UnknownError)
+    end
+
+    def authentication_error?
+      error? && %w[INVALID_TOKEN AUTHENTICATION_FAILURE].include?(error_code)
     end
   end
 end

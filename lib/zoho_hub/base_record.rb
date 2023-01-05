@@ -167,31 +167,15 @@ module ZohoHub
 
       alias exist? exists?
 
-      # rubocop:disable Metrics/AbcSize
-      # rubocop:disable Metrics/CyclomaticComplexity
-      # rubocop:disable Metrics/PerceivedComplexity
       def build_response(body)
         response = Response.new(body)
 
-        raise InvalidTokenError, response.msg if response.invalid_token?
-        raise InternalError, response.msg if response.internal_error?
-        raise InvalidRequestError, response.msg if response.invalid_request?
-        raise RecordInvalid, response.msg if response.invalid_data?
-        raise InvalidModule, response.msg if response.invalid_module?
-        raise NoPermission, response.msg if response.no_permission?
-        raise AuthenticationFailure, response.msg if response.authentication_failure?
-        raise MandatoryNotFound, response.msg if response.mandatory_not_found?
-        raise RecordInBlueprint, response.msg if response.record_in_blueprint?
-        raise TooManyRequestsError, response.msg if response.too_many_requests?
-        raise RecordNotInProcessError, response.msg if response.record_not_in_process?
-        raise RecordNotFound, response.msg if response.record_not_found?
-        raise OauthScopeMismatch, response.msg if response.oauth_scope_mismatch?
-
-        response
+        if response.error?
+          raise response.error_class, response.msg
+        else
+          response
+        end
       end
-      # rubocop:enable Metrics/AbcSize
-      # rubocop:enable Metrics/CyclomaticComplexity
-      # rubocop:enable Metrics/PerceivedComplexity
     end
 
     def initialize(params = {})
