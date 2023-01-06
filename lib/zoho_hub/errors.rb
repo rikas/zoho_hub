@@ -13,6 +13,8 @@ module ZohoHub
 
   class InvalidRequestError < Error; end
 
+  class InvalidQueryError < Error; end
+
   class InvalidModule < Error; end
 
   class NoPermission < Error; end

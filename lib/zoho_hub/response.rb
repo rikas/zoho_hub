@@ -22,6 +22,10 @@ module ZohoHub
       error_code?('INVALID_REQUEST')
     end
 
+    def invalid_query?
+      error_code?('INVALID_QUERY')
+    end
+
     def authentication_failure?
       error_code?('AUTHENTICATION_FAILURE')
     end

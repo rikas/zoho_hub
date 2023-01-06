@@ -176,6 +176,7 @@ module ZohoHub
         raise InvalidTokenError, response.msg if response.invalid_token?
         raise InternalError, response.msg if response.internal_error?
         raise InvalidRequestError, response.msg if response.invalid_request?
+        raise InvalidQueryError, response.msg if response.invalid_query?
         raise RecordInvalid, response.msg if response.invalid_data?
         raise InvalidModule, response.msg if response.invalid_module?
         raise NoPermission, response.msg if response.no_permission?
