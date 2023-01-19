@@ -4,8 +4,8 @@ require 'zoho_hub/records/base_record'
 
 module ZohoHub
   class Quote < BaseRecord
-    attributes :id, :stage, :subject, :potential_id, :owner_id, :product_id, :account_id, :extra_info
-    attributes :funding_amount, :financed_on
+    attributes :id, :stage, :subject, :potential_id, :owner_id, :product_id, :account_id
+    attributes :funding_amount, :financed_on, :extra_info
 
     attribute_translation(
       id: :id,
@@ -26,7 +26,7 @@ module ZohoHub
       # The Quote has an array of products but we only care about one
       if params.dig(:Product_Details)
         product = params.dig(:Product_Details).first
-        @product_id = product.dig(:id)
+        @product_id = product[:id]
       end
     end
 

@@ -6,10 +6,10 @@ module ZohoHub
   class Potential < BaseRecord
     attributes :id, :code, :deal_name, :amount, :description, :stage
     attributes :company_age_years, :company_age_months, :term, :use_proceeds, :proceeds_detail
-    attributes :currency, :territory, :employee_count, :turnover, :industry, :region, :turnover_figure
+    attributes :currency, :territory, :employee_count, :turnover, :industry, :region
     attributes :review_outcome, :first_created, :last_modified, :preferred_term, :project_notes
     attributes :campaign_id, :account_id, :contact_id, :campaign_detail, :reviewers_comment
-    attributes :accounting_software, :banking_provider
+    attributes :accounting_software, :banking_provider, :turnover_figure
     attributes :guarantee_types, :home_ownership_status
     attributes :accountant_id, :vat_registration, :published_all_of_market
     attributes :credit_risk_band, :live_ccjs, :satisfied_ccjs

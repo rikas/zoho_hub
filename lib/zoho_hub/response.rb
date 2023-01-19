@@ -42,10 +42,7 @@ module ZohoHub
 
     def msg
       msg = data[:message]
-
-      if data.dig(:code) == 'INVALID_DATA'
-        msg << ", error in #{data.dig(:details, :api_name)}"
-      end
+      msg << ", error in #{data.dig(:details, :api_name)}" if data.dig(:code) == 'INVALID_DATA'
 
       if data.dig(:details, :expected_data_type)
         expected = data.dig(:details, :expected_data_type)
