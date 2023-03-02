@@ -25,17 +25,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'activesupport', '> 6'
   spec.add_dependency 'addressable', '~> 2.8'
-  spec.add_dependency 'faraday', '~> 1.10'
-  spec.add_dependency 'faraday_middleware', '~> 1.2'
+  spec.add_dependency 'faraday', '~> 2.7'
   spec.add_dependency 'multi_json', '~> 1.15'
   spec.add_dependency 'rainbow', '~> 3.1'
-
-  spec.add_development_dependency 'bundler'
-  spec.add_development_dependency 'dotenv', '~> 2.8'
-  spec.add_development_dependency 'pry-byebug', '~> 3.10'
-  spec.add_development_dependency 'rake'
-  spec.add_development_dependency 'rspec'
-  spec.add_development_dependency 'rubocop'
-  spec.add_development_dependency 'rubocop-rspec'
-  spec.add_development_dependency 'simplecov'
 end
