@@ -15,7 +15,7 @@ module ZohoHub
     attributes :credit_risk_band, :live_ccjs, :satisfied_ccjs
     attributes :state, :number_of_connections
     attributes :submitted_to_lender_panel, :last_attachment_uploaded, :funds_timeline
-    attributes :cancellation_reason
+    attributes :cancellation_reason, :stripe_payment_reference
 
     DEFAULTS = {
       currency: 'GBP',
