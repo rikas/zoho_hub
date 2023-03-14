@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'zoho_hub/records/base_record'
+require 'faraday/multipart'
 
 module ZohoHub
   class Attachment < BaseRecord

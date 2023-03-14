@@ -26,6 +26,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'activesupport', '> 6'
   spec.add_dependency 'addressable', '~> 2.8'
   spec.add_dependency 'faraday', '~> 2.7'
+  spec.add_dependency 'faraday-multipart'
   spec.add_dependency 'multi_json', '~> 1.15'
   spec.add_dependency 'rainbow', '~> 3.1'
 end
