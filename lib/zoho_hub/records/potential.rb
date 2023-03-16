@@ -16,6 +16,7 @@ module ZohoHub
     attributes :state, :number_of_connections
     attributes :submitted_to_lender_panel, :last_attachment_uploaded, :funds_timeline
     attributes :cancellation_reason, :stripe_payment_reference
+    attributes :portal_session_id, :portal_session_url
 
     DEFAULTS = {
       currency: 'GBP',
