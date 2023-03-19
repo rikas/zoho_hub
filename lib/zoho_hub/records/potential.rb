@@ -42,7 +42,10 @@ module ZohoHub
       turnover_figure: :Turnover_figure,
       last_attachment_uploaded: :Last_Attachment_Uploaded,
       funds_timeline: :When_will_you_needs_the_funds,
-      cancellation_reason: :If_Application_Cancelled_select_reason
+      cancellation_reason: :If_Application_Cancelled_select_reason,
+      potal_session_id: :Portal_Session_ID,
+      portal_session_url: :Portal_Session_URL,
+      portal_agent_session_url: :Portal_Agent_Session_URL,
     )
 
     def initialize(params)
