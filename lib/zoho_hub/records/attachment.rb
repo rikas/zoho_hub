@@ -44,10 +44,11 @@ module ZohoHub
         new(response.data)
       end
 
-      def get(path, parent:, **params)
+      def get(path, params = {}, &block)
+        parent = params.fetch(:parent)
         # remove /search added by where method
         path = path.sub('/search', '')
-        ZohoHub.connection.get(parent_module_path(path, parent), params)
+        ZohoHub.connection.get(parent_module_path(path, parent), params, &block)
       end
 
       def post(path, parent:, **params)
@@ -78,7 +79,7 @@ module ZohoHub
       raise NotImplementedError
     end
 
-    def save(*)
+    def save(*, **)
       super
     rescue => e
       if e.message.include?('Attachment link already exists')
