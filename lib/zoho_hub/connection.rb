@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'faraday'
-require 'faraday_middleware'
 require 'rainbow'
 require 'addressable'
 
@@ -111,17 +110,18 @@ module ZohoHub
     end
 
     # The authorization header that must be added to every request for authorized requests.
-    def authorization_header
-      { 'Authorization' => "Zoho-oauthtoken #{@access_token}" }
+    def authorization
+      "Zoho-oauthtoken #{@access_token}"
     end
 
     def adapter
       Faraday.new(url: base_url) do |conn|
-        conn.headers = authorization_header if access_token?
-        conn.use FaradayMiddleware::EncodeJson
-        conn.use FaradayMiddleware::ParseJson
+        conn.headers['Authorization'] = authorization if access_token?
+        conn.request :json
         conn.response :json, parser_options: { symbolize_names: true }
-        conn.response :logger if ZohoHub.configuration.debug?
+        if ZohoHub.configuration.debug?
+          conn.response :logger,::Logger.new($stdout), headers: true, bodies: true
+        end
         conn.adapter Faraday.default_adapter
       end
     end

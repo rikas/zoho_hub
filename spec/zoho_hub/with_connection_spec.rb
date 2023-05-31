@@ -10,7 +10,7 @@ RSpec.describe ZohoHub::WithConnection do
   describe '.get' do
     it 'fires a get request with ZohoHub::Connection' do
       get_stub = stub_request(:get, 'https://crmsandbox.zoho.eu/settings/modules')
-                 .to_return(status: 200, body: '', headers: {})
+                 .to_return(status: 200, body: '', headers: { "Content-Type": "application/json" })
 
       test_class.get('/settings/modules')
 
