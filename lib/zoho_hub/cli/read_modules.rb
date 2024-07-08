@@ -58,8 +58,10 @@ module ZohoHub
 
       def setup_connection
         ZohoHub.configure do |config|
-          config.client_id    = @options[:client_id] || ENV['ZOHO_CLIENT_ID']
-          config.secret       = @options[:secret] || ENV['ZOHO_SECRET']
+          config.client_id     = @options[:client_id] || ENV['ZOHO_CLIENT_ID']
+          config.secret        = @options[:secret] || ENV['ZOHO_SECRET']
+          config.proxy_address = @options[:proxy][:proxy_address] || nil
+          config.proxy_port    = @options[:proxy][:proxy_port] || nil
         end
 
         refresh_token = @options[:refresh_token] || ENV['ZOHO_REFRESH_TOKEN']

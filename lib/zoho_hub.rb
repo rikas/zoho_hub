@@ -39,7 +39,13 @@ module ZohoHub
   def setup_connection(params = {})
     raise "ERROR: #{params[:error]}" if params[:error]
 
-    connection_params = params.dup.slice(:access_token, :expires_in, :api_domain, :refresh_token)
+    connection_params = params.dup.slice(
+      :access_token,
+      :expires_in,
+      :api_domain,
+      :refresh_token,
+      :proxy
+    )
 
     @connection = Connection.new(**connection_params)
   end

@@ -22,6 +22,7 @@ module ZohoHub
     end
 
     attr_accessor :debug, :access_token, :expires_in, :api_domain, :refresh_token
+    attr_reader :proxy_address, :proxy_port
 
     # This is a block to be run when the token is refreshed. This way you can do whatever you want
     # with the new parameters returned by the refresh method.
@@ -31,11 +32,13 @@ module ZohoHub
 
     BASE_PATH = '/crm/v2/'
 
-    def initialize(access_token: nil, api_domain: nil, expires_in: 3600, refresh_token: nil)
+    def initialize(access_token: nil, api_domain: nil, expires_in: 3600, refresh_token: nil, proxy: {})
       @access_token = access_token
       @expires_in = expires_in
       @api_domain = api_domain || self.class.infer_api_domain
       @refresh_token ||= refresh_token # do not overwrite if it's already set
+      @proxy_address = proxy[:proxy_address]
+      @proxy_port = proxy[:proxy_port]
     end
 
     def get(path, params = {})
@@ -114,7 +117,7 @@ module ZohoHub
     end
 
     def adapter
-      Faraday.new(url: base_url) do |conn|
+      Faraday.new(url: base_url, proxy: proxy_url) do |conn|
         conn.headers = authorization_header if access_token?
         conn.use FaradayMiddleware::EncodeJson
         conn.use FaradayMiddleware::ParseJson
@@ -122,6 +125,12 @@ module ZohoHub
         conn.response :logger if ZohoHub.configuration.debug?
         conn.adapter Faraday.default_adapter
       end
+    end
+
+    def proxy_url
+      return unless proxy_address && proxy_port
+
+      "https://#{proxy_address}:#{proxy_port}"
     end
   end
 end

@@ -55,6 +55,17 @@ RSpec.describe ZohoHub::Connection do
 
         expect(result).to eq('custom domain')
       end
+
+      it 'allows to set proxy' do
+        connection = described_class.new(access_token: '',
+                                         proxy: {
+                                           address: 'proxy address',
+                                           port: 'proxy port'
+                                         })
+
+        expect(connection.proxy_address).to eq('proxy address')
+        expect(connection.proxy_port).to eq('proxy port')
+      end
     end
   end
 end
