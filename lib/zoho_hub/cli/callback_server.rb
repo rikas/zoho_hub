@@ -36,7 +36,7 @@ module ZohoHub
       end
 
       def run(argv = ARGV, env = ENV)
-        exit 1 unless good_run(argv, env)
+        exit 1 unless good_run?(argv, env)
 
         ZohoHub::OauthCallbackServer.set(:port, @options[:port]) if @options[:port]
 
@@ -47,8 +47,8 @@ module ZohoHub
         callback_url = "http://#{bind_address}:#{bind_port}/#{callback_path}"
 
         ZohoHub.configure do |config|
-          config.client_id    = @options[:client_id] || ENV['ZOHO_CLIENT_ID']
-          config.secret       = @options[:secret] || ENV['ZOHO_SECRET']
+          config.client_id    = @options[:client_id] || ENV.fetch('ZOHO_CLIENT_ID', nil)
+          config.secret       = @options[:secret] || ENV.fetch('ZOHO_SECRET', nil)
           config.redirect_uri = callback_url
         end
 
@@ -70,7 +70,7 @@ module ZohoHub
         !ZohoHub.configuration.client_id || !ZohoHub.configuration.secret
       end
 
-      def good_run(argv, env)
+      def good_run?(argv, env)
         return false unless parse(argv, env)
 
         true
@@ -81,13 +81,12 @@ module ZohoHub
         true
       rescue OptionParser::ParseError => e
         error_output(e)
+        false
       end
 
       def error_output(error)
         warn "Error: #{error}"
         warn "Try `#{parser.program_name} server --help' for more information"
-
-        false
       end
     end
   end

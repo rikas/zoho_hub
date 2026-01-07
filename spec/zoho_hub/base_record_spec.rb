@@ -16,7 +16,7 @@ RSpec.describe ZohoHub::BaseRecord do
         record = test_class.new(response.data.first)
 
         expect(record.my_string).to eq('')
-        expect(record.my_bool).to eq(false)
+        expect(record.my_bool).to be(false)
       end
     end
   end

@@ -52,7 +52,7 @@ module ZohoHub
       end
 
       def zoho_key_translation
-        @attribute_translation.to_a.map(&:rotate).to_h
+        @attribute_translation.to_a.to_h { |k, v| [v, k] }
       end
     end
 

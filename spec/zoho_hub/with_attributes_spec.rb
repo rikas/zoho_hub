@@ -48,7 +48,7 @@ RSpec.describe ZohoHub::WithAttributes do
       test.assign_attributes(one: 1, two: 2)
       expect(test.one).to eq(1)
       expect(test.two).to eq(2)
-      expect(test.three).to eq(nil)
+      expect(test.three).to be_nil
     end
   end
 end

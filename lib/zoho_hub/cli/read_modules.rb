@@ -33,11 +33,11 @@ module ZohoHub
       end
 
       def run(argv = ARGV, env = ENV)
-        exit 1 unless good_run(argv, env)
+        exit 1 unless good_run?(argv, env)
 
         setup_connection
 
-        client_id = @options[:client_id] || ENV['ZOHO_CLIENT_ID']
+        client_id = @options[:client_id] || ENV.fetch('ZOHO_CLIENT_ID', nil)
         puts "Reading modules for client ID: #{client_id}..."
 
         modules_hashes = ZohoHub::Settings::Module.all_json
@@ -50,7 +50,7 @@ module ZohoHub
         end
       end
 
-      def good_run(argv, env)
+      def good_run?(argv, env)
         return false unless parse(argv, env)
 
         true
@@ -58,11 +58,11 @@ module ZohoHub
 
       def setup_connection
         ZohoHub.configure do |config|
-          config.client_id    = @options[:client_id] || ENV['ZOHO_CLIENT_ID']
-          config.secret       = @options[:secret] || ENV['ZOHO_SECRET']
+          config.client_id    = @options[:client_id] || ENV.fetch('ZOHO_CLIENT_ID', nil)
+          config.secret       = @options[:secret] || ENV.fetch('ZOHO_SECRET', nil)
         end
 
-        refresh_token = @options[:refresh_token] || ENV['ZOHO_REFRESH_TOKEN']
+        refresh_token = @options[:refresh_token] || ENV.fetch('ZOHO_REFRESH_TOKEN', nil)
         token_params = ZohoHub::Auth.refresh_token(refresh_token)
 
         if configuration_incomplete?(refresh_token)
@@ -84,9 +84,7 @@ module ZohoHub
         FileUtils.mkdir_p(modules_path)
         file_name = File.join(modules_path, "#{info[:api_name]}.json")
 
-        File.open(file_name, 'w') do |file|
-          file.write(JSON.pretty_generate(info))
-        end
+        File.write(file_name, JSON.pretty_generate(info))
 
         return unless info[:api_supported]
 
@@ -99,9 +97,7 @@ module ZohoHub
         FileUtils.mkdir_p(fields_path)
         file_name = File.join(fields_path, "#{info[:api_name]}.json")
 
-        File.open(file_name, 'w') do |file|
-          file.write(JSON.pretty_generate(fields_array))
-        end
+        File.write(file_name, JSON.pretty_generate(fields_array))
       end
 
       def parse(argv, _env)
@@ -109,13 +105,12 @@ module ZohoHub
         true
       rescue OptionParser::ParseError => e
         error_output(e)
+        false
       end
 
       def error_output(error)
         warn "Error: #{error}"
         warn "Try `#{parser.program_name} server --help' for more information"
-
-        false
       end
     end
   end

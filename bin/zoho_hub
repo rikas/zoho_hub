@@ -31,9 +31,9 @@ end
 
 case command
 when 'callback-server'
-  ZohoHub::Cli::CallbackServer.new.run(ARGV[1..-1])
+  ZohoHub::Cli::CallbackServer.new.run(ARGV[1..])
 when 'read-modules'
-  ZohoHub::Cli::ReadModules.new.run(ARGV[1..-1])
+  ZohoHub::Cli::ReadModules.new.run(ARGV[1..])
 else
   $stdout.puts 'Usage:'
   $stdout.puts "    zoho_hub [command] [options]\n"

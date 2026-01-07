@@ -8,16 +8,16 @@ require 'dotenv'
 Dotenv.load
 
 ZohoHub.configure do |config|
-  config.client_id    = ENV['ZOHO_CLIENT_ID']
-  config.secret       = ENV['ZOHO_SECRET']
-  config.redirect_uri = ENV['ZOHO_REDIRECT_URI']
+  config.client_id    = ENV.fetch('ZOHO_CLIENT_ID', nil)
+  config.secret       = ENV.fetch('ZOHO_SECRET', nil)
+  config.redirect_uri = ENV.fetch('ZOHO_REDIRECT_URI', nil)
   config.api_domain   = ENV['ZOHO_API_DOMAIN'] if ENV['ZOHO_API_DOMAIN']
   config.debug        = ENV['ZOHO_DEBUG'] || false
 end
 
 # We assume that we already have a refresh token, to make things easier here.
 puts 'Refreshing token...'
-token_params = ZohoHub::Auth.refresh_token(ENV['ZOHO_REFRESH_TOKEN'])
+token_params = ZohoHub::Auth.refresh_token(ENV.fetch('ZOHO_REFRESH_TOKEN', nil))
 ZohoHub.setup_connection(token_params)
 
 send(:include, ZohoHub)

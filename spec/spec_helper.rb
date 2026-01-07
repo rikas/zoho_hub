@@ -11,14 +11,14 @@ Dotenv.load
 require 'zoho_hub'
 
 ZohoHub.configure do |config|
-  config.client_id    = ENV['ZOHO_CLIENT_ID']
-  config.secret       = ENV['ZOHO_SECRET']
-  config.redirect_uri = ENV['ZOHO_REDIRECT_URI']
+  config.client_id    = ENV.fetch('ZOHO_CLIENT_ID', nil)
+  config.secret       = ENV.fetch('ZOHO_SECRET', nil)
+  config.redirect_uri = ENV.fetch('ZOHO_REDIRECT_URI', nil)
 end
 
-ZohoHub.setup_connection(access_token: ENV['ZOHO_ACCESS_TOKEN'],
-                         refresh_token: ENV['ZOHO_REFRESH_TOKEN'],
-                         expires_in: ENV['ZOHO_EXPIRES_IN'],
+ZohoHub.setup_connection(access_token: ENV.fetch('ZOHO_ACCESS_TOKEN', nil),
+                         refresh_token: ENV.fetch('ZOHO_REFRESH_TOKEN', nil),
+                         expires_in: ENV.fetch('ZOHO_EXPIRES_IN', nil),
                          api_domain: ENV['ZOHO_API_DOMAIN'] || 'https://crmsandbox.zoho.eu')
 
 RSpec.configure do |config|

@@ -11,14 +11,14 @@ require 'dotenv'
 Dotenv.load
 
 ZohoHub.configure do |config|
-  config.client_id    = ENV['ZOHO_CLIENT_ID']
-  config.secret       = ENV['ZOHO_SECRET']
+  config.client_id    = ENV.fetch('ZOHO_CLIENT_ID', nil)
+  config.secret       = ENV.fetch('ZOHO_SECRET', nil)
 end
 
-token_params = ZohoHub::Auth.refresh_token(ENV['ZOHO_REFRESH_TOKEN'])
+token_params = ZohoHub::Auth.refresh_token(ENV.fetch('ZOHO_REFRESH_TOKEN', nil))
 ZohoHub.setup_connection(token_params)
 
-puts "Reading modules for client ID: #{ENV['ZOHO_CLIENT_ID']}..."
+puts "Reading modules for client ID: #{ENV.fetch('ZOHO_CLIENT_ID', nil)}..."
 
 modules_hashes = ZohoHub::Settings::Module.all_json
 
@@ -31,9 +31,7 @@ modules_hashes.each do |hash|
   FileUtils.mkdir_p(modules_path)
   file_name = File.join(modules_path, "#{hash[:api_name]}.json")
 
-  File.open(file_name, 'w') do |file|
-    file.write(JSON.pretty_generate(hash))
-  end
+  File.write(file_name, JSON.pretty_generate(hash))
 
   next unless hash[:api_supported]
 
@@ -42,7 +40,5 @@ modules_hashes.each do |hash|
   FileUtils.mkdir_p(fields_path)
   file_name = File.join(fields_path, "#{hash[:api_name]}.json")
 
-  File.open(file_name, 'w') do |file|
-    file.write(JSON.pretty_generate(fields_array))
-  end
+  File.write(file_name, JSON.pretty_generate(fields_array))
 end
