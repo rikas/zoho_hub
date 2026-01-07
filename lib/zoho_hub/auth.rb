@@ -2,7 +2,6 @@
 
 require 'multi_json'
 require 'faraday'
-require 'faraday_middleware'
 require 'addressable'
 
 module ZohoHub

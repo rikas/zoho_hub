@@ -27,8 +27,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'addressable'
   spec.add_dependency 'backports'
-  spec.add_dependency 'faraday'
-  spec.add_dependency 'faraday_middleware'
+  spec.add_dependency 'faraday', '~> 2.0'
   spec.add_dependency 'launchy'
   spec.add_dependency 'multi_json'
   spec.add_dependency 'rainbow'
