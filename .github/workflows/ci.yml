@@ -1,6 +1,9 @@
+---
 name: CI
 
-on: [push, pull_request]
+on:
+  - push
+  - pull_request
 
 jobs:
   lint:
@@ -17,15 +20,19 @@ jobs:
       - name: rubocop
         timeout-minutes: 5
         run: bundle exec rubocop -c .rubocop.yml
-
   test:
     runs-on: ubuntu-latest
     continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
       matrix:
-        ruby: ['2.5', '2.6', '2.7', '3.0']
-        experimental: [false]
+        ruby:
+          - '3.3'
+          - '3.4'
+          - '3.5'
+          - '4.0'
+        experimental:
+          - false
     steps:
       - uses: actions/checkout@v2
       - uses: ruby/setup-ruby@v1
